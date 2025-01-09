@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1736412402 "triangles.tex" "triangles.pdf" "triangles" 1736412402
+["pdflatex"] 1736426141 "triangles.tex" "triangles.pdf" "triangles" 1736426141
   "/etc/texmf/web2c/texmf.cnf" 1728313746 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/tex/generic/luatex85/luatex85.sty" 1466003200 5870 5c4dd54f0f0c0983167985107b28c800 ""
   "/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex" 1601326656 992 855ff26741653ab54814101ca36e153c ""
@@ -81,7 +81,7 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1736325085 1435836 f91fb7a9941a454f193d6a5e108415c1 ""
   "tkz-2d.sty" 0 -1 0 ""
-  "triangles.aux" 1736412364 32 3985256e7290058c681f74d7a3565a19 ""
+  "triangles.aux" 1736426136 32 3985256e7290058c681f74d7a3565a19 ""
   "triangles.tex" 1736412402 7240 bcdaddb3087c280c152bf9e0328043a9 ""
   (generated)
   "triangles.log"

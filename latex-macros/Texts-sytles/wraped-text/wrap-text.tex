@@ -1,0 +1,132 @@
+%%%
+%                       code doesn't work
+%%%
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{blindtext}
+\usepackage[T1]{fontenc}
+\usepackage{shapepar}
+\usepackage{microtype}
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{10pt}%
+\usetikzlibrary{calc,fit,intersections}
+\def\shapeparnodeaccuracy{2}
+\newcommand\shapeparnode[6][]{
+  % 6 parameters:
+  % style for node (default:empty),
+  % h margin, v margin, left path, right path, text (just one paragraph!)
+
+  % name left and right paths and compute there bounding boxes
+  \begin{scope}[local bounding box=leftbb]
+    \path[name path global=left, xshift=#2] #4;
+  \end{scope}
+  \node[inner ysep=-#3, inner xsep=0pt, fit=(leftbb)](leftbb){};
+  \begin{scope}[local bounding box=rightbb]
+    \path[name path global=right, xshift=-#2] #5;
+  \end{scope}
+  \node[inner ysep=-#3, inner xsep=0pt, fit=(rightbb)](rightbb){};
+
+  % global bounding box
+  \path let
+  \p1=(leftbb.north west), \p2=(leftbb.south west),
+  \p3=(rightbb.north east), \p4=(rightbb.south east)
+  in
+  \pgfextra{
+    \pgfmathsetmacro{\ymin}{(\y1 < \y3) ? \y1 : \y3}
+    \pgfmathsetmacro{\ymax}{(\y2 > \y4) ? \y2 : \y4}
+    \typeout{ymin \ymin}
+    \typeout{ymax \ymax}
+  } node[inner sep=0, fit={(\x1,\ymin pt)(\x3,\ymax pt)}](mybb){};
+
+  % compute nb steps
+  \path let \p1=(mybb.north), \p2=(mybb.south) in
+  \pgfextra{
+    \pgfmathsetmacro{\fnthght}{1em/\shapeparnodeaccuracy}
+    \pgfmathtruncatemacro{\nbsteps}{(\y1-\y2)/\fnthght}
+    \xdef\nbsteps{\nbsteps}
+    \typeout{nb steps \nbsteps}
+  };
+
+  % horizontal references
+  \path (mybb.north) -- (mybb.south)
+  \foreach \cnt in {0, 1, ..., \nbsteps}{
+    \pgfextra{\pgfmathsetmacro{\pos}{\cnt/\nbsteps}}
+    coordinate[pos=\pos] (ref \cnt)
+  };
+
+  % left and right boundaries coordinates
+  \foreach \cnt in {0, 1, ..., \nbsteps}{
+    % an horizontal line from left to right
+    \path[name path=ltor]
+      (mybb.west |- ref \cnt) --  (mybb.east |- ref \cnt);
+    % same line from right to left
+    \path[name path=rtol]
+      (mybb.east |- ref \cnt) -- (mybb.west |- ref \cnt);
+    % left boundary
+    \path[name intersections={of=rtol and left, by={l \cnt}, sort by=rtol}];
+    % right boundary
+    \path[name intersections={of=ltor and right, by={r \cnt}, sort by=ltor}];
+  }
+  % start point (and initial value of boundshape)
+  \path let \p1=(l 0) in 
+  \pgfextra{
+    \pgfmathsetmacro{\xstart}{\x1}
+    \xdef\boundshape{{0}{0}b{\xstart}}
+    \xdef\xmin{\xstart}
+    \xdef\xmax{\xstart}
+  };
+
+  % top and bottom
+  \path let \p1=(l 0), \p2=(l \nbsteps) in
+  \pgfextra{
+    \pgfmathsetmacro{\ystart}{\y1}\xdef\ystart{\ystart}
+    \pgfmathsetmacro{\yending}{\y2}\xdef\yending{\yending}
+  };
+  % incremental definition of boundshape
+  \foreach \cnt in {0, 1, ..., \nbsteps}{
+    \path let \p1=(l \cnt), \p2=(r \cnt) in
+    \pgfextra{
+      \pgfmathsetmacro{\start}{\x1}
+      \pgfmathsetmacro{\len}{\x2-\x1}
+      \pgfmathsetmacro{\ypos}{\cnt/\nbsteps*(\ystart - \yending)}
+      {\let\\=\relax \xdef\boundshape{\boundshape\\{\ypos}t{\start}{\len}}}
+      \pgfmathsetmacro{\xmin}{(\xmin < \start) ? \xmin : \start}
+      \xdef\xmin{\xmin}
+      \pgfmathsetmacro{\xmax}{(\xmax > \start + \len) ? \xmax : \start + \len}
+      \xdef\xmax{\xmax}
+    };
+  }
+  % draw the node with text in a shapepar
+  \pgfmathsetmacro{\ymax}{\ystart - \yending}
+  {\let\\=\relax \xdef\boundshape{\boundshape\\{\ymax}e{0}}}
+  \node[#1, text width=\xmax pt - \xmin pt, align=flush left,
+  anchor=north west, inner sep=0]
+  at (mybb.north west -| \xmin pt, 0)
+  {\Shapepar[1pt]{\boundshape}#6\par};
+}
+
+\begin{document}%
+\begin{tikzpicture}
+	\begin{scope}[yshift=-22cm] % third example
+		\footnotesize
+		\def\radius{3.1}
+		\def\pathone{(3,0)
+			arc(90:225:\radius)
+			arc (45:-45:\radius/2.415)
+			arc(135:270:\radius)}
+		\def\pathtwo{(3,-4*\radius)
+			arc(-90:0:\radius)
+			arc(180:90:\radius)
+			arc(270:180:\radius)
+			arc(0:90:\radius)}
+		\fill[top color=lime, bottom color=orange, middle color=yellow, draw=white]
+		\pathone -- \pathtwo -- cycle;
+		\shapeparnode[text=black, font=\footnotesize]
+		{2em}{1em}{\pathone}{\pathtwo}{\blindtext[2]}%
+		%\draw[orange] \pathone;
+		%\draw[orange] \pathtwo;
+	\end{scope}
+\end{tikzpicture}
+\end{document}

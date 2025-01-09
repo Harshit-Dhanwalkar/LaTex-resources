@@ -1,0 +1,41 @@
+ \documentclass{minimal}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\begin{document}
+
+\pagestyle{empty}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+\xdefinecolor{darkgreen}{RGB}{175, 193, 36}
+\newcounter{cntShader}
+\newcounter{cntRoot}
+\setcounter{cntShader}{20}
+\def\couleur{darkgreen}
+
+\begin{tikzpicture}
+	\foreach \y in {86,38,15}{
+			\setcounter{cntShader}{1}
+			\coordinate (a) at (0,0);
+			\coordinate (b) at (0:1);
+			\foreach \x in {1,...,\y}{%
+					\coordinate (c) at ($ (b)!1cm!270:(a) $);
+					\begin{pgfonlayer}{background}
+						\draw[fill=\couleur!\thecntShader] (a)--(b)--(c)--cycle;
+					\end{pgfonlayer}
+					\setcounter{cntRoot}{\x}
+					\addtocounter{cntRoot}{1}
+					\node[fill=white,draw,circle,inner sep=1pt] at (c)
+					{$\sqrt{\thecntRoot}$};
+					\coordinate (b) at (c);
+					\pgfmathsetcounter{cntShader}{\thecntShader+4}
+					\setcounter{cntShader}{\thecntShader}
+				}
+		}
+	\node[fill=white,draw,circle,inner sep=1pt] at (0:1) {$\sqrt{1}$};
+\end{tikzpicture}
+
+\end{document}

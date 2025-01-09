@@ -1,0 +1,39 @@
+\documentclass[a4paper]{article}
+\usepackage{tikz}
+\usepackage[active,floats,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+
+\begin{document}
+\begin{tikzpicture}
+	\definecolor{r1}{RGB}{0,129,188}
+	\definecolor{r2}{RGB}{252,177,49}
+	\definecolor{r3}{RGB}{35,34,35}
+	\definecolor{r4}{RGB}{0,157,87}
+	\definecolor{r5}{RGB}{238,50,78}
+	\begin{scope}
+		\clip (-6,2) rectangle (6,-.9);
+		\foreach \col/\xp/\yp in {
+				r5/4/0, r4/2/-1.8, r3/0/0,
+				r2/-2/-1.8, r1/-4/0
+			} {
+				\path[draw=white,line width=.08cm,
+					fill=\col,even odd rule]
+				(\xp, \yp) circle (1.9cm)
+				(\xp, \yp) circle (1.5cm);
+			}
+	\end{scope}
+	\begin{scope}
+		\clip (-6,-.9) rectangle (6,-3.8);
+		\foreach \col/\xp/\yp in {
+				r1/-4/0, r2/-2/-1.8, r3/0/0,
+				r4/2/-1.8, r5/4/0
+			} {
+				\path[draw=white,line width=.08cm,
+					fill=\col,even odd rule]
+				(\xp, \yp) circle (1.9cm)
+				(\xp, \yp) circle (1.5cm);
+			}
+	\end{scope}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,147 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{flushleft}
+\setlength\PreviewBorder{35pt}%
+ 
+
+% colors for the ruled rectangle
+\definecolor{color1}{RGB}{249,255,195}
+\definecolor{color2}{RGB}{251,245,160}
+% colors for the fulcrum
+\definecolor{color3}{RGB}{239,178,107}
+\definecolor{color4}{RGB}{214,96,0}
+% colors for the weights
+\definecolor{color5}{RGB}{191,203,224}
+\definecolor{color6}{RGB}{105,103,161}
+
+% A pic path for the weights
+\tikzset{
+Peso/.pic={
+  \coordinate (wll) at (-0.4cm,0);
+  \coordinate (wlr) at (0.4cm,0);
+  \coordinate (wul) at (-0.3cm,0.4cm);
+  \coordinate (wur) at (0.3cm,0.4cm);
+  \draw[fill=color5] 
+    (wll) -- (wlr) -- (wur) -- (wul) -- cycle;
+  \draw[fill=color6]
+    (wur) --
+    ++(-\Angle:6pt) --
+    ++(-75:0.4cm) --
+    (wlr) --
+    cycle;  
+  }
+}
+
+% counters to store the number of weights and the sum of
+% the given integers
+\newcounter{Number}
+\newcounter{Suma}
+
+% to perform a scaling along the x-axis (1cm=no scaling)
+\newlength\XFactor
+\setlength\XFactor{1cm}
+
+% the height of the rectangle
+\def\RectHt{1cm}
+% the angle for the 3D effect
+\def\Angle{20}
+% lengths controlling the help lines separation
+\def\Corr{1pt}
+\def\Gap{6pt}
+
+% the main environment
+\newenvironment{Balance}[1]
+{%
+  \medskip\par\noindent
+  \setcounter{Number}{0}%
+  \setcounter{Suma}{0}%
+  \begin{tikzpicture}[x=\XFactor]
+    \foreach \Valor in {#1}
+    {
+      \pic at (\Valor,\RectHt) {Peso};
+      \stepcounter{Number}%
+      \addtocounter{Suma}{\Valor}
+      \xdef\Steps{\Valor}
+    }
+    \def\RectWd{\numexpr\Steps+1\relax*\XFactor}%
+    \pgfmathsetmacro{\FulcrumCoord}{\theSuma/\theNumber}
+
+% The ruled rectangle
+    \coordinate (ll) at (0,0);%\node at ([xshift=-10pt]ll) {\FulcrumCoord};
+    \coordinate (ur) at (\RectWd,\RectHt);
+    \draw[fill=color1]
+      (ll) rectangle (ur);
+    \draw[fill=color2] 
+      (ur) -- 
+      ++(-\Angle:6pt) -- 
+      ++(0,-\RectHt) -- 
+      ++(-\RectWd,0) -- 
+      (ll) --
+      ++(\RectWd,0) --
+      cycle;   
+    \foreach \Valor in {1,...,\Steps}
+      \draw (\Valor,1) -- ++(0pt,-5pt) node[below] {\Valor};  
+    \draw (\RectWd,0) -- ++(-\Angle:6pt);
+
+% The fulcrum
+    \draw[fill=color3] 
+      (\FulcrumCoord,0) --
+      ++(240:1) --
+      ++(1,0) coordinate (aux) --
+      cycle;
+    \draw[fill=color4]  
+      (\FulcrumCoord,0) --
+      ++(-\Angle:6pt) --
+      ++(-60:1) --
+      ++(-1,0) --
+      ++(180-\Angle:6pt) --
+      ++(1,0) --
+      cycle;
+    \draw (aux) -- ++(-\Angle:6pt);
+    \coordinate (cotaFulc) 
+      at (\FulcrumCoord,\RectHt);
+    \draw[color4] 
+      (\FulcrumCoord,0) --
+      ++(0,2pt) 
+        node[above=-2pt] {\pgfmathprintnumber[precision=1]{\FulcrumCoord}};
+}
+{\end{tikzpicture}\medskip\par\noindent}
+
+% the command to draw help lines
+\newcommand\Cotas[2][1]{
+\draw 
+  (\FulcrumCoord,\RectHt+#1\Corr+\number\numexpr#1-1\relax\Gap) -- 
+  ++(0,10pt);
+  \foreach \Valor in {#2}
+    {
+      \draw 
+        (\Valor,\RectHt+#1\Corr+\number\numexpr#1-1\relax\Gap) -- 
+          coordinate (cota\Valor) 
+        ++(0,10pt);
+      \draw[<->,>=latex,help lines] 
+        (cotaFulc|-cota\Valor) -- 
+          node[fill=white] {\footnotesize$\pgfmathparse{\Valor-\FulcrumCoord}%
+          \pgfmathprintnumber[precision=1]{\pgfmathresult}$} 
+        (cota\Valor);
+    }
+}
+\begin{document}
+\begin{flushleft}
+	\begin{Balance}{3,4,8}
+		\Cotas{4,8}
+		\Cotas[2]{3}
+	\end{Balance}
+
+	\begin{Balance}{2,4,6,8,10}
+		\Cotas{4,8}
+		\Cotas[2]{2,10}
+	\end{Balance}
+
+	\begin{Balance}{1,4,5,8,10,12}
+		\Cotas{5,8}
+		\Cotas[2]{4,10}
+		\Cotas[3]{1,12}
+	\end{Balance}
+\end{flushleft}
+\end{document}

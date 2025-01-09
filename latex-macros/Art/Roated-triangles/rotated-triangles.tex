@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage[usenames,dvipsnames,pdftex]{xcolor}
+\usepackage{tikz,ifthen}
+
+\begin{document}
+\newcounter{density}
+\setcounter{density}{20}
+\begin{tikzpicture}
+	\def\couleur{MidnightBlue}
+	\path[coordinate] (0,0)  coordinate(A)
+	++( 60:12cm) coordinate(B)
+	++(-60:12cm) coordinate(C);
+	\draw[fill=\couleur!\thedensity] (A) -- (B) -- (C) -- cycle;
+	\foreach \x in {1,...,15}{%
+			\pgfmathsetcounter{density}{\thedensity+10}
+			\setcounter{density}{\thedensity}
+			\path[coordinate] coordinate(X) at (A){};
+			\path[coordinate] (A) -- (B) coordinate[pos=.15](A)
+			-- (C) coordinate[pos=.15](B)
+			-- (X) coordinate[pos=.15](C);
+			\draw[fill=\couleur!\thedensity] (A)--(B)--(C)--cycle;
+		}
+\end{tikzpicture}
+\end{document}

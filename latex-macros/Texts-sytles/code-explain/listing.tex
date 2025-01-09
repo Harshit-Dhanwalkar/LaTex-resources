@@ -1,0 +1,59 @@
+\documentclass[border={35pt 10pt 150pt 60pt}, % left bottom right top
+  svgnames]{standalone} 
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{listings}
+\lstset{%
+  frame            = tb,    % draw frame at top and bottom of code block
+  tabsize          = 1,     % tab space width
+  numbers          = left,  % display line numbers on the left
+  framesep         = 3pt,   % expand outward
+  framerule        = 0.4pt, % expand outward 
+  commentstyle     = \color{Green},      % comment color
+  keywordstyle     = \color{blue},       % keyword color
+  stringstyle      = \color{DarkRed},    % string color
+  backgroundcolor  = \color{WhiteSmoke}, % backgroundcolor color
+  showstringspaces = false,              % do not mark spaces in strings
+}
+\begin{document}
+\begin{lstlisting}[language = C++, numbers = none, escapechar = !,
+    basicstyle = \ttfamily\bfseries, linewidth = .6\linewidth] 
+ int!
+   \tikz[remember picture] \node [] (a) {};
+ !puissance!
+   \tikz[remember picture] \node [] (b) {};
+ !(int x,!
+   \tikz[remember picture] \node [] (c){};
+ !int n) { 
+
+     int i, p = 1; !\tikz[remember picture] \node [] (d){};!           
+
+     for (i = 1; i <= n; i++) 
+       p = p * x; !\tikz[remember picture] \node [inner xsep = 40pt] (e){};! 
+
+     return p; !
+       \tikz[remember picture] \node [] (f){};!  
+ }
+\end{lstlisting}
+\begin{tikzpicture}[remember picture, overlay,
+		every edge/.append style = { ->, thick, >=stealth,
+				DimGray, dashed, line width = 1pt },
+		every node/.append style = { align = center, minimum height = 10pt,
+				font = \bfseries, fill= green!20},
+		text width = 2.5cm ]
+	\node [above left = .75cm and -.75 cm of a,text width = 2.2cm]
+	(A) {return value type};
+	\node [right = 0.25cm of A, text width = 1.9cm]
+	(B) {function name};
+	\node [right = 0.5cm of B] (C) {list of formal parameters};
+	\node [right = 4.cm of d]  (D) {local variables declaration};
+	\node [right = 2.cm of e]  (E) {instructions};
+	\node [right = 5.cm of f]  (F) {instruction \texttt{\bfseries return}};
+	\draw (A.south) + (0, 0) coordinate(x1) edge (x1|-a.north);
+	\draw (B.south) + (0, 0) coordinate(x2) edge (x2|-b.north);
+	\draw (C.south) + (0, 0) coordinate(x3) edge (x3|-c.north);
+	\draw (D.west) edge (d.east) ;
+	\draw (E.west) edge (e.east) ;
+	\draw (F.west) edge (f.east) ;
+\end{tikzpicture}
+\end{document}

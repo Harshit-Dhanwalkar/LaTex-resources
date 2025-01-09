@@ -1,0 +1,65 @@
+\documentclass{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10}
+
+\begin{document}
+
+\pgfplotsset{
+    colormap={whitered}{color(0cm)=(white); color(1cm)=(orange!75!red)},
+    colormap={whiteblue}{color(0cm)=(white); color(1cm)=(blue)},
+}
+
+\begin{tikzpicture}[
+    declare function={mu11=60;},
+    declare function={mu12=20;},
+    declare function={sigma11=5;},
+    declare function={sigma12=5;},
+    declare function={mu21=70;},
+    declare function={mu22=40;},
+    declare function={sigma21=5;},
+    declare function={sigma22=5;},
+    declare function={rho=0.8;},
+    declare function={bivar(\ma,\sa,\mb,\sb,\rho)=
+        1/(2*pi*\sa*\sb*sqrt(1-\rho^2)) * exp(-(
+            (x-\ma)^2/\sa^2 
+            + (y-\mb)^2/\sb^2 
+            - 2*\rho*(x-\ma)*(y-\mb)/(\sa*\sb)
+        )/(2*(1-\rho^2)));}]
+\begin{axis}[
+    width=15cm,
+    view={-15}{70},
+    enlargelimits=false,
+    grid=major,
+    domain=40:90,
+    y domain=0:60,
+    samples=60,
+    xlabel=$x_1$,
+    ylabel=$x_2$,
+    zlabel={$p$}
+]
+\addplot3 [
+    surf,
+    colormap={bluewhitered}{color(0cm)=(blue); color(0.5cm)=(white); color(1cm)=(orange!75!red)},
+    point meta={
+        max(
+            bivar(mu11,sigma11,mu12,sigma12,rho),
+            bivar(mu21,sigma21,mu22,sigma22,rho)
+        )
+    }
+] {
+    max(
+        bivar(mu11,sigma11,mu12,sigma12,rho),
+        bivar(mu21,sigma21,mu22,sigma22,rho)
+    )};
+
+% Correct axis lines
+\draw [black!50] (axis cs:40,0,0) -- (axis cs:90,0,0);
+\draw [black!50] (axis cs:40,0,0) -- (axis cs:40,60,0);
+
+\node at (axis cs:50,10,0.18) [pin=165:$p(x_1)$] {};
+\node at (axis cs:60,50,0.32) [pin=-15:$p(x_2)$] {};
+\end{axis}
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,38 @@
+%%
+% cod might take 1 min to compile and render
+%%
+
+\documentclass{article}
+\usepackage[gray]{xcolor}
+\usepackage{tikz,pgffor,graphicx}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}
+
+\usetikzlibrary{shadows,3d}
+
+\begin{document}
+\begin{tikzpicture}
+	\def\nuPi{3.1459265}
+	\foreach \i in {11,10,...,0}{% Loop for i
+			\foreach \j in {5,4,...,0}{% Loop for j
+					\pgfmathsetmacro{\dx}{rand*0.1} % Random variance for x-coordinate
+					\pgfmathsetmacro{\dy}{rand*0.1} % Random variance for y-coordinate
+					\pgfmathsetmacro{\rot}{rand*0.1} % Random variance for rotation
+
+					% Top layer
+					\shade[ball color=red] ({\i+\dx+\rot},{0.5*\j+\dy+0.4*sin(\i*\nuPi*10)}) circle(0.45);
+					\shade[ball color=gray] (\i+\dx,{0.5*\j+\dy+0.4*sin(\i*\nuPi*10)-0.9}) circle(0.45);
+					\shade[ball color=gray] (\i+\dx-\rot,{0.5*\j+\dy+0.4*sin(\i*\nuPi*10)-1.8}) circle(0.45);
+
+					% Bottom layer
+					\pgfmathsetmacro{\dx}{rand*0.1}
+					\pgfmathsetmacro{\dy}{rand*0.1}
+					\pgfmathsetmacro{\rot}{rand*0.1}
+					\shade[ball color=gray] (\i+\dx+\rot,{0.5*\j+\dy+0.4*sin(\i*\nuPi*10)-2.8}) circle(0.45);
+					\shade[ball color=gray] (\i+\dx,{0.5*\j+\dy+0.4*sin(\i*\nuPi*10)-3.7}) circle(0.45);
+					\shade[ball color=red] (\i+\dx-\rot,{0.5*\j+\dy+0.4*sin(\i*\nuPi*10)-4.6}) circle(0.45);
+				}
+		}
+\end{tikzpicture}
+\end{document}

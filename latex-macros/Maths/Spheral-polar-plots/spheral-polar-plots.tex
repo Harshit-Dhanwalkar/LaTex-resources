@@ -1,0 +1,111 @@
+\documentclass{minimal}
+
+\usepackage{tikz}           %for TikZ graphics
+\usepackage{tikz-3dplot} %for 3dplot functionality
+
+\usepackage[active,tightpage]{preview}      %generates a tightly fitting border around the work
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{2mm}
+
+\begin{document}
+\tdplotsetmaincoords{70}{135}
+\begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(15/2)*sin(\tdplottheta)*cos(\tdplottheta)}{black}{\tdplotphi}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+%Here's some more examples.
+L = 0
+\begin{tikzpicture}[scale=2,line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{1}{black}{0}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 1, M_L = -1$
+\begin{tikzpicture}[scale=2,line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(3/2)*sin(\tdplottheta)}{black}{-\tdplotphi}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 1, M_L = 0$
+\begin{tikzpicture}[scale=2,line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(3)*cos(\tdplottheta)}{black}{0}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 1, M_L = +1$
+\begin{tikzpicture}[scale=2,line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(3/2)*sin(\tdplottheta)}{black}{\tdplotphi}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 2, M_L = -2$
+\begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(15/2)/2*sin(\tdplottheta)^2}{black}{-2*\tdplotphi}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 2, M_L = -1$
+\begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(15/2)*sin(\tdplottheta)*cos(\tdplottheta)}{black}{-\tdplotphi}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 2, M_L = 0$
+\begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(5)/2*(3*cos(\tdplottheta)^2 - 1 )}{black}{-\tdplotphi}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 2, M_L = 1$
+\begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(15/2)*sin(\tdplottheta)*cos(\tdplottheta)}{black}{\tdplotphi}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 2, M_L = +2$
+\begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(15/2)/2*sin(\tdplottheta)^2}{black}{2*\tdplotphi}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+$L = 3, M_L = 0$
+\begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
+	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
+	{sqrt(7)/2*(5*cos(\tdplottheta)^3 - 3*cos(\tdplottheta))}{black}{0}%
+	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
+	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
+\end{tikzpicture}
+
+\end{document}

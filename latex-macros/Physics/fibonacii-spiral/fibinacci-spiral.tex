@@ -1,0 +1,77 @@
+\documentclass{minimal}
+\usepackage{amsmath,tikz}
+\usetikzlibrary{backgrounds,calc}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{0pt}%
+
+
+\begin{document}
+\begin{tikzpicture}[background rectangle/.style={fill=black}, show background rectangle]
+	% Create some counters for holding the Fibonacci numbers
+	\newcounter{a}
+	\newcounter{b}
+	\newcounter{temp}
+
+	% Initialize the counters
+	\setcounter{a}{0}
+	\setcounter{b}{1}
+
+	% The spiral will start at the origin
+	\coordinate (0) at (0,0);
+
+	% This loop defines the number of turns in the spiral. Note that we
+	% will have to be careful not to overflow our counters or make the
+	% spiral too large for TeX to handle. This is easy to do as the
+	% Fibonacci sequence grows exponentially.
+	\foreach \i in {1,...,18}
+		{
+			% Get the "name" of the last point on the spiral
+			\pgfmathsetmacro{\lastpoint}{\i-1}
+
+			% Compute the angle for this turn of the spiral
+			\pgfmathsetmacro{\startangle}{mod(\i-1,4) * 90}
+
+			% Draw this turn of the spiral and remember the point where we end 
+			\draw[white] (\lastpoint) arc
+			(\startangle : \startangle + 90 : \value{b}/10.0pt) coordinate (\i);
+
+			% Compute the next Fibonacci number
+			\setcounter{temp}{\value{b}}
+			\addtocounter{b}{\value{a}}
+			\setcounter{a}{\value{temp}}
+		}
+
+	% Add some framing for the spiral while at the same time not "boxing"
+	% it in. Note that to put a square around each turn of the spiral we
+	% could have just used the command \draw[white] (\lastpoint)
+	% rectangle (\i); after drawing each turn in the loop above.
+	\foreach \i in {1,3,...,17}
+		{
+			\pgfmathsetmacro{\lastpoint}{\i-1}
+			\draw[white] (\lastpoint) -| (\i);
+		}
+
+	\foreach \i in {2,4,...,16}
+		{
+			\pgfmathsetmacro{\lastpoint}{\i-1}
+			\draw[white] (\lastpoint) |- (\i);
+		}
+
+	\draw[white] (17) -- (17 |- 18);
+
+	% Add some text displaying the formula for the Fibonacci numbers
+	\node(eq) at ($(18) + (2.5,1)$)
+	[white,text width = 2cm,font=\fontsize{8}{8}\selectfont] {
+		\begin{displaymath}
+			f(n) = \left\{
+			\begin{array}{lr}
+				0               & \text{~~if } n = 0    \\
+				1               & \text{~~if } n = 1    \\
+				f(n-1) + f(n-2) & \text{~~if } n \geq 2 \\
+			\end{array}
+			\right.
+		\end{displaymath}
+	};
+\end{tikzpicture}
+\end{document}

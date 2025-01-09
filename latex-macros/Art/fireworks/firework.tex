@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{0pt}%
+\usetikzlibrary{calc,decorations.pathmorphing}
+%
+\pgfdeclareradialshading{someshade}{\pgfpointorigin}{%
+  color(0mm)=(pgftransparent!40);color(5mm)=(pgftransparent!50);%
+  color(10mm)=(pgftransparent!70);color(2cm)=(pgftransparent!100)}
+\pgfdeclareradialshading{somenodeshade}{\pgfpointorigin}{%
+  color(0mm)=(pgftransparent!0);color(2mm)=(pgftransparent!5);%
+  color(5mm)=(pgftransparent!95);color(20mm)=(pgftransparent!100)}
+\pgfdeclareradialshading{invertshade}{\pgfpointorigin}{%
+  color(0mm)=(pgftransparent!100);color(6mm)=(pgftransparent!95);%
+  color(10mm)=(pgftransparent!60);color(2cm)=(pgftransparent!0)}
+\pgfdeclarefading{fadeit}{\pgfuseshading{someshade}}
+\pgfdeclarefading{fadein}{\pgfuseshading{invertshade}}
+%
+\begin{document}
+\begin{tikzpicture}[projectile/.style={decorate,decoration={random steps,
+						segment length=3pt,amplitude=0.5pt}}]
+	\fill[black] (-4,-4) rectangle (6,5);
+
+	\begin{scope}[xshift=0cm,yshift=-0.4cm,transparency group]
+		\pgfsetfading{fadein}{\pgftransformshift{\pgfpointorigin}}
+		\foreach \x in {0,6,..., 360}{\draw[blue!80!white,projectile,line width=1.1pt]
+				(0,0) to [in=90] (10*rand+\x:rand*1mm+2cm);};
+	\end{scope}
+
+	\begin{scope}[xshift=2cm,yshift=1cm]
+		\foreach \x in {0,8,..., 360}{\draw [yellow!5,thick,projectile] (0.7,0)
+				to  (3*rand+\x :1mm*rand+2.2cm)  node[circle,inner sep=1mm,
+					shade,shading=somenodeshade,opacity=0.1] {};}
+			{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{2.5cm}{1cm}}}};
+		\fill[white] (-3,-3) rectangle (3,3);
+	\end{scope}
+
+	\begin{scope}[xshift=3cm,yshift=-1cm]
+		\foreach \x in {0,10,..., 360}{\def\r1{rand}\draw [yellow]
+				($(0,0)!abs{\r1}!(\x :5mm)$) to [in=90] ($(0,0)!abs{\r1}+0.2!(\x :8mm)$);}
+			{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{3cm}{-1cm}}}};
+		\fill[yellow,opacity=0.6] (-3,-3) rectangle (3,3);
+	\end{scope}
+
+	\begin{scope}[xshift=-1cm,yshift=1.5cm]
+		\foreach \x in {0,12,..., 360}{\def\r2{rand}\draw [red,line width=0.5pt]
+				($(0,0)!abs{\r2}!(\x :3mm)$) -- ($(0,0)!abs{\r2}+0.1!(\x :7mm)$);}
+			{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-1cm}{1.5cm}}}};
+		\fill[red,opacity=0.6] (-3,-3) rectangle (3,3);
+	\end{scope}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,41 @@
+\documentclass[tikz,border=10pt]{standalone}
+\tikzset{
+  pics/.cd,
+  disc/.style = {
+    code = {
+      \fill [white] ellipse [x radius = 2, y radius = 2/3];
+      \path [left color = black!50, right color = black!50,
+        middle color = black!25] 
+        (-2+.05,-1.1) arc (180:360:2-.05 and 2/3-.05*2/3) -- cycle;
+      \path [top color = black!25, bottom color = white] 
+        (0,.05*2/3) ellipse [x radius = 2-.05, y radius = 2/3-.05*2/3];
+      \path [left color = black!25, right color = black!25,
+        middle color = white] (-2,0) -- (-2,-1) arc (180:360:2 and 2/3)
+        -- (2,0) arc (360:180:2 and 2/3);
+      \foreach \r in {225,315}
+        \foreach \i [evaluate = {\s=30;}] in {0,2,...,30}
+          \fill [black, fill opacity = 1/50] 
+            (0,0) -- (\r+\s-\i:2 and 2/3) -- ++(0,-1) 
+            arc (\r+\s-\i:\r-\s+\i:2 and 2/3) -- ++(0,1) -- cycle;
+      \foreach \r in {45,135}
+        \foreach \i [evaluate = {\s=30;}] in {0,2,...,30}
+          \fill [black, fill opacity = 1/50] 
+            (0,0) -- (\r+\s-\i:2 and 2/3) 
+            arc (\r+\s-\i:\r-\s+\i:2 and 2/3)  -- cycle;
+    }
+  },
+  disc bottom/.style = {
+    code = {
+      \foreach \i in {0,2,...,30}
+        \fill [black, fill opacity = 1/60] (0,-1.1)
+          ellipse [x radius = 2+\i/40, y radius = 2/3+\i/60];
+      \path pic {disc};
+    }
+  }
+}
+\begin{document}
+\begin{tikzpicture}
+	\path (0,0) pic {disc bottom} (0,1.25) pic {disc} (0,2.5) pic {disc};
+\end{tikzpicture}
+\end{document}
+

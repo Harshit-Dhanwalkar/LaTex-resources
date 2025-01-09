@@ -1,0 +1,15 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\usepackage{subfig}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+\usetikzlibrary{fadings}
+\pagestyle{empty}
+\begin{document}
+\begin{tikzpicture}
+	\fill[green] (90:4) -- (210:4) -- (-30:4) -- cycle;
+	\fill[blue,path fading=west] (90:4) -- (210:4) -- (-30:4) -- cycle;
+	\fill[red,path fading=south] (90:4) -- (210:4) -- (-30:4) -- cycle;
+\end{tikzpicture}
+\end{document}

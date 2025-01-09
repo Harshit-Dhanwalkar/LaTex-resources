@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage[margin=0.3cm, paperwidth=3.3cm, paperheight=3.3cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{shadows}
+
+\definecolor{darkblue}{rgb}{0.2,0.2,0.6}
+\definecolor{darkred}{rgb}{0.6,0.1,0.1}
+\definecolor{darkgreen}{rgb}{0.2,0.6,0.2}
+
+\def\arrow{
+  (10.75:1.1) -- (6.5:1) arc (6.25:120:1) [rounded corners=0.5] --
+  (120:0.9) [rounded corners=1] -- (130:1.1) [rounded corners=0.5] --
+  (120:1.3) [sharp corners] -- (120:1.2) arc (120:5.25:1.2)
+  [rounded corners=1] -- (10.75:1.1) -- (6.5:1) -- cycle
+}
+
+\tikzset{
+  ashadow/.style={opacity=.25, shadow xshift=0.07, shadow yshift=-0.07},
+}
+
+\def\arrows[#1]{         
+  \begin{scope}[scale=#1]
+    \draw[color=darkred, %
+    drop shadow={ashadow, color=red!60!black}] \arrow;
+
+    \draw[color=darkgreen, bottom color=green!90!black, top color=green!60, %
+    drop shadow={ashadow, color=green!60!black}] [rotate=120] \arrow;
+
+    \draw[color=darkblue, right color=blue, left color=blue!60, %
+    drop shadow={ashadow, color=blue!60!black}] [rotate=240] \arrow;
+
+    % to hide the green shadow
+    \draw[color=darkred, left color=red, right color=red!60] \arrow;
+  \end{scope}
+}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+	\begin{tikzpicture}
+		\arrows[1];
+	\end{tikzpicture}
+\end{center}
+\end{document}

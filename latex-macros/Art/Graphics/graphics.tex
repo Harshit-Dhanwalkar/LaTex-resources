@@ -1,0 +1,42 @@
+\documentclass{minimal}
+
+\usepackage{tikz}
+\usetikzlibrary{trees,decorations.pathmorphing}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+
+\begin{document}
+\tikzstyle{level 1}=[sibling angle=120]
+\tikzstyle{level 2}=[sibling angle=60]
+\tikzstyle{level 3}=[sibling angle=30]
+\tikzstyle{every node}=[fill]
+\tikzstyle{edge from parent}=[
+decorate,
+decoration={snake, segment length=1mm, amplitude=0.8mm},
+draw
+]
+
+\begin{tikzpicture}[
+		grow cyclic,
+		shape=circle,
+		very thick,
+		level distance=10mm,
+		cap=round
+	]
+	\node {}
+	child [color=\A] foreach \A in {red,green,blue}
+		{
+			node {}
+			child [color=\A!50!\B] foreach \B in {red,green,blue}
+				{
+					node {}
+					child [color=\A!50!\B!50!\C] foreach \C in {black,gray,white}
+						{
+							node {}
+						}
+				}
+		};
+\end{tikzpicture}
+
+\end{document}

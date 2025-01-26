@@ -1,0 +1,37 @@
+\documentclass[varwidth=true, border=5pt]{standalone}
+\usepackage{xcolor}
+\usepackage{amsmath,siunitx,xcolor}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\begin{document}
+\begin{tikzpicture}
+	\pgfkeys{%
+		/pgf/number format/set thousands separator = {}}
+	\begin{axis}[
+			axis background/.style = {%
+					shade,
+					top color = gray,
+					bottom color = white},
+			legend style = {%
+					fill = white},
+			xlabel = Mass $\Omega$,
+			ylabel = $\sigma*\mathcal{A}(\si{\pico\barn})$,
+		]
+		\addplot+[only marks] table[x index=0,y index=3,header=false] {%
+				3000              1.2970e+00    0.198956 0.258046
+				3100              8.6050e-01    0.18747 0.161318
+				3200              5.7970e-01    0.172414 0.0999484
+				3300              3.9770e-01    0.147098 0.0585009
+				3400              2.7720e-01    0.128355 0.03558
+				3500              1.9700e-01    0.139395 0.0274608
+				3600              1.4310e-01    0.0867237 0.0124102
+				3700              1.0600e-01    0.0865613 0.0091755
+				3800              7.9990e-02    0.0509629 0.00407652
+				3900              6.1560e-02    0.0501454 0.00308695
+				4000              4.8010e-02    0.0249455 0.00119763
+			};
+		\legend{$\sigma_{\text{MC}}$}
+	\end{axis}
+\end{tikzpicture}
+\end{document}

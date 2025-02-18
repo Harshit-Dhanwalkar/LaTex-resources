@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{center}
+\setlength\PreviewBorder{10pt}%
+
+\begin{document}
+\begin{center}
+	\begin{tikzpicture}
+		% Define a formula for the coil.
+		% 0.3 ... how far the rings are apart
+		% 0.4 ... how much from the side the rings are seen (try 0 and the same as the radius)
+		% 1.5 ... radius of the rings
+		\def\coil#1{
+			{0.3 * (2*#1 + \t) + 0.4*sin(\t * pi r))},
+			{1.5 * cos(\t * pi r)}
+		}
+
+		% Draw the part of the coil behind the rectangle
+		\foreach \n in {0,1,...,10} {
+				\draw[domain={0:1},smooth,variable=\t,samples=15]
+				plot (\coil{\n});
+			}
+
+		% Draw the rectangle
+		\filldraw[fill=white] (-0.5,-1) rectangle (7,1);
+
+		% Draw the part of the coil in front of the rectangle
+		\foreach \n in {0,1,...,10} {
+				\draw[domain={1:2},smooth,variable=\t,samples=15,
+					preaction={draw,white,line width=3pt}     % remove if undesired
+				]
+				plot (\coil{\n});
+			}
+	\end{tikzpicture}
+\end{center}
+\end{document}

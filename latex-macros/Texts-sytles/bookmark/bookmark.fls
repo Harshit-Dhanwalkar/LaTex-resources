@@ -180,6 +180,11 @@ INPUT ./images/marla-the-singer.png
 OUTPUT bookmark.pdf
 INPUT ./images/marla-the-singer.png
 INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
+INPUT ./images/Muchi.png
+INPUT ./images/Muchi.png
+INPUT images/Muchi.png
+INPUT ./images/Muchi.png
+INPUT ./images/Muchi.png
 INPUT bookmark.aux
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb

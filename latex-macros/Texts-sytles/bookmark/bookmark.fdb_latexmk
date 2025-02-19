@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1739953078 "bookmark.tex" "bookmark.pdf" "bookmark" 1739953078
+["pdflatex"] 1739971216 "bookmark.tex" "bookmark.pdf" "bookmark" 1739971216
   "/etc/texmf/web2c/texmf.cnf" 1728313746 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -29,8 +29,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1734418184 4073795 a82a847ac97773bf4a607ab050efa3a1 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1736325085 1435836 f91fb7a9941a454f193d6a5e108415c1 ""
-  "bookmark.aux" 1739953078 235 692ccf534b109d4b9649fc1493a556df "pdflatex"
-  "bookmark.tex" 1739953078 918 c18f26232332029355b089ce183163e6 ""
+  "bookmark.aux" 1739971216 235 692ccf534b109d4b9649fc1493a556df "pdflatex"
+  "bookmark.tex" 1739971215 681 e58c4dcc02c2f296b7236a0562566d7e ""
+  "images/Muchi.png" 1739970397 581600 447cdaa00162ca79ec613b0cd29f91ce ""
   "images/marla-the-singer.png" 1739951699 10973 ad38682bdb1cb8a7dc16784a22eb4f52 ""
   (generated)
   "bookmark.aux"

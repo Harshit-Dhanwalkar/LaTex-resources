@@ -1,0 +1,25 @@
+\documentclass{minimal}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.mypathmorphing}
+
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{center}
+\setlength\PreviewBorder{5pt}%
+
+\begin{document}
+\begin{center}
+	\begin{tikzpicture}
+		\draw [decorate, decoration={coil,     aspect=0.4, amplitude=5 mm,  segment length=4mm}, gray, very thick] (0,0) -- (4,0);
+		\draw [decorate, decoration={coilup,   aspect=0.4, amplitude=5 mm,  segment length=4mm}, red] (0,0) -- (4,0);
+		\draw [decorate, decoration={coildown, aspect=0.4, amplitude=5 mm,  segment length=4mm}, blue] (0,0) -- (4,0);
+	\end{tikzpicture}
+\end{center}
+\begin{center}
+	\begin{tikzpicture}
+		\draw [decorate, decoration={coilup, aspect=0.4, amplitude=5 mm,  segment length=4mm}] (0,0) -- (4,0);
+		\filldraw [fill=white] (-1,-0.4) rectangle (5,0.4);
+		\draw [decorate, decoration={coildown, aspect=0.4, amplitude=5 mm,  segment length=4mm}] (0,0) -- (4,0);
+	\end{tikzpicture}
+\end{center}
+\end{document}

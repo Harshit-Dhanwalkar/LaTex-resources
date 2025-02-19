@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{eso-pic}
+\usepackage{lipsum} % For dummy text
+
+% \newcommand\AddBookmarkImage{%
+%     \AddToShipoutPictureBG{%
+%         \AtPageLowerLeft{%
+%             \includegraphics[height=\paperheight]{images/marla-the-singer.png}%
+%         }%
+%     }%
+% }
+
+% \newcommand\AddBookmark{%
+%     \AddToShipoutPicture{%
+%         \put(\LenToUnit{\paperwidth},0){%  
+%             \makebox(0,0)[rb]{\includegraphics[height=\paperheight]{images/marla-the-singer.png}}%
+%         }%
+%     }%
+% }
+
+\newcommand\bookmarkimage{%
+    \AddToShipoutPictureFG*{%
+        \put(\LenToUnit{\paperwidth},0){%
+            \makebox(0,0)[rb]{\includegraphics[height=\paperheight]{images/marla-the-singer.png}}%
+        }%
+    }%
+}
+
+\begin{document}
+
+\section{Introduction}
+\lipsum[1-4]
+\bookmarkimage
+% \AddBookmarkImage
+% \AddBookmark
+
+\section{Another Section}
+\lipsum[5-8]
+
+\end{document}

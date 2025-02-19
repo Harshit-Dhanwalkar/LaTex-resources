@@ -1,0 +1,88 @@
+\usepgfmodule{decorations}
+
+% coilup decoration
+%
+% Parameters: \pgfdecorationsegmentamplitude, \pgfdecorationsegmentlength,
+
+\pgfdeclaredecoration{coilup}{coil}
+{
+	\state{coil}[switch if less than=%
+		1.5\pgfdecorationsegmentlength+%
+		\pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude+%
+		\pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude to last,
+		width=+\pgfdecorationsegmentlength]
+	{
+		\pgfpathcurveto
+		{\pgfpoint@oncoil{0    }{ 0.555}{1}}
+		{\pgfpoint@oncoil{0.445}{ 1    }{2}}
+		{\pgfpoint@oncoil{1    }{ 1    }{3}}
+		\pgfpathmoveto{\pgfpoint@oncoil{1    }{-1    }{9}}
+		\pgfpathcurveto
+		{\pgfpoint@oncoil{0.445}{-1    }{10}}
+		{\pgfpoint@oncoil{0    }{-0.555}{11}}
+		{\pgfpoint@oncoil{0    }{ 0    }{12}}
+	}
+	\state{last}[width=.5\pgfdecorationsegmentlength+%
+		\pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude+%
+		\pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude,next state=final]
+	{
+		\pgfpathcurveto
+		{\pgfpoint@oncoil{0    }{ 0.555}{1}}
+		{\pgfpoint@oncoil{0.445}{ 1    }{2}}
+		{\pgfpoint@oncoil{1    }{ 1    }{3}}
+		\pgfpathmoveto{\pgfpoint@oncoil{2    }{ 0    }{6}}
+	}
+	\state{final}
+	{
+		\pgfpathmoveto{\pgfpointdecoratedpathlast}
+	}
+}
+
+
+% coildown decoration
+%
+% Parameters: \pgfdecorationsegmentamplitude, \pgfdecorationsegmentlength,
+
+\pgfdeclaredecoration{coildown}{coil}
+{
+	\state{coil}[switch if less than=%
+		1.5\pgfdecorationsegmentlength+%
+		\pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude+%
+		\pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude to last,
+		width=+\pgfdecorationsegmentlength]
+	{
+		\pgfpathmoveto{\pgfpoint@oncoil{1    }{1    }{3}}
+		\pgfpathcurveto
+		{\pgfpoint@oncoil{1.555}{ 1    }{4}}
+		{\pgfpoint@oncoil{2    }{ 0.555}{5}}
+		{\pgfpoint@oncoil{2    }{ 0    }{6}}
+		\pgfpathcurveto
+		{\pgfpoint@oncoil{2    }{-0.555}{7}}
+		{\pgfpoint@oncoil{1.555}{-1    }{8}}
+		{\pgfpoint@oncoil{1    }{-1    }{9}}
+	}
+	\state{last}[width=.5\pgfdecorationsegmentlength+%
+		\pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude+%
+		\pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude,next state=final]
+	{
+		\pgfpathmoveto{\pgfpoint@oncoil{1    }{ 1    }{3}}
+		\pgfpathcurveto
+		{\pgfpoint@oncoil{1.555}{ 1    }{4}}
+		{\pgfpoint@oncoil{2    }{ 0.555}{5}}
+		{\pgfpoint@oncoil{2    }{ 0    }{6}}
+	}
+	\state{final}
+	{
+		\pgfpathlineto{\pgfpointdecoratedpathlast}
+	}
+}
+
+\def\pgfpoint@oncoil#1#2#3{%
+	\pgf@x=#1\pgfdecorationsegmentamplitude%
+	\pgf@x=\pgfdecorationsegmentaspect\pgf@x%
+	\pgf@y=#2\pgfdecorationsegmentamplitude%
+	\pgf@xa=0.083333333333\pgfdecorationsegmentlength%
+	\advance\pgf@x by#3\pgf@xa%
+}
+
+\endinput

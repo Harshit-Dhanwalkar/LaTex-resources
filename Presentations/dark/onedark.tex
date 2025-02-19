@@ -1,0 +1,100 @@
+\documentclass[14pt,compress,usenames,dvipsnames,aspectratio=169]{beamer}
+%\usetheme{Singapore}
+\useoutertheme{shadow}
+\usetheme{CambridgeUS}
+\definecolor{mygreen}{RGB}{150, 255, 210}%186}
+\definecolor{leftblue}{RGB}{230,255,255}
+\definecolor{rightblue}{RGB}{111,195,223}
+\definecolor{lefttron}{RGB}{19,44,65}
+\definecolor{myblack}{RGB}{27,27,27}
+\definecolor{mypurple}{RGB}{205,87,255}
+
+\usecolortheme{owl}
+
+\setbeamercolor{section in head/foot}{fg = white,bg=black}
+\setbeamercolor{title}{fg=mygreen,bg=black}
+\setbeamercolor{titlelike}{fg=yellow,bg=black}
+\setbeamercolor{item}{fg=mygreen}
+\setbeamercolor{block title}{fg=white,bg=myblack!200}
+\setbeamercolor{block body}{bg=normal text.bg!80}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamercolor{normal text}{fg=white,bg=myblack}%!89.9}
+
+%Gradient
+\setbeamercolor{frametitle}{fg=orange,bg=black}
+\setbeamercolor{frametitle right}{fg=white,bg=gray}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{shadowtext}
+\usepackage{multicol}
+\usepackage[makeroom]{cancel}
+
+\graphicspath{{./figures/},}
+
+\AtBeginSection{\frame{\sectionpage}}
+
+\usepackage{natbib}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{natbib}
+\usepackage{bibentry}
+\usepackage{animate}
+\usepackage{varwidth}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
+\title{\textbf{Talk Title}}
+\author{Fname Lname}
+
+\institute[]{%
+Institute Name
+}
+\date{}
+
+\usefonttheme{professionalfonts}
+
+% \usepackage{mydefs}
+
+\setbeamercovered{transparent} 
+\setbeamertemplate{navigation symbols}{} 
+\titlegraphic{
+\begin{center}
+\vspace*{-30pt}
+\includegraphics[height=0.15\tH]{figures/uni_logo.png}
+
+\vspace*{10pt}
+% \includegraphics[height=0.03\tH]{figures/mail_logo.png}\hspace*{2pt}
+% {\scriptsize \href{mailto:abarik@jhu.edu}{email@example.com}}\hspace*{20pt}
+\end{center}
+}
+%\institute[JHU]{Planetary Interiors}
+
+
+
+\begin{document}
+
+\setbeamercovered{invisible}
+
+\begin{frame}[plain]
+	\titlepage
+\end{frame}
+
+\begin{frame}{Frame Title}
+
+\end{frame}
+
+\begin{frame}{References}
+	\bibliographystyle{apalike}
+	\bibliography{bib}
+\end{frame}
+
+\end{document}

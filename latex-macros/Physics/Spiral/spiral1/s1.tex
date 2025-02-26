@@ -1,0 +1,14 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{10pt}%
+
+\begin{document}
+\begin{preview}
+\begin{tikzpicture}
+    \draw [domain=0:25.1327,variable=\t,smooth,samples=75]
+        plot ({\t r}: {0.002*\t*\t});
+\end{tikzpicture}
+\end{preview}
+\end{document}

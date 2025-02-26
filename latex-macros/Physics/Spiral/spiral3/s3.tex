@@ -1,0 +1,25 @@
+\documentclass{article}
+\usepackage{tikz}
+
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{10pt}%
+
+\newcommand\spiral{}% Just for safety so \def won't overwrite something
+\def\spiral[#1](#2)(#3:#4:#5){% \spiral[draw options](placement)(end angle:revolutions:final radius)
+\pgfmathsetmacro{\domain}{pi*#3/180+#4*2*pi}
+\draw [#1,shift={(#2)}, domain=0:\domain,variable=\t,smooth,samples=int(\domain/0.08)] plot ({\t r}: {#5*\t/\domain})
+}
+
+\begin{document}
+\begin{preview}
+	\begin{tikzpicture}
+		\spiral[red](0,0)(0:6:6);
+		\spiral[blue](0,0)(0:6:-6);
+		\spiral[blue](-12,0)(0:6:6);
+		\spiral[red](12,0)(0:6:-6);
+		\spiral[blue](-12,0)(90:2:-2.25);
+		\spiral[red](12,0)(90:2:2.25);
+	\end{tikzpicture}
+\end{preview}
+\end{document}

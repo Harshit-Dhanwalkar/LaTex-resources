@@ -1,0 +1,35 @@
+\documentclass[a4paper]{article}
+\usepackage{pst-solides3d}  
+\begin{document}
+
+\psset{Decran=20,viewpoint=40 20 20 rtp2xyz,lightsrc=viewpoint,action=draw**,
+	fillcolor=blue!30!white,linewidth=0.1pt}
+\begin{pspicture}(-1.5,-2)(2,2)
+	\psSolid[object=parallelepiped,a=5,b=6,c=2](0,0,2)
+\end{pspicture}
+\begin{pspicture}(-1.5,-2)(1.5,2)
+	\psSolid[object=sphere,r=3,ngrid=20 20](0,0,2)
+\end{pspicture}
+\begin{pspicture}(-1.5,-2)(1.5,2)
+	\psSolid[object=cone,r=3,h=5,ngrid=2 20]
+\end{pspicture}
+\begin{pspicture}(-1.5,-2)(1.5,2)
+	\psSolid[object=troncconecreux,r0=3,r1=2,h=5,ngrid=2 20,incolor=green!60!white]
+\end{pspicture}
+
+\psset{incolor=red!60!white}
+\begin{pspicture}(-1.5,-2)(2,2)
+	\psSolid[object=parallelepiped,a=5,b=6,c=2,rm=0,hollow](0,0,2)
+\end{pspicture}
+\begin{pspicture}(-1.5,-2)(1.5,2)
+	\psSolid[object=sphere,r=3,ngrid=20 20,hollow,
+		rm=100 101 102 120 121 122 140 141 142](0,0,2)
+\end{pspicture}
+\begin{pspicture}(-1.5,-2)(1.5,2)
+	\psSolid[object=cone,r=3,h=5,ngrid=2 20,rm=20 21 22,hollow]
+\end{pspicture}
+\begin{pspicture}(-1.5,-2)(1.5,2)
+	\psSolid[object=troncconecreux,r0=3,r1=2,h=5,ngrid=2 20,hollow,rm=20 21 22]
+\end{pspicture}
+
+\end{document}

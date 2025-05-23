@@ -22,8 +22,9 @@
 		\fill[black!60!,rounded corners,draw=black,thick](-5.3,-4.3)
 		rectangle (5.3,4.3);
 		\fill[screen] (-5.0,-4.0) rectangle (5.0,4.0);
-		\draw[trace] plot(\x,{1+2.4*sin((2.5*\x +1) r)}); % r for radians...
-		\draw[trace] plot(\x,{-1+1.25*sin((0.75*\x) r});
+		\clip (-5,-4) rectangle (5,4);
+		\draw[trace] plot(\x,{1 + 4*cos((2.0*\x + 2) r)});
+		\draw[trace] plot(\x,{-1 + 1.25*sin((0.75*\x) r});
 		\draw[thin] (-5.0,-4.0) grid (5.0,4.0);
 		\draw[axes] (-5,0)--(5,0); % Time axis
 		\draw[axes] (0,-4)--(0,4);

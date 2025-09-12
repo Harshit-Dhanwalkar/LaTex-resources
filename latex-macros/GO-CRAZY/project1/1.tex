@@ -9,9 +9,14 @@
 \tikzset{dashed/.style={dash pattern=on 4pt off 1.5pt,line width=0.5pt},
     wing/.style={smooth,line width=1pt,fill=black!5},
     point/.style={circle,inner sep=0pt, minimum width=4pt,fill=black}
-    }
+}
 
-\newcommand\spiral{} % just for safety
+\def\lenghtOfString{2cm} % k_\alpha
+\def\groundWidth{5cm}
+\def\wingletAngle{30}
+\def\wingAngle{10}
+
+\newcommand\spiral{} %
 \def\spiral[#1](#2)(#3:#4)(#5:#6)[#7]{%
 \pgfmathsetmacro{\domain}{#4+#7*360}
 \pgfmathsetmacro{\growth}{180*(#6-#5)/(pi*(\domain-#3))}
@@ -22,6 +27,7 @@
    smooth,
    samples=int(\domain/5)] plot ({\t r}: {#5+\growth*\t-\growth*#3*pi/180})
 }
+
 \newcommand\intrado{(0,0)
                     (0.0334,-0.0767)
                     (0.1087,-0.1437)
@@ -78,40 +84,51 @@
 \begin{document}
 \begin{preview}
 	\begin{tikzpicture}[>=latex,scale=1,line width=0.5pt]
-		\begin{scope}[rotate around={-13:(10,0)}]
+		\begin{scope}[rotate around={-\wingAngle:(0,0)}]
+			% wings
 			\draw[wing] plot coordinates {\intrado};
 			\draw[wing] plot coordinates {\extrado};
+
 			% points
 			\node[point] at (3,0) (EC) {};
 			\node[point] at (1.75,0) (AC) {};
 			\draw[dashed] (EC) -- +(-90:1)node[coordinate](ec){};
 			\draw[dashed] (AC) -- +(-90:1)node[coordinate](ec2){};
+			\draw[dashed] (AC) +(180:3cm)--(12,0);
+
 			\node[above left, outer sep=4pt] at (EC) {$EC$};
 			\node[above left, outer sep=3pt] at (AC) {$AC$};
-			\spiral[](EC)(0:100)(0:0.5)[2] node[coordinate] (SpringEnd) {};
+
+			\draw[<->] (ec) -- node[below]{$ec$}(ec2);
+
+			\draw[->] (EC) +(180+\wingAngle:3.5cm) arc [start angle=180+\wingAngle, delta angle=-\wingAngle, radius=3.5cm] node[midway,left]{$\alpha = \wingAngle^{\circ}$};
+			\draw[dashed] (EC) -- +(180+\wingAngle:4cm);
+
+			\spiral[](EC)(0:110)(0:0.5)[2] node[coordinate] (SpringEnd) {};
+			\node[yshift=\lenghtOfString, pattern=north west lines, minimum width=\groundWidth] (Ground) at (SpringEnd) {};
+
 			\draw[fill=white,white] (8.25,0) -- +(0:.5) arc (0:360:.5);
-			\draw[line width=1pt] (8.25,0) -- +(120:.5) arc (120:195:.5);
+			\draw[line width=1pt] (8.25,0) -- +(120:.5) arc (120:200:.5);
 			\fill[fill=white] (8,-.25) rectangle (10,.5);
+
 			% winglet
-			\begin{scope}[rotate around={-30:(8.3,0)},xshift=7.9cm,scale=0.35,y=1.5cm]
+			\begin{scope}[rotate around={-\wingletAngle:(8.3,0)},xshift=7.9cm,scale=0.35,y=1.5cm]
 				\draw[wing] plot coordinates {\intrado};
 				\draw[wing] plot coordinates {\extrado};
 			\end{scope}
+
 			\node[point] (kdelta) at (8.3,0) {};
-			\begin{scope}[rotate around={-30:(8.3,0)}]
+			\begin{scope}[rotate around={-\wingletAngle:(8.3,0)}]
 				\draw[dashed] (8.3,0) -- +(0:3.5) node[coordinate] (deltaEnd) {};
 				\draw[dashed] (8.3,0) -- +(-90:1.2) node[coordinate](epsC){};
 				\draw[dashed] (11.4,0) -- +(-90:1.2) node[coordinate](epsC2){};
 			\end{scope}
-			\draw[<->] (epsC) -- node[below left] {$\varepsilon c$}(epsC2);
+
 			\spiral[](kdelta)(0:130)(0:0.52)[2] node[above right] {$k_\delta$};
-			\draw[dashed](-1,0)--(12,0);
-			\draw[<-] (deltaEnd) arc [start angle=-30, delta angle=30, radius=3.5cm] node[midway,right]{$\delta$};
+			\draw[<-] (deltaEnd) arc [start angle=-\wingletAngle, delta angle=\wingletAngle, radius=3.5cm] node[midway,right]{$\delta = \wingletAngle^{\circ}$};
+			\draw[<->] (epsC) -- node[below left] {$\varepsilon c$}(epsC2);
 		\end{scope}%
-		\draw[<->] (ec) -- node[below]{$ec$}(ec2);
-		\draw[->] (EC) +(180:3.5cm) arc [start angle=180, delta angle=-13, radius=3.5cm] node[midway,left]{$\alpha$};
-		\draw[dashed] (EC) -- +(180:4);
-		\node[yshift=2cm,pattern=north west lines,minimum width=2cm] (Ground) at (SpringEnd) {};
+
 		\draw[line width=1pt] (SpringEnd)-- node[right]{$k_\alpha$} (Ground.south);
 		\draw (Ground.south west) -- (Ground.south east);
 	\end{tikzpicture}

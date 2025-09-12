@@ -1,6 +1,5 @@
 \documentclass[border=5mm]{standalone}
 \usepackage{tikz}
-
 \usepackage[active,tightpage]{preview}
 \PreviewEnvironment{tikzpicture}
 \setlength\PreviewBorder{10pt}%
@@ -11,10 +10,13 @@
     point/.style={circle,inner sep=0pt, minimum width=4pt,fill=black}
 }
 
+\author{Harshit Prashant Dhanwalkar}
+\title{Air foil}
+
 \def\lenghtOfString{2cm} % k_\alpha
-\def\groundWidth{5cm}
+\def\groundWidth{3cm}
+\def\wingAngle{15}
 \def\wingletAngle{30}
-\def\wingAngle{10}
 
 \newcommand\spiral{} %
 \def\spiral[#1](#2)(#3:#4)(#5:#6)[#7]{%
@@ -94,7 +96,7 @@
 			\node[point] at (1.75,0) (AC) {};
 			\draw[dashed] (EC) -- +(-90:1)node[coordinate](ec){};
 			\draw[dashed] (AC) -- +(-90:1)node[coordinate](ec2){};
-			\draw[dashed] (AC) +(180:3cm)--(12,0);
+			\draw[dashed, <->] (AC) +(180:2.8cm) -- (12,0);
 
 			\node[above left, outer sep=4pt] at (EC) {$EC$};
 			\node[above left, outer sep=3pt] at (AC) {$AC$};
@@ -102,14 +104,14 @@
 			\draw[<->] (ec) -- node[below]{$ec$}(ec2);
 
 			\draw[->] (EC) +(180+\wingAngle:3.5cm) arc [start angle=180+\wingAngle, delta angle=-\wingAngle, radius=3.5cm] node[midway,left]{$\alpha = \wingAngle^{\circ}$};
-			\draw[dashed] (EC) -- +(180+\wingAngle:4cm);
+			\draw[dashed, ->] (EC) -- +(180+\wingAngle:4cm);
 
 			\spiral[](EC)(0:110)(0:0.5)[2] node[coordinate] (SpringEnd) {};
 			\node[yshift=\lenghtOfString, pattern=north west lines, minimum width=\groundWidth] (Ground) at (SpringEnd) {};
 
 			\draw[fill=white,white] (8.25,0) -- +(0:.5) arc (0:360:.5);
 			\draw[line width=1pt] (8.25,0) -- +(120:.5) arc (120:200:.5);
-			\fill[fill=white] (8,-.25) rectangle (10,.5);
+			\fill[fill=white] (8,0) rectangle (10,0.4);
 
 			% winglet
 			\begin{scope}[rotate around={-\wingletAngle:(8.3,0)},xshift=7.9cm,scale=0.35,y=1.5cm]
@@ -131,6 +133,8 @@
 
 		\draw[line width=1pt] (SpringEnd)-- node[right]{$k_\alpha$} (Ground.south);
 		\draw (Ground.south west) -- (Ground.south east);
+
+		\node[anchor=north east] at (current bounding box.north east) {\footnotesize By Harshit Prashant Dhanwalkar};
 	\end{tikzpicture}
 \end{preview}
 

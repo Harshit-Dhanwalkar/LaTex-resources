@@ -1,0 +1,24 @@
+\ProvidesPackage{drawproton}[Custom package for drawing proton structure]
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+
+\newcommand{\drawproton}[4][]{%
+	% #1 = options
+	% #2 = radius
+	% #3 = parton level
+	% #4 = additional parameter
+	\begin{scope}[#1]
+		\draw[fill=blue!20, opacity=0.7] (0,0) circle (#2pt);
+		\foreach \i in {1,...,#3} {
+				\pgfmathsetmacro{\angle}{360*\i/#3 + 15*#4}
+				\pgfmathsetmacro{\r}{#2 * 0.6}
+				\fill[red!50] (\angle:\r pt) circle (3pt);
+			}
+		\foreach \i in {1,...,#4} {
+				\pgfmathsetmacro{\angle}{360*\i/#4 - 15*#3}
+				\pgfmathsetmacro{\r}{#2 * 0.8}
+				\fill[green!50] (\angle:\r pt) circle (2pt);
+			}
+	\end{scope}
+}
+\endinput

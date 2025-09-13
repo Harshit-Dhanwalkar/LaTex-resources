@@ -1,0 +1,56 @@
+\documentclass[border=0pt,pstricks]{standalone}
+\usepackage{pst-coil,pstricks-add}
+\usepackage[nomessages]{fp}
+
+\FPset\CoilArm{0.25}
+\FPset\CoilWidth{0.3}
+\FPeval\CoilTurn{round(50/3:3)}
+\FPeval\DeltaY{0.5}
+\FPeval\Amp{1.5}
+\FPeval\FPS{25}
+\FPeval\Vx{2}% propagation speed
+\FPeval\Period{1}% second
+
+\psset
+{
+    coilarm=\CoilArm,
+    coilwidth=\CoilWidth,
+}
+
+
+\newcommand\System[4][0]{% #1: frame, #2: x, #3: y, #4: label
+    \uput[90](#2,4.25){#4}
+    \FPeval\CoilHeight{round((4-(#3)-2*CoilArm)/(CoilWidth*CoilTurn):3)}
+    \pszigzag[coilheight=\CoilHeight,linejoin=2](#2,4)(#2,#3)
+    \ifnum#1=1
+        \bgroup
+            \psset{origin={#2,#3}}
+            \psframe[dimen=inner,fillstyle=solid,fillcolor=black](-0.5,0)(0.5,-1)
+            \psdot[linecolor=yellow](0,-0.5)
+        \egroup
+    \fi
+}
+
+\begin{document}
+\FPeval\DeltaTime{round(1/\FPS:2)}
+\FPeval\TotalFrame{round(\FPS*\Period:0)}
+\multido{\n=0.00+\DeltaTime}{\TotalFrame}{%
+	\begin{pspicture*}[showgrid=false](-1.5,-2)(3.5,5)
+		% Ceiling
+		\psframe
+		[
+			fillstyle=vlines,
+			hatchsep=2pt,
+			hatchwidth=0.5\pslinewidth,
+			hatchcolor=gray,
+			hatchangle=45,
+			%linestyle=none
+		](0,4)(2,4.25)
+		% Spring without box
+		\FPeval\Y{round(-DeltaY-Amp*cos(2*pi*\n/Period)+2:3)}
+		\System[1]{1}{\Y}{A}
+		\psplot[algebraic,linecolor=red,plotpoints=1000]
+		{-1.5}{3.5}{-\DeltaY-\Amp*cos((2*\psPi/\Period)*((-\Vx*\n+x-1)/\Vx))+2-0.5}
+	\end{pspicture*}}
+
+\end{document}

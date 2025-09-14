@@ -1,0 +1,57 @@
+\documentclass{standalone}
+\usepackage{tikz,pgfplots}
+
+\begin{document}
+\begin{tikzpicture}[]
+	\pgfmathsetmacro{\xmin}{-6}
+	\pgfmathsetmacro{\ymin}{-6}
+	\pgfmathsetmacro{\xmax}{6}
+	\pgfmathsetmacro{\ymax}{6}
+	\pgfmathsetmacro{\Lambda}{.5}
+	\pgfmathsetmacro{\DistanceSources}{\Lambda/2}
+	\pgfmathsetmacro{\CentreI}{-4*\DistanceSources}
+	\pgfmathsetmacro{\CentreII}{\CentreI+\DistanceSources}
+	\pgfmathsetmacro{\CentreIII}{\CentreII+\DistanceSources}
+	\pgfmathsetmacro{\CentreIV}{\CentreIII+\DistanceSources}
+	\pgfmathsetmacro{\CentreV}{\CentreIV+\DistanceSources}
+	\pgfmathsetmacro{\CentreVI}{\CentreV+\DistanceSources}
+	\pgfmathsetmacro{\CentreVII}{\CentreVI+\DistanceSources}
+	\pgfmathsetmacro{\Cutoff}{\Lambda/10}
+	\pgfmathsetmacro{\RetardIIvsI}{pi/2}
+	\pgfmathsetmacro{\Date}{0}
+
+	\begin{axis}[colormap/blackwhite,
+			view ={0}{90},
+			xlabel = $x$,
+			ylabel = $y$,
+			extra x ticks = ,
+			extra x tick labels = ,
+			extra y ticks = ,
+			extra y tick labels = ,
+			xmin = \xmin,
+			ymin = \ymin,
+			xmax = \xmax,
+			ymax = \ymax,
+			domain = \xmin:\xmax,
+			samples = 50
+		]
+		\addplot3[surf,shader=interp,raw gnuplot] gnuplot {
+				set isosamples 50,50;
+				amorti (centre,xy,y,cutoff)= 1;
+				interf(centre,date,x,y,cutoff,lambda,retard) =%
+				amorti(centre,x,y,cutoff)%
+				* cos(date-2*pi*sqrt((x-centre)**2 + y**2)/lambda-retard);
+				splot [x=\xmin:\xmax] [y=\ymin:\ymax] 1./7.*(%
+				interf(\CentreI,\Date,x,y,\Cutoff,\Lambda,0)%
+				+ interf(\CentreII,\Date,x,y,\Cutoff,\Lambda,\RetardIIvsI)%
+				+ interf(\CentreIII,\Date,x,y,\Cutoff,\Lambda,2*\RetardIIvsI)%
+				+ interf(\CentreIV,\Date,x,y,\Cutoff,\Lambda,3*\RetardIIvsI)%
+				+ interf(\CentreV,\Date,x,y,\Cutoff,\Lambda,4*\RetardIIvsI)%
+				+ interf(\CentreVI,\Date,x,y,\Cutoff,\Lambda,5*\RetardIIvsI)%
+				+ interf(\CentreVII,\Date,x,y,\Cutoff,\Lambda,6*\RetardIIvsI)%
+				)
+			};
+	\end{axis}
+\end{tikzpicture}
+
+\end{document}

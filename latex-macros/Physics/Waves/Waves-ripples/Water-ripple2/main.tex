@@ -1,0 +1,75 @@
+\documentclass{standalone}
+
+\usepackage[cmyk]{xcolor}
+\definecolor{wave}{cmyk}{1,0.35,0,0}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\tikzset{
+        samples=100,
+}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
+
+\pgfmathsetmacro\T{1}
+\pgfmathsetmacro\A{0.2}
+\pgfmathsetmacro\N{5}
+\pgfmathsetmacro\D{\N*\T}
+
+\begin{document}
+
+\begin{tikzpicture}
+	\begin{axis}[
+			view={0}{90},
+			hide axis,
+			colormap={custom}{color=(white) color=(wave)},
+			trig format plots=rad,
+			x=1cm,
+			y=1cm,
+			z=0cm,
+		]
+		\clip (-\D/2,-\D/2) rectangle (\D/2, \D/2);
+		\addplot3[
+			data cs=polar,
+			domain=0:2*pi,
+			domain y=0:\D,samples y=25,
+			surf,shader=interp,
+		] {\A*sin(2*pi/\T * y)};
+
+	\end{axis}
+\end{tikzpicture}
+
+
+\begin{tikzpicture}
+	% Shading
+	\coordinate (C) at (0.25pt,0);% small overlapping
+	\foreach \x in {1,...,\N} {
+			\shade [shading=axis, right color=white, left color=wave, shading angle=90]
+			($(\x*\T-\T,-\A)-(C)$) rectangle ++($(\T/2,2*\A)+(C)$);
+			\shade [shading=axis, left color=white, right color=wave, shading angle=90]
+			($(\x*\T-\T/2,-\A)-(C)$) rectangle ++($(\T/2,2*\A)+(C)$);
+		}
+	% Cosine Wave
+	\draw [black] plot [id=sine, domain=0:\D]
+	function {\A*cos(2*pi/\T*x)};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\begin{axis}[
+			view={0}{90},
+			hide axis,
+			colormap={custom}{color=(white) color=(wave)},
+			trig format plots=rad,
+			x=1cm,
+			y=1cm,
+			z=0cm,
+		]
+		\addplot3[
+			domain=0:\D,samples=100,
+			domain y=-\A:\A,samples y=2,
+			surf,shader=interp,
+		] {\A*cos(2*pi/\T * x)};
+
+		\addplot [domain=0:\D,samples=100] {\A*cos(2*pi/\T*x)};
+	\end{axis}
+\end{tikzpicture}
+\end{document}

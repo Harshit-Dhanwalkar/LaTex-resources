@@ -1,0 +1,81 @@
+% Code does not work
+\documentclass[
+   11pt,cmyk,
+   multi={tikzpicture},
+   border=10mm,
+]{standalone}
+
+
+% General packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\usepackage[garamond]{mathdesign}
+\usepackage{mathtools}
+
+% Colors
+\usepackage{xcolor}
+   \definecolor{spot}{cmyk}{1,0.20,0,0}
+   \colorlet{gray}{black!60}
+   \colorlet{wave}{spot}
+
+% Load TikZ and libraries
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning,decorations.pathmorphing,%
+   arrows.meta,backgrounds}
+% Define TikZ styles etc.
+\tikzset{
+   every plot/.style={
+      prefix=plots/,
+      samples=200,
+   },
+   every node/.style={
+      font=\footnotesize,
+   },
+   line width=1pt,
+   shorten/.style={
+      shorten >=#1,
+      shorten <=#1,
+   },
+   >=Triangle[],
+   axis/.style={-Stealth[]},
+   tick/.style={
+      axis,
+      shorten <=-0.5\pgflinewidth,
+      shorten >=-0.5\pgflinewidth,
+   },
+}
+
+% Load and configure pgfplots
+\usepackage{pgfplots}
+   \usepgfplotslibrary{polar}
+   \pgfplotsset{
+      compat=1.11,
+      wave axis/.style={
+         view={0}{90},
+         hide axis,
+         colormap={custom}{color=(white) color=(wave)},
+         trig format plots=rad,
+         trig format=rad,
+         x=1cm,
+         y=1cm,
+         z=0cm,
+         anchor=origin,
+      },
+      wave plot/.style={
+         samples=200,
+         samples y=2,
+         surf,shader=interp,
+      },
+      polar wave plot/.style={
+         data cs=polar,
+         domain=0:2*pi,
+         samples y=100,
+         surf,shader=interp,
+      },
+   }
+
+% Macro for subfigure captions
+\newcommand{\subfig}[1]{\textbf{\textsf{#1)}}~}
+
+\begin{document}

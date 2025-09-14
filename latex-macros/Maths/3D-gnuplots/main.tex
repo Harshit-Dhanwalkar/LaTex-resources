@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+
+\begin{document}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[view={45}{30}, xlabel=$x$, ylabel=$y$, zlabel={$f(x,y)$}]
+			% set sampling
+			\addplot3[
+				surf,
+				domain=-6:6,
+				domain y=-6:6,
+				samples=50
+			]
+			{ exp(-(x^2 + y^2)) * cos(deg(x)) * sin(deg(y)) };
+		\end{axis}
+	\end{tikzpicture}
+	\caption{3D surface plot}
+\end{figure}
+
+\end{document}

@@ -1,0 +1,80 @@
+% under construction
+\documentclass[tikz]{standalone}
+\begin{document}
+
+\def\length{36}
+\def\base{3}
+\def\motorlength{3}
+\def\motorheight{11}
+\def\centerOfGravityDistance{6}
+\def\loadDistanceX{19}
+\def\loadDistanceY{4}
+\def\counterLoadDistanceX{6}
+
+\begin{tikzpicture}[scale=0.5]
+	% Define coordinates for the crane's base
+	\coordinate (A) at (0,0);
+	\coordinate (B) at (1.5,0.5);
+	\coordinate (C) at (4.5,0.5);
+	\coordinate (D) at (6,0);
+	\coordinate (E) at (\loadDistanceX,8);
+	\coordinate (F) at (-\motorlength +3, \motorheight);
+
+	\draw (-\base-2,0) -- (\length+4,0);
+	\draw[double] (A) -- ++(1.5,0.5)--++(3,0)--++(1.5,-0.5);
+	\draw[double] (A) -- ++(1.5,1.5) ++(3,0)--++(1.5,-1.5);
+	\draw[double] (B) -- ++(0,10)--++(3,0)--++(0,-10);
+	\draw[double,join=bevel] (B) -- ++(18.43:3.16) -- ++(161.57:3.16) -- ++(18.43:3.16) -- ++(161.57:3.16) -- ++(18.43:3.16) -- ++(161.57:3.16) -- ++(18.43:3.16) -- ++(161.57:3.16) -- ++(18.43:3.16) -- ++(161.57:3.16);
+	\draw[double] (B) -- +(135:0.707);
+	\draw[double] (C) -- +(45:0.707);
+	\draw[fill=lightgray] (-\counterLoadDistanceX + 4,8.5) rectangle (-\counterLoadDistanceX + 2,14) node at +(1,-2.75) {$A$};
+	\draw[double] (-\counterLoadDistanceX+4,10.5) -- ++(\base + \length + 1,0) -- ++(0,1.732) -- ++(-\base - \length -1,0);
+	\draw[double,join=bevel] (-\counterLoadDistanceX+4,10.5+1.732) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) -- ++(-60:2) -- ++(60:2) node at +(0.75,-1.723/2) {$B$};
+	\draw[fill=lightgray] (\base + 1.6,10.5) rectangle (\base + \length - 0.2,9.5);
+	\draw[double] (F) +(0,-0.5) -- ++(0,-2) -- ++(1.5,0);
+	\draw[double] (F) +(0,-2) -- ++(1.5,-0.5);
+	\draw[fill=gray] (F) +(0.6,2.3) rectangle +(-0.6,1.3);
+	\draw[fill=lightgray, even odd rule] (E) +(0.5, -3) circle (0.25) circle (0.125);
+	\draw[double distance=0.4] (-0.5,13) -- ++(0,-4) ++(0.5,-0.5) -- ++(\loadDistanceX,0) ++(0.5,-0.5) -- ++(0,-3);
+	\draw (E) +(0,0.55) arc (90:0:0.55);
+	\draw[fill=white] (E) circle (0.5);
+	\draw[fill=white] (E) +(0.625, 2.125) circle (0.375) +(-0.625,2.125) circle (0.375);
+	\draw[rounded corners, fill=lightgray] (E) +(0,-0.5) -- ++(1,2.375) -- ++(-2,0) -- cycle;
+	\draw (E) circle (0.07);
+	\draw (E) +(0.625,2.125) circle (0.07);
+	\draw (E) +(-0.625,2.125) circle (0.07);
+	\draw[fill=gray] (F) +(0,2) circle (0.5) circle (0.07) node at +(1.25, 2) {$M$};
+	\draw[fill=gray] (F) +(0,-2) circle (0.6) circle (0.07) node at +(0,-3) {$C$};
+	\draw[double] (\loadDistanceX,\loadDistanceY) ++(0.5,1) -- +(3,-1) (\loadDistanceX,\loadDistanceY) ++(0.5,1) -- +(-3,-1);
+	\draw[fill=gray] (\loadDistanceX, \loadDistanceY) ++(-2.5, 0.05) rectangle +(6,-0.2); % plank
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(-1.5, 0.06) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(-1, 0.06) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(-0.5, 0.06) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(0, 0.06) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(0.5, 0.06) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(1, 0.06) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(1.5, 0.06) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(-1, 0.37) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(-0.5, 0.37) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(0, 0.37) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(0.5, 0.37) rectangle +(0.5,0.3);
+	\draw[fill=red] (\loadDistanceX, \loadDistanceY) ++(1, 0.37) rectangle +(0.5,0.3);
+	%Dimensions
+	\draw[semithick] (0,-0.25) -- +(0,-1) node at +(0,1.25) {$D$} ++(3,-3) -- +(0,3.25+10.5+1.723) ++(3,3) -- +(0,-1) node at +(0,1.25) {$E$} ++(33,-3) -- +(0,12.25);
+	\draw[semithick] (\base,10.75+1.732) -- (\base,13.6+0.25+1+1.5) ++(-3,-1.5) -- +(0,-1);
+	\draw[semithick] (\base + \centerOfGravityDistance,6)--++(0,2.25) ++(0,0.5)--(\base + \centerOfGravityDistance,9.95);
+	\draw[semithick] (18.5,2) -- +(0,1);
+	\fill (9,10.5) -- ++(0.3,0) arc (0:-90:0.3) -- ++(0,0.6) arc (90:180:0.3);
+	\fill[white] (9,10.5) -- ++(0.3,0) arc (0:90:0.3) -- ++(0,-0.6) arc (270:180:0.3);
+	\draw[very thin] (9,10.5) circle (0.3) node at +(0,2.5) {$G$};
+	\draw[semithick, to-to] (0, -0.75) -- +(\base,0) node[font=\footnotesize] at +(1.5,-0.5) {\base m};
+	\draw[semithick, to-to] (\base, -0.75) -- +(\base,0) node[font=\footnotesize] at +(1.5,-0.5) {\base m};
+	\draw[semithick, to-to] (\base, -2.5) -- +(\length,0) node[fill=white, font=\footnotesize] at +(\length/2,0) {\length m};
+	\draw[semithick, to-to] (\base,13.6+0.25+0.5) -- +(-\motorlength,0) node[font=\footnotesize] at +(-1.5,0.5) {\motorlength m};
+	\draw[semithick] (-\counterLoadDistanceX + \base, 14.25) -- (-\counterLoadDistanceX + \base, 13.6+0.25+1+1.5);
+	\draw[semithick, to-to] (\base,13.6+0.25+2) -- +(-\counterLoadDistanceX,0) node[font=\footnotesize] at +(-2.5,0.5) {\counterLoadDistanceX m};
+	\draw[semithick, to-to] (\base,6.5) -- +(\centerOfGravityDistance,0) node[fill=white, font=\footnotesize] at +(\centerOfGravityDistance - \base,0) {\centerOfGravityDistance m};
+	\draw[semithick,to-to] (\base,2.5) -- +(\loadDistanceX,0) node[fill=white,font=\footnotesize] at +(7.75,0) {$x$};
+	\node at (0,0) {0};
+\end{tikzpicture}
+\end{document}

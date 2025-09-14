@@ -1,0 +1,12 @@
+\documentclass[pstricks]{standalone}
+\usepackage{pst-node,pst-plot}
+\pstVerb{realtime srand}
+
+\begin{document}
+\psLoop{25}{%
+	\begin{pspicture}(-2,-2)(2,2)
+		\pscircle*[linecolor=orange]{0.75}
+		\curvepnodes[plotpoints=73]{0}{360}{Rand 10 div 1.50 add t PtoC}{P}
+		\psnccurve(0,\numexpr\Pnodecount-1){P}
+	\end{pspicture}}
+\end{document}

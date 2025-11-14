@@ -1,0 +1,657 @@
+% Code does not work
+% !TeX encoding = utf8
+
+% \documentclass[
+%    11pt,cmyk,
+%    multi={tikzpicture},
+%    border=10mm,
+% ]{standalone}
+
+\documentclass[
+   11pt,
+   border=10mm
+]{standalone}
+
+% General packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\usepackage{amsmath}
+% \usepackage[garamond]{mthdesign}
+% \usepackage{mathtools}
+
+% Colors
+\usepackage{xcolor}
+\definecolor{spot}{cmyk}{1,0.20,0,0}
+\colorlet{gray}{black!60}
+\colorlet{wave}{spot}
+
+% Load TikZ and libraries
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning,decorations.pathmorphing,arrows.meta,backgrounds}
+\tikzset{
+   every plot/.style={
+      prefix=plots/,
+      samples=200,
+   },
+   every node/.style={
+      font=\footnotesize,
+   },
+   line width=1pt,
+   shorten/.style={
+      shorten >=#1,
+      shorten <=#1,
+   },
+   >=Triangle[],
+   axis/.style={-Stealth[]},
+   tick/.style={
+      axis,
+      shorten <=-0.5\pgflinewidth,
+      shorten >=-0.5\pgflinewidth,
+   },
+}
+
+% Load and configure pgfplots
+\usepackage{pgfplots}
+   \usepgfplotslibrary{polar}
+   \pgfplotsset{
+      compat=1.11,
+      wave axis/.style={
+         view={0}{90},
+         hide axis,
+         colormap={custom}{color=(white) color=(wave)},
+         trig format plots=rad,
+         trig format=rad,
+         x=1cm,
+         y=1cm,
+         z=0cm,
+         anchor=origin,
+      },
+      wave plot/.style={
+         samples=200,
+         samples y=2,
+         surf,shader=interp,
+      },
+      polar wave plot/.style={
+         data cs=polar,
+         domain=0:2*pi,
+         samples y=100,
+         surf,shader=interp,
+      },
+   }
+
+% Macro for subfigure captions
+% \newcommand{\subfig}[2]{\textbf{\textsf{#1)}}~#2}
+\newcommand{\subfig}[1]{\textbf{\textsf{#1}}~}
+
+
+\begin{document}
+% Modes of a wave in a tube
+% \begin{tikzpicture}[
+% 		tube/.style={ultra thick,black},
+% 		wave/.style={thick,gray},
+% 	]
+% 	% define variables
+% 	%% tube size
+% 	\def\H{.9}
+% 	\def\L{5.5}
+% 	%% distances
+% 	\def\A{0.3}
+% 	\def\B{0.5}
+% 	%% wave's amplitude
+% 	\pgfmathsetmacro\a{0.35}
+% 	% both ends open or closed
+% 	\foreach \n in {1,2,3,4,5} {
+% 			\begin{scope}[shift={(0,-\n*\H-\n*\A)}]
+% 				% closed ends
+% 				%% wave
+% 				\begin{scope}
+% 					% air pressure
+% 					\begin{axis}[wave axis]
+% 						\addplot3[wave plot,domain=0:\L,domain y=-\H/2:\H/2] {abs(sin(pi/\L * \n * x))};
+% 						%               \addplot[domain=0:\L,samples=100] function {abs(sin(pi/\L * \n * x))};
+% 					\end{axis}
+% 					% wave form
+% 					\draw [wave]
+% 					plot [id=moden-gg-1-\n, domain=0:\L] function {\a * sin(pi/\L * \n * x)}
+% 					plot [id=moden-gg-2-\n, domain=0:\L] function {-\a * sin(pi/\L * \n * x)};
+% 				\end{scope}
+% 				%% tube
+% 				\draw [tube] (\L,-\H/2) -| (0,\H/2) -- (\L,\H/2) -- cycle;
+% 				%% coordinates for later use
+% 				\coordinate (GG-\n) at (0,0);
+% 				\coordinate (B1) at (0,-\H/2);
+% 				% open ends
+% 				\begin{scope}[shift={(\L+\B,0)}]
+% 					%% wave
+% 					\begin{scope}
+% 						% air pressure
+% 						\begin{axis}[wave axis]
+% 							\addplot3[wave plot,domain=0:\L,domain y=-\H/2:\H/2] {abs(cos(pi/\L * \n * x))};
+% 							%                  \addplot[domain=0:\L,samples=100] function {abs(cos(pi/\L * \n * x))};
+% 						\end{axis}
+% 						% wave
+% 						\draw [wave]
+% 						plot [id=moden-oo-1-\n, domain=0:\L] function {\a * cos(pi/\L * \n * x)}
+% 						plot [id=moden-oo-2-\n, domain=0:\L] function {-\a * cos(pi/\L * \n * x)};
+% 					\end{scope}
+% 					%% tube
+% 					\draw [tube] (0,-\H/2) -- (\L,-\H/2) (0,\H/2) -- (\L,\H/2);
+% 					%% coordinates
+% 					\coordinate (B2) at (0,-\H/2);
+% 				\end{scope}
+% 			\end{scope}
+% 		}
+% 	\foreach \n in {1,3,5} {
+% 			\begin{scope}[shift={(0,-\n*\H-\n*\A)}]
+% 				% one end open, one closed
+% 				\begin{scope}[shift={(2*\L+2*\B,0)}]
+% 					%% wave
+% 					\begin{scope}
+% 						% air pressure
+% 						\begin{axis}[wave axis]
+% 							\addplot3[wave plot,domain=0:\L,domain y=-\H/2:\H/2] {abs(sin(pi/\L * (\n-0.5) * x))};
+% 							%                  \addplot[domain=0:\L,samples=100] function {abs(sin(pi/\L * (\n-0.5) * x))};
+% 						\end{axis}
+% 						% wave
+% 						\draw [wave]
+% 						plot [id=moden-go-1-\n, domain=0:\L] function {\a * sin(pi/\L * (\n-0.5) * x)}
+% 						plot [id=moden-go-2-\n, domain=0:\L] function {-\a * sin(pi/\L * (\n-0.5) * x)};
+% 					\end{scope}
+% 					%% tube
+% 					\draw [tube] (\L,-\H/2) -| (0,\H/2) -- (\L,\H/2);
+% 					%% coordinates
+% 					\coordinate (B3) at (0,-\H/2);
+% 				\end{scope}
+% 			\end{scope}
+% 		}
+% 	% captions/text
+% 	\foreach \n in {1,2,3,4,5} {
+% 			\node at (GG-\n) [rotate=90,left=4pt,anchor=south,inner sep=0pt] {$n=\n$};
+% 		}
+% 	\node  at (B1) [below right=1.5mm and 0mm,inner sep=0pt] {\subfig{a}{closed/closed}};
+% 	\node  at (B2) [below right=1.5mm and 0mm,inner sep=0pt] {\subfig{b}{open/open}};
+% 	\node  at (B3) [below right=1.5mm and 0mm,inner sep=0pt] {\subfig{c}{closed/open}};
+% \end{tikzpicture}
+%
+% % Wave moves through five points (particles)
+% \begin{tikzpicture}
+% 	% Variables
+% 	%% wave
+% 	\pgfmathsetmacro\T{9}
+% 	\pgfmathsetmacro\A{1.75}
+% 	%% oscillations
+% 	\pgfmathsetmacro\Ti{1.5}
+% 	\pgfmathsetmacro\Ai{0.6}
+% 	\pgfmathsetmacro\yMax{1}
+% 	\pgfmathsetmacro\xMax{2*\Ti+0.3}
+% 	\pgfmathsetmacro\D{2*\Ti+0.2}
+% 	\coordinate (S) at (0,-2.7);
+% 	% wave
+% 	%% axis
+% 	\draw [axis] (0,-2) -- (0,2.6) node [left] {$z(x,0)$};
+% 	\draw [axis] (0,0) -- (10,0) node [below] {$x$};
+% 	\draw [tick, |-] (0,\A) node [left] {$z_\text{m}$} -- (0,0);
+% 	%% wave langth
+% 	\draw [|-|] (0,2.2) -- ++ (\T,0) node [midway,above] {$\lambda$};
+% 	%% wave form
+% 	\draw [ultra thick, gray] plot [id=welle, domain=-\yMax-0.1:\T+\yMax]
+% 	function {\A*sin(2*pi/\T*x)};
+% 	\pgfmathsetmacro\X{0.425*\T}
+% 	\pgfmathsetmacro\Y{\A*sin(2*pi/\T*\X r)}
+% 	\draw [gray] (\X,\Y) -- ++(35:0.7) node [right,align=left]
+% 	{\textbf{snapshot} of wave\\ at time $t=0$};;
+% 	%% oscillating points
+% 	\coordinate (1) at (0.00*\T,0);
+% 	\coordinate (2) at (0.25*\T,\A);
+% 	\coordinate (3) at (0.50*\T,0);
+% 	\coordinate (4) at (0.75*\T,-\A);
+% 	\coordinate (5) at (1.00*\T,0);
+% 	\coordinate (6) at (1.25*\T,\A);
+% 	\foreach \n in {1,2,3,4,5} {
+% 			\node (n\n) at (\n) [
+% 				circle,
+% 				font=\sffamily\scriptsize,
+% 				spot,
+% 				draw, ultra thick,
+% 				fill=white,
+% 				inner sep=0pt,
+% 				minimum size=3mm,
+% 				outer sep=1mm,
+% 			] {\n};
+% 		}
+% 	%% movment of points
+% 	\draw [spot,thick,->] (n1) -- ++(0,-0.5*\A);
+% 	\draw [spot,thick,->] (n2) -- ++(0,-0.5*\A);
+% 	\draw [spot,thick,->] (n3) -- ++(0,0.5*\A);
+% 	\draw [spot,thick,->] (n4) -- ++(0,0.5*\A);
+% 	\draw [spot,thick,->] (n5) -- ++(0,-0.5*\A);
+% 	% oscillations
+% 	\begin{scope}[shift={($(1)+(S)$)}, rotate=-90]
+% 		%% axis
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_1(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		%% sine form
+% 		\draw [thick, spot] plot [id=welle-schwingung-1, domain=0:\D]
+% 		function {-\Ai*sin(2*pi/\Ti*x)};
+% 		%% ponts
+% 		\node (n) at (0,0) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {1};
+% 		%% movment
+% 		\draw [spot,thick,-{Triangle[scale=0.7]}] (n) -- ++(0,-\Ai);
+% 		%% origin coordinate for later use
+% 		\coordinate (U1) at (0,0);
+% 		%% root coordinate for later use
+% 		\coordinate (N1) at (3*\Ti/4,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(2)+(S)+(0,-\A)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_2(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=welle-schwingung-2, domain=0:\D]
+% 		function {\Ai*sin(2*pi/\Ti*x+pi/2)};
+% 		\node (n) at (0,\Ai) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {2};
+% 		\draw [spot,thick,-{Triangle[scale=0.7]}] (n) -- ++(0,-\Ai);
+% 		\coordinate (N2) at (4*\Ti/4,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(3)+(S)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_3(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=welle-schwingung-3, domain=0:\D]
+% 		function {-\Ai*sin(2*pi/\Ti*x+pi)};
+% 		\node (n) at (0,0) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {3};
+% 		\draw [spot,thick,-{Triangle[scale=0.7]}] (n) -- ++(0,\Ai);
+% 		\coordinate (N3) at (5*\Ti/4,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(4)+(S)+(0,\A)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_4(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=welle-schwingung-4, domain=0:\D]
+% 		function {\Ai*sin(2*pi/\Ti*x+3*pi/2)};
+% 		\node (n) at (0,-\Ai) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {4};
+% 		\draw [spot,thick,-{Triangle[scale=0.7]}] (n) -- ++(0,\Ai);
+% 		\coordinate (N4) at (6*\Ti/4,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(5)+(S)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_5(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=welle-schwingung-5, domain=0:\D]
+% 		function {-\Ai*sin(2*pi/\Ti*x+2*pi)};
+% 		\node (n) at (0,0) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {5};
+% 		\draw [spot,thick,-{Triangle[scale=0.7]}] (n) -- ++(0,-\Ai);
+% 		\coordinate (U5) at (0,0);
+% 		\coordinate (N5) at (7*\Ti/4,0);
+% 	\end{scope}
+% 	% help lines
+% 	\foreach \x in {0.25,0.5,...,2} {
+% 			\begin{scope}[on background layer]
+% 				\draw [dotted] ($(U1)+(-\yMax,-\x*\Ti)$) -- ($(U5)+(\yMax,-\x*\Ti)$);
+% 			\end{scope}
+% 		}
+% 	% pahse shift
+% 	\foreach \n [remember=\n as \lastn (initially 1)] in {2,3,4,5} {
+% 			\draw [gray,thick] (N\lastn) -| ($(N\lastn)!0.5!(N\n)$) |- (N\n);
+% 		}
+% 	\draw [gray,thick] (N1) -- ++(-\yMax,0);
+% 	\draw [gray,thick] (N5) -- ++(\yMax,0);
+% \end{tikzpicture}
+%
+% % Standing wave
+% \begin{tikzpicture}
+% 	% Variables
+% 	%% wave
+% 	\pgfmathsetmacro\T{9}
+% 	\pgfmathsetmacro\A{1.75}
+% 	%% oscillations
+% 	\pgfmathsetmacro\Ti{0.9}
+% 	\pgfmathsetmacro\Ai{0.3}
+% 	\pgfmathsetmacro\yMax{0.5}
+% 	\pgfmathsetmacro\xMax{2*\Ti+0.3}
+% 	\pgfmathsetmacro\D{2*\Ti+0.1}
+% 	\coordinate (S) at (0,-2.7);
+% 	% wave
+% 	%% axis
+% 	\draw [axis] (0,-2) -- (0,2.6) node [left] {$z(x,t_0)$};
+% 	\draw [axis] (0,0) -- (10,0) node [below] {$x$};
+% 	\draw [tick, |-] (0,\A) node [left] {$z_\text{m}$} -- (0,0);
+% 	%% wave length
+% 	\draw [|-|] (0,2.2) -- ++ (\T,0) node [midway,above] {$\lambda$};
+% 	%% wave form
+% 	\draw [ultra thick, gray] plot [id=stehende-welle, domain=-\yMax-0.1:\T+\yMax]
+% 	function {\A*sin(2*pi/\T*x)};
+% 	\pgfmathsetmacro\X{0.425*\T}
+% 	\pgfmathsetmacro\Y{\A*sin(2*pi/\T*\X r)}
+% 	\draw [gray] (\X,\Y) -- ++(35:0.7) node [right,align=left]
+% 	{\textbf{snapshot} of wave\\ at time $t=t_0$};
+% 	%% osizllationg points (II)
+% 	\coordinate (1) at (0.00*\T,0);
+% 	\coordinate (2) at (0.25*\T,\A);
+% 	\coordinate (3) at (0.50*\T,0);
+% 	\coordinate (4) at (0.75*\T,-\A);
+% 	\coordinate (5) at (1.00*\T,0);
+% 	\pgfmathsetmacro\X{0.125*\T}
+% 	\pgfmathsetmacro\Yvi{\A*sin(2*pi/\T*\X r)}
+% 	\coordinate (6) at (\X,\Yvi);
+% 	\pgfmathsetmacro\X{0.375*\T}
+% 	\pgfmathsetmacro\Yvii{\A*sin(2*pi/\T*\X r)}
+% 	\coordinate (7) at (\X,\Yvii);
+% 	\pgfmathsetmacro\X{0.625*\T}
+% 	\pgfmathsetmacro\Yviii{\A*sin(2*pi/\T*\X r)}
+% 	\coordinate (8) at (\X,\Yviii);
+% 	\pgfmathsetmacro\X{0.875*\T}
+% 	\pgfmathsetmacro\Yix{\A*sin(2*pi/\T*\X r)}
+% 	\coordinate (9) at (\X,\Yix);
+% 	\foreach \n in {1,2,3,4,5,6,7,8,9} {
+% 			\node (n\n) at (\n) [
+% 				circle,
+% 				font=\sffamily\scriptsize,
+% 				spot,
+% 				draw, ultra thick,
+% 				fill=white,
+% 				inner sep=0pt,
+% 				minimum size=3mm,
+% 				outer sep=1mm,
+% 			] {\n};
+% 		}
+% 	%% movment of points
+% 	\draw [spot,thick,->] (n2) -- ++(0,-0.5*\A);
+% 	\draw [spot,thick,->] (n4) -- ++(0,0.5*\A);
+% 	\draw [spot,thick,->] (n6) -- ++(0,-0.5*\Yvi);
+% 	\draw [spot,thick,->] (n7) -- ++(0,-0.5*\Yvii);
+% 	\draw [spot,thick,->] (n8) -- ++(0,-0.5*\Yviii);
+% 	\draw [spot,thick,->] (n9) -- ++(0,-0.5*\Yix);
+% 	% oscillations
+% 	\begin{scope}[shift={($(1)+(S)$)}, rotate=-90]
+% 		%% axis
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_1(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		%% sine form
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-1, domain=0:\D]
+% 		function {0};
+% 		%% oscillating point (particle)
+% 		\node (n) at (0,0) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {1};
+% 		%% origin coordinate for later use
+% 		\coordinate (U1) at (0,0);
+% 		%% root coordinate for later use
+% 		\coordinate (N1) at (5*\Ti/4,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(2)+(S)+(0,-\A)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_2(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-2, domain=0:\D]
+% 		function {\Ai*sin(2*pi/\Ti*x+pi/2)};
+% 		\node (n) at (0,\Ai) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {2};
+% 	\end{scope}
+% 	\begin{scope}[shift={($(3)+(S)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_3(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-3, domain=0:\D]
+% 		function {0};
+% 		\node (n) at (0,0) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {3};
+% 	\end{scope}
+% 	\begin{scope}[shift={($(4)+(S)+(0,\A)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_4(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-4, domain=0:\D]
+% 		function {-\Ai*sin(2*pi/\Ti*x+pi/2)};
+% 		\node (n) at (0,-\Ai) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {4};
+% 	\end{scope}
+% 	\begin{scope}[shift={($(5)+(S)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_5(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-5, domain=0:\D]
+% 		function {0};
+% 		\node (n) at (0,0) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {5};
+% 		\coordinate (U5) at (0,0);
+% 		\coordinate (N5) at (5*\Ti/4,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(6)+(S)-(0,\Yvi)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_6(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-6, domain=0:\D]
+% 		function {\Yvi/\A*\Ai*sin(2*pi/\Ti*x+pi/2)};
+% 		\node (n) at (0,\Yvi/\A*\Ai) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {6};
+% 		\coordinate (U6) at (0,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(7)+(S)-(0,\Yvii)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_7(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-7, domain=0:\D]
+% 		function {\Yvii/\A*\Ai*sin(2*pi/\Ti*x+pi/2)};
+% 		\node (n) at (0,\Yvii/\A*\Ai) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {7};
+% 		\coordinate (U7) at (0,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(8)+(S)-(0,\Yviii)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_8(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-8, domain=0:\D]
+% 		function {\Yviii/\A*\Ai*sin(2*pi/\Ti*x+pi/2)};
+% 		\node (n) at (0,\Yviii/\A*\Ai) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {8};
+% 		\coordinate (U8) at (0,0);
+% 	\end{scope}
+% 	\begin{scope}[shift={($(9)+(S)-(0,\Yix)$)}, rotate=-90]
+% 		\draw [axis] (0,-\yMax) -- (0,\yMax) node [above,midway] {$z_9(t)$};
+% 		\draw [axis] (0,0) -- (\xMax,0) node [right] {$t$};
+% 		\draw [thick, spot] plot [id=stehende-welle-schwingung-9, domain=0:\D]
+% 		function {\Yix/\A*\Ai*sin(2*pi/\Ti*x+pi/2)};
+% 		\node (n) at (0,\Yix/\A*\Ai) [
+% 			circle,
+% 			font=\sffamily\tiny,
+% 			spot,
+% 			draw, thick,
+% 			fill=white,
+% 			inner sep=0pt,
+% 			minimum size=2mm,
+% 			outer sep=0.5mm,
+% 		] {9};
+% 		\coordinate (U9) at (0,0);
+% 	\end{scope}
+% 	% help lines
+% 	\foreach \x in {0.25,0.5,...,2} {
+% 			\begin{scope}[on background layer]
+% 				\draw [dotted] ($(U1)+(-\yMax,-\x*\Ti)$) -- ($(U5)+(\yMax,-\x*\Ti)$);
+% 			\end{scope}
+% 		}
+% 	% (no) phase shift
+% 	\draw [gray,thick] ($(N1)-(\yMax,0)$) -- ($(N5)+(\yMax,0)$);
+% \end{tikzpicture}
+%
+% % Organ pipe
+% \begin{tikzpicture}
+% 	% Varaibles
+% 	%% pipe foot
+% 	\def\F{2.25}
+% 	\def\r{0.1}
+% 	%% wave length
+% 	\def\w{20}
+% 	%% amplitude
+% 	\def\z{0.5}
+% 	%% wave body
+% 	\def\R{0.6}
+% 	\pgfmathsetmacro\l{0.6*\R}
+% 	\pgfmathsetmacro\L{\w/2-\l}
+% 	%% cut
+% 	\def\A{0.8}
+% 	\def\hA{0.4}
+% 	%% distance for captions
+% 	\pgfmathsetmacro\B{\R+0.3}
+% 	% wave
+% 	\draw [ultra thick, spot,fill=spot!20] plot [id=pfeifen-welle-1,domain=0:\w/2] function
+% 		{\z*sin(2*pi/\w*x)};
+% 	\draw [ultra thick, spot,fill=spot!20] plot [id=pfeifen-welle-2,domain=0:\w/2] function
+% 		{-\z*sin(2*pi/\w*x)};
+% 	% axis
+% 	\draw [axis] (-\F-\hA-\A/2,0) -- (\w/2+0.35,0) node [below left] {$x$};
+% 	% pipe
+% 	\draw [ultra thick] (-\F-\hA-\A/2,-\r) -- (-\hA-\A/2,-\R) -- (\L,-\R)
+% 	(-\F-\hA-\A/2,\r) -- (-\hA-\A/2,\R) -- ++(\hA,0) ++(\A,0) -- (\L,\R);
+% 	;
+% 	\draw [line width=3pt] (0,-\R) -- (0,\R-\A/8);
+% 	\draw [dashed] (\L,-\R) -- (\L,\R);
+% 	% captions
+% 	\node at (\w/4,0) [spot,fill=spot!20] {$\Delta p(x,0)$};
+% 	\draw [tick, |-|] (-\F-\hA-\A/2,-\B) -- (0,-\B) node [midway,below] {foot length};
+% 	\draw [tick, |-|] (0,-\B) -- (\L,-\B) node [midway,below] {reduced length $L_\text{r}$};
+% 	\draw [tick, |-|] (\L,-\B) -- (\L+\l,-\B) node [midway,below] {$\ell$};
+% 	\draw [tick, |-|] (0,\B) -- (\w/2,\B) node [midway,above] {theoretical length $L$};
+% \end{tikzpicture}
+%
+% % Helmholtz’ model for the open end
+% \begin{tikzpicture}
+% 	% define variables
+% 	\def\H{0.275}
+% 	\def\S{1.8}
+% 	\def\B{8}
+% 	\def\T{4.5}
+% 	\def\l{2.6}
+% 	\def\s{0.3}
+% 	\pgfmathsetmacro\w{atan((\S+\H/2)/\T)}
+% 	\pgfmathsetmacro\R{sqrt(\T^2+(\S+\H/2)^2)}
+% 	%% wave parameters
+% 	\pgfmathsetmacro\wL{6.5*\H}
+% 	\pgfmathsetmacro\wA{\H/2}
+% 	\pgfmathsetmacro\D{10*\wL}
+% 	% plane wave
+% 	\begin{axis}[wave axis]
+% 		\addplot3[wave plot,domain=-\B:0.05,domain y=-\wA:\wA] {abs(sin(pi/\wL * x))};
+% 		%      \addplot[domain=-\D:0,samples=200] function {abs(cos(pi/\wL * x))};
+% 	\end{axis}
+% 	% radial wave
+% 	\begin{scope}
+% 		%      \clip (0,-\H/2-\S) -- (-\w:\R) arc [start angle=-\w, end angle=\w, radius=\R]
+% 		%         -- (0,\H/2+\S) -- cycle;
+% 		\clip (0,-\H/2-\S) rectangle (\T,\H/2+\S);
+% 		\begin{axis}[wave axis]
+% 			\addplot3[polar wave plot,domain y=0:2*\T] function {abs(sin(pi/\wL * y))*exp(-0.2*y)};
+% 			%         \addplot[domain=0:2*\T,samples=200] function {abs(cos(pi/\wL * x))*exp(-0.2*x)};
+% 		\end{axis}
+% 	\end{scope}
+% 	% tube
+% 	\draw [ultra thick] (-\B,\H/2) -| (0,\H/2+\S);
+% 	\draw [ultra thick] (-\B,-\H/2) -| (0,-\H/2-\S);
+% 	% axis
+% 	\draw [axis] (-\B,0) -- ($(\T,0)-(0.25,0)$) node [below left] {$x$};
+% 	\draw [tick,|-] (0,0) node [below right=2pt and 2.5pt,inner sep=0pt] {$0$} -- (1,0);
+% 	\draw [axis] (0,0) -- (25:2.5) node [below] {$\vec{r}$};
+% 	% captions
+% 	\draw (-2.5*\wL,0.25*\H) -- ++(65:.6) node [above] {$\psi_\text{i}$};
+% 	\draw (60:\wL/1.9) -- ++(180:1.1) node [left] {$\psi_\text{a}$};
+% 	\node at (0,-\H/2) [below left, align=right] {cross sectional\\area $A$};
+% \end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{shadings,spy,calc}
+
+\begin{document}
+
+\begin{tikzpicture}[spy using outlines={
+				circle,              % Shape of the spy lens
+				size=.1\textwidth,   % Diameter of the spy circle
+				magnification=3,     % Zoom level (3× in this case)
+				connect spies        % Draws connecting lines
+			}]
+	% image 1
+	\node[inner sep=0pt,label={270:{(a) Image 1}}] (image1) %
+	at (-.375\textwidth,0) {% Dummy image 1
+			\begin{tikzpicture}
+				\path [top color=blue, bottom color=black]
+				(0,0) rectangle (.25\textwidth,.25\textwidth);
+			\end{tikzpicture}};
+	\begin{scope}[x={($ (image1.south east) - (image1.south west) $ )},y={( $ (image1.north west) - (image1.south west)$ )}, shift={(image1.south west)}]
+		\node (spy1n) at (250/512,380/512) {};%relative pixel
+		\coordinate (spy1nto) at (-.5,1);
+		\spy [black,thick] on (spy1n) in node at (spy1nto);%
+	\end{scope}
+
+	% image 2
+	\node[anchor=south west,inner sep=0pt,label={[align=left]270:{(b) Image 2.}}] %
+	(image2) at (-.125\textwidth,.125\textwidth) {%
+			\begin{tikzpicture}
+				\path [top color=green, bottom color=black]
+				(0,0) rectangle (.2\textwidth,.2\textwidth);
+			\end{tikzpicture}};
+	\begin{scope}[x={($ (image2.south east) - (image2.south west) $ )},y={( $ (image2.north west) - (image2.south west)$ )}, shift={(image2.south west)}]
+		\node (spy2) at (350/512,300/512) {};%relative pixel
+		\coordinate (spy2to) at (.5,1);
+		\spy [black,thick] on (spy2) in node at (spy2to);%
+	\end{scope}
+\end{tikzpicture}
+\end{document}

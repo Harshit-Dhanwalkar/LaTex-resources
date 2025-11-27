@@ -1,0 +1,276 @@
+\documentclass{article}
+
+\usepackage[landscape,a2paper]{geometry}
+\usepackage{microtype}
+\usepackage[default,semibold,light]{sourcesanspro}
+\usepackage{parskip}
+\pagestyle{empty}
+
+\newcommand*{\roomone}{Auditorium}
+\newcommand*{\roomtwo}{Uniting Hall}
+\newcommand*{\roomfour}{Uniting Foyer}
+\newcommand*{\roomsix}{Dining Room}
+\newcommand*{\roomtwelve}{Hall}
+\newcommand*{\roomfood}{\roomsix\slash\roomtwelve}
+\newcommand*{\roommdgs}{Room listed on booklet cover}
+
+\newcommand*{\firstspeaker}{firstspeaker}
+\newcommand*{\secondspeaker}{secondspeaker}
+
+\newcommand*{\timetablefont}{\Large}
+% \newcommand*{\timetablefont}{\scriptsize}
+% \newcommand*{\timetablefont}{\tiny}
+
+\newcommand*{\yscale}{1.8}
+
+\newlength{\timewidth}
+\settowidth{\timewidth}{\timetablefont\bfseries 00:00}
+\addtolength{\timewidth}{1pt}
+
+\newlength{\activitywidth}
+\setlength{\activitywidth}{\textwidth}
+\addtolength{\activitywidth}{-4\timewidth}
+\addtolength{\activitywidth}{-4pt}
+\setlength{\activitywidth}{0.15\activitywidth}
+
+\usepackage[cmyk]{xcolor}
+\definecolor{darkbg}{cmyk}{0.95,0.95,0.45,0.65}
+\definecolor{mdg}{cmyk}{0,0.3,0.24,0.03}
+\definecolor{talk}{cmyk}{0.13,0,0,0}
+\definecolor{coach}{cmyk}{0,0.02,0.22,0}
+\definecolor{food}{cmyk}{0,0.2,0.41,0.06}
+\definecolor{seminar}{cmyk}{0.08,0,0.11,0.04}
+\definecolor{workshop}{cmyk}{0,0,0,0.11}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,chains}
+
+\begin{document}
+
+\pagecolor{darkbg}
+\color{white!50}
+
+\begin{tikzpicture}[
+		remember picture,
+		overlay,
+		node distance=0 cm,
+		chain default direction=going below,
+		inner sep=0pt,
+		outer sep=0.9pt,
+		font=\timetablefont,
+		time/.style args={#1,#2}{
+				anchor=north west,
+				minimum width=0.9\timewidth,
+				minimum height=\yscale*#1cm-2pt,
+				node contents={},
+				append after command={
+						node[anchor=north east,
+								inner sep=0pt,
+								outer sep=2pt,
+								font=\timetablefont\bfseries
+							]
+						at (\tikzlastnode.north east) {#2}
+					},
+				on chain
+			},
+		activity/.style args={#1,#2,#3}{
+				anchor=north west,
+				minimum width=\activitywidth,
+				minimum height=\yscale*#1cm-2pt,
+				node contents={},
+				append after command={
+						node[anchor=north west,
+								inner sep=0pt,
+								outer sep=3pt,
+								text width=\activitywidth-6pt
+							]
+						at (\tikzlastnode.north west) {\textbf{#2}\\#3}
+					},
+				on chain
+			},
+		coloredactivity/.style args={#1,#2,#3,#4}{
+				anchor=north west,
+				minimum width=\activitywidth,
+				minimum height=\yscale*#1cm-2pt,
+				fill=#4,
+				node contents={},
+				append after command={
+						node[anchor=north west,
+								inner sep=0pt, outer sep=3pt,
+								text width=\activitywidth-6pt,
+								font=\color{black!90}]
+						at (\tikzlastnode.north west) {\textbf{#2}\\#3}
+					},
+				on chain
+			}
+	]
+	% ========== MONDAY ==========
+	\begin{scope}[start chain]
+		\node (mon-time) [time={1,}];
+		\node[time={1,8:00}];
+		\node[time={1.5,9:00}];
+		\node[time={0.75,10:30}];
+		\node[time={1.25,11:15}];
+		\node[time={0.5,12:45}];
+		\node[time={1.5,13:00}];
+		\node[time={1.5,14:30}];
+		\node[time={0.5,16:00}];
+		\node[time={1.5,16:30}];
+		\node[time={1.5,18:00}];
+		\node[time={1.5,19:30}];
+		\node[time={1.5,21:00}];
+	\end{scope}
+	\begin{scope}[start chain]
+		\node (mon) [right=of mon-time.north east, activity={1,\Large\hfill Monday\hfill\strut,}];
+		\node[coloredactivity={1,Breakfast,\roomfood,food}];
+		\node[coloredactivity={1.5,Talk 1: \firstspeaker,\roomone,talk}];
+		\node[activity={0.75,Morning tea,}];
+		\node[coloredactivity={1.25,Ministry Discussion Group 1,Room listed on booklet cover,mdg}];
+		\node[activity={0.5,Coach's briefing,}];
+		\node[coloredactivity={1.5,Lunch,\roomfood,food}];
+		\node[coloredactivity={1.5,Free time\slash Coaching slot 1,,coach}];
+		\node[activity={0.5,Afternoon tea,}];
+		\node[coloredactivity={1.5,Free time\slash Coaching slot 2,,coach}];
+		\node[coloredactivity={1.5,Dinner,\roomfood,food}];
+		\node[coloredactivity={1.5,Talk 2: \secondspeaker,\roomone,talk}];
+		\node[activity={1.5,Supper,\roomtwo}];
+	\end{scope}
+
+	% ========== TUESDAY ==========
+	\begin{scope}[start chain]
+		\node (tue-time) [right=of mon.north east, time={1,}];
+		\node[time={1,8:00}];
+		\node[time={1.5,9:00}];
+		\node[time={0.75,10:30}];
+		\node[time={1.25,11:15}];
+		\node[time={0.5,12:45}];
+		\node[time={1.5,13:00}];
+		\node[time={1.5,14:30}];
+		\node[time={0.5,16:00}];
+		\node[time={1.5,16:30}];
+		\node[time={1.5,18:00}];
+		\node[time={1.5,19:30}];
+		\node[time={1.5,21:00}];
+	\end{scope}
+	\begin{scope}[start chain]
+		\node (tue) [right=of tue-time.north east, activity={1,\Large\hfill Tuesday\hfill\strut,}];
+		\node[coloredactivity={1,Breakfast,\roomfood,food}];
+		\node[coloredactivity={1.5,Talk 3: \firstspeaker,\roomone,talk}];
+		\node[activity={0.75,Morning tea,}];
+		\node[coloredactivity={1.25,Ministry Discussion Group 2,Room listed on booklet cover,mdg}];
+		\node[activity={0.5,Coach's briefing,}];
+		\node[coloredactivity={1.5,Lunch,\roomfood,food}];
+		\node[coloredactivity={1.5,Free time\slash Coaching slot 3,,coach}];
+		\node[activity={0.5,Afternoon tea,}];
+		\node[coloredactivity={1.5,Free time\slash Coaching slot 4,,coach}];
+		\node[coloredactivity={1.5,Dinner,\roomfood,food}];
+		\node[coloredactivity={1.5,Talk 4: \secondspeaker,\roomone,talk}];
+		\node[activity={1.5,Supper,\roomtwo}];
+	\end{scope}
+
+	% ========== WEDNESDAY ==========
+	\begin{scope}[start chain]
+		\node (wed-time) [right=of tue.north east, time={1,}];
+		\node[time={0.5,}];
+		\node[time={1,8:30}];
+		\node[time={1.25,9:30}];
+		\node[time={0.5,10:45}];
+		\node[time={1.25,11:15}];
+		\node[time={1,12:30}];
+		\node[time={1,13:30}];
+		\node[time={1.5,14:30}];
+		\node[time={0.5,16:00}];
+		\node[time={1.5,16:30}];
+		\node[time={1.5,18:00}];
+		\node[time={2,19:30}];
+		\node[time={1,21:30}];
+	\end{scope}
+	\begin{scope}[start chain]
+		\node (wed) [right=of wed-time.north east, activity={1,\Large\hfill Wednesday\hfill\strut,}];
+		\node[activity={0.5,,}];
+		\node[coloredactivity={1,Breakfast,\roomfood,food}];
+		\node[coloredactivity={1.25,Seminars,\roomone,seminar}];
+		\node[activity={0.5,Morning tea,}];
+		\node[coloredactivity={1.25,Workshops,\roomtwo,workshop}];
+		\node[coloredactivity={1,Lunch,\roomfood,food}];
+		\node[coloredactivity={1,Ministry Discussion Group 3,\roommdgs,mdg}];
+		\node[coloredactivity={1.5,Free time\slash Coaching slot 5,,coach}];
+		\node[activity={0.5,Afternoon tea,}];
+		\node[coloredactivity={1.5,Free time\slash Coaching slot 6,,coach}];
+		\node[coloredactivity={1.5,Dinner,\roomfood,food}];
+		\node[coloredactivity={2,Talk 5: \firstspeaker,\roomone,talk}];
+		\node[activity={1,Supper,\roomtwo}];
+	\end{scope}
+
+	% ========== THURSDAY ==========
+	\begin{scope}[start chain]
+		\node (thu-time) [right=of wed.north east, time={1,}];
+		\node[time={10,}];
+		\node[time={2,18:00}];
+		\node[time={1.5,20:00}];
+		\node[time={1,21:30}];
+	\end{scope}
+	\begin{scope}[start chain]
+		\node (thu) [right=of thu-time.north east, activity={1,\Large\hfill Thursday\hfill\strut,}];
+		\node[activity={10,,}];
+		\node[activity={2,Registration,\roomfour}];
+		\node[coloredactivity={1.5,Talk 6: \secondspeaker,\roomone,talk}];
+		\node[activity={1,Supper,\roomtwo}];
+	\end{scope}
+
+	% ========== FRIDAY ==========
+	\begin{scope}[start chain]
+		\node (fri-time) [right=of thu.north east, time={1,}];
+		\node[time={0.5,}];
+		\node[time={0.5,8:30}];
+		\node[time={1,9:00}];
+		\node[time={0.5,10:00}];
+		\node[time={1,10:30}];
+		\node[time={1.5,11:30}];
+		\node[time={1,13:00}];
+	\end{scope}
+	\begin{scope}[start chain]
+		\node (fri) [right=of fri-time.north east, activity={1,\Large\hfill Friday\hfill\strut,}];
+		\node[activity={0.5,,}];
+		\node[activity={0.5,Light breakfast,}];
+		\node[coloredactivity={1,Ministry Discussion Group 4,\roommdgs,mdg}];
+		\node[activity={0.5,Personal reflection\slash prayer,}];
+		\node[coloredactivity={1,Brunch,\roomtwo,food}];
+		\node[coloredactivity={1.5,Talk 7: \firstspeaker,\roomone,talk}];
+		\node[activity={1,Pack up and leave,}];
+	\end{scope}
+
+	% ========== SATURDAY ==========
+	\begin{scope}[start chain]
+		\node (sat-time) [right=of fri.north east, time={1,}];
+		\node[time={10,}];
+		\node[time={2,18:00}];
+		\node[time={1.5,20:00}];
+		\node[time={1,21:30}];
+	\end{scope}
+	\begin{scope}[start chain]
+		\node (sat) [right=of sat-time.north east, activity={1,\Large\hfill Saturday\hfill\strut,}];
+		\node[activity={10,,}];
+		\node[activity={2,Free day,}];
+		\node[coloredactivity={1.5,Special Event,\roomone,talk}];
+		\node[activity={1,Supper,\roomtwo}];
+	\end{scope}
+
+	% ========== SUNDAY ==========
+	\begin{scope}[start chain]
+		\node (sun-time) [right=of sat.north east, time={1,}];
+		\node[time={10,}];
+		\node[time={2,18:00}];
+		\node[time={1.5,20:00}];
+		\node[time={1,21:30}];
+	\end{scope}
+	\begin{scope}[start chain]
+		\node (sun) [right=of sun-time.north east, activity={1,\Large\hfill Sunday\hfill\strut,}];
+		\node[activity={10,,}];
+		\node[activity={2,Rest day,}];
+		\node[coloredactivity={1.5,Closing Ceremony,\roomone,talk}];
+		\node[activity={1,Supper,\roomtwo}];
+	\end{scope}
+\end{tikzpicture}%
+
+\end{document}

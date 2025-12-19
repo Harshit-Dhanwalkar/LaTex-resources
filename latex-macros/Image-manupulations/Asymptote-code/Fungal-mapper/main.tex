@@ -1,3 +1,5 @@
+% sudo apt install asymptote
+%
 % To process it with `latexmk`, create file `latexmkrc`:
 %
 %     sub asy {return system("asy '$_[0]'");}
@@ -7,9 +9,11 @@
 %
 % and run `latexmk -pdf igrid.tex`.
 % it will generate main-1_0.tex and main-1_1.tex and corresponding pdfs with main mergered pdf
+
 \documentclass{article}
 \usepackage[inline]{asymptote}
 \usepackage{lmodern}
+
 \begin{document}
 \begin{figure}
 	\begin{asy}

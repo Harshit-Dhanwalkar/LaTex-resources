@@ -1,5 +1,5 @@
 \documentclass[border={35pt 10pt 150pt 60pt}, % left bottom right top
-  svgnames]{standalone} 
+  svgnames]{standalone}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usepackage{listings}
@@ -8,33 +8,36 @@
   tabsize          = 1,     % tab space width
   numbers          = left,  % display line numbers on the left
   framesep         = 3pt,   % expand outward
-  framerule        = 0.4pt, % expand outward 
+  framerule        = 0.4pt, % expand outward
   commentstyle     = \color{Green},      % comment color
   keywordstyle     = \color{blue},       % keyword color
   stringstyle      = \color{DarkRed},    % string color
   backgroundcolor  = \color{WhiteSmoke}, % backgroundcolor color
   showstringspaces = false,              % do not mark spaces in strings
 }
+
 \begin{document}
+
 \begin{lstlisting}[language = C++, numbers = none, escapechar = !,
-    basicstyle = \ttfamily\bfseries, linewidth = .6\linewidth] 
+    basicstyle = \ttfamily\bfseries, linewidth = .6\linewidth]
  int!
    \tikz[remember picture] \node [] (a) {};
  !puissance!
    \tikz[remember picture] \node [] (b) {};
  !(int x,!
    \tikz[remember picture] \node [] (c){};
- !int n) { 
+ !int n) {
 
-     int i, p = 1; !\tikz[remember picture] \node [] (d){};!           
+     int i, p = 1; !\tikz[remember picture] \node [] (d){};!
 
-     for (i = 1; i <= n; i++) 
-       p = p * x; !\tikz[remember picture] \node [inner xsep = 40pt] (e){};! 
+     for (i = 1; i <= n; i++)
+       p = p * x; !\tikz[remember picture] \node [inner xsep = 40pt] (e){};!
 
      return p; !
-       \tikz[remember picture] \node [] (f){};!  
+       \tikz[remember picture] \node [] (f){};!
  }
 \end{lstlisting}
+
 \begin{tikzpicture}[remember picture, overlay,
 		every edge/.append style = { ->, thick, >=stealth,
 				DimGray, dashed, line width = 1pt },
@@ -56,4 +59,5 @@
 	\draw (E.west) edge (e.east) ;
 	\draw (F.west) edge (f.east) ;
 \end{tikzpicture}
+
 \end{document}

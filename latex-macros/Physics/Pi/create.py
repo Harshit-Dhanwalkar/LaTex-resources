@@ -27,7 +27,7 @@ for i in range(0, len(pi), 2):
 # Representation of pi
 data = [("x", "y", "color")]  # header
 for e1, e2 in zip(split_pi, split_pi[1:]):
-    tuple_date = (int(e1), int(e2), "c{}".format(int(int(e1) / 10)))
+    tuple_date = (int(e1), int(e2), "c{}".format(int(int(e1+e2) / 10)))
     data.append(tuple_date)
 
 # Write data to csv

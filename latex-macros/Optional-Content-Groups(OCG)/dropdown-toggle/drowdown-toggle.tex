@@ -1,0 +1,59 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WARNING: This PDF uses OCG (Optional Content Groups) for toggles.
+% SUPPORTED VIEWERS: Okular, Evince, Chrome, Firefox, Acrobat (Desktop).
+% NOT SUPPORTED: Zathura, Mobile PDF Viewers, Preview (macOS).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{mathabx} 
+\usepackage{ocgx2}
+\usepackage{hyperref}
+
+% Toggle switch macro
+\NewDocumentCommand{\itemtoggle}{mm}{% 
+  {\hypersetup{pdfborder=0 0 0}%
+  \switchocg{#2}{%
+    \begin{ocg}{#1}{#2}{off}\rlap{$\blacktriangledown$}\end{ocg}%
+    \begin{ocmd}{\AllOff{#2}}$\blacktriangleright$\end{ocmd}%
+  }}%
+}
+
+\begin{document}
+
+% Warning block inside the PDF
+\noindent\fcolorbox{red}{yellow!10}{%
+	\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+		\textbf{Compatibility Note:} This document contains interactive toggles.
+		Please use \textbf{Okular}, \textbf{Evince}, or a \textbf{Desktop Web Browser} to view it.
+		Interactive features will not function on mobile devices or Zathura.
+	}%
+}
+
+\section*{Atmospheric Science \& Physics}
+
+\begin{itemize}
+	% Item 1: Hydrostatic Balance
+	\item[\itemtoggle{Hydrostatic}{hydro}] \textbf{Hydrostatic Balance}
+		\begin{ocmd}{\AllOn{hydro}}
+			{\color{teal} $\frac{dp}{dz} = -\rho g$} \\
+			Explains why the atmosphere doesn't collapse or fly off into space; pressure decreases with height to balance gravity.
+		\end{ocmd}
+
+		% Item 2: Coriolis Force
+	\item[\itemtoggle{Coriolis}{cor}] \textbf{Coriolis Parameter}
+		\begin{ocmd}{\AllOn{cor}}
+			{\color{purple} $f = 2\Omega \sin \phi$} \\
+			Crucial for large-scale motion; it accounts for the Earth's rotation and determines the direction of cyclones.
+		\end{ocmd}
+
+		% Item 3: Mass-Energy
+	\item[\itemtoggle{Relativity}{emc2}] \textbf{Mass-Energy Equivalence}
+		\begin{ocmd}{\AllOn{emc2}}
+			{\color{cyan} $E=mc^2$} \\
+			Einstein's formula relating energy to mass, explaining the nuclear fusion that powers solar radiation.
+		\end{ocmd}
+\end{itemize}
+
+\end{document}

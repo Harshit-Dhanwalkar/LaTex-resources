@@ -1,0 +1,75 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WARNING: This PDF uses OCG (Optional Content Groups) for toggles.
+% SUPPORTED VIEWERS: Okular, Evince, Chrome, Firefox, Acrobat (Desktop).
+% NOT SUPPORTED: Zathura, Mobile PDF Viewers, Preview (macOS).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{amsmath, amsthm}
+\usepackage{hyperref}
+\usepackage[tikz]{ocgx2}
+
+\usetikzlibrary{calc, shapes.callouts}
+
+% Helper for clickable text anchors
+\newcommand{\jymanchor}[1]{\tikz[remember picture,baseline=(#1.base)]{\node(#1){};}}
+
+\begin{document}
+
+% Warning block inside the PDF
+\noindent\fcolorbox{red}{yellow!10}{%
+	\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+		\textbf{Compatibility Note:} This document contains interactive toggles.
+		Please use \textbf{Okular}, \textbf{Evince}, or a \textbf{Desktop Web Browser} to view it.
+		Interactive features will not function on mobile devices or Zathura.
+	}%
+}
+
+\begin{itemize}
+	% Example 1: Popup + dimming
+	\item \textbf{Style 1 (Dimming):} By the
+	      \switchocg{mvt_details}{%
+		      \textcolor{blue}{\textbf{Mean Value Theorem\jymanchor{mvt_link}}}%
+	      }, we find the slope...
+
+	      \vspace{2cm}
+
+	      % Example 2: Just popup
+	\item \textbf{Style 2 (Simple):} Large scale flow is influenced by the
+	      \switchocg{cor_details}{%
+		      \textcolor{purple}{\textbf{Coriolis Effect\jymanchor{cor_link}}}%
+	      } due to rotation.
+\end{itemize}
+
+% layer 1: pop-up + dimming background
+\begin{tikzpicture}[remember picture, overlay]
+	\begin{ocg}{MVT}{mvt_details}{off}
+		% 1. The Dimming: Fills the whole page
+		\fill[white, opacity=0.8] (current page.south west) rectangle (current page.north east);
+		% 2. The Box
+		\node[draw=blue, fill=blue!5, rectangle callout, rounded corners,
+			callout absolute pointer=(mvt_link), text width=5cm]
+		at ($(mvt_link)+(3,2)$) {
+			\textbf{With Dimming}\\
+			This style focuses attention by fading the background.
+		};
+	\end{ocg}
+\end{tikzpicture}
+
+% Layer 2: just the pop-up (simple)
+\begin{tikzpicture}[remember picture, overlay]
+	\begin{ocg}{Coriolis}{cor_details}{off}
+		% No \fill here, so the background stays sharp
+		\node[draw=purple, fill=purple!5, rectangle callout, rounded corners,
+			callout absolute pointer=(cor_link), text width=5cm]
+		at ($(cor_link)+(3,-2)$) {
+			\textbf{Simple Pop-up}\\
+			No background dimming. Good for quick side-notes.
+		};
+	\end{ocg}
+\end{tikzpicture}
+
+\end{document}

@@ -7,12 +7,12 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{xcolor}
-\usepackage{mathabx} 
+\usepackage{mathabx}
 \usepackage{ocgx2}
 \usepackage{hyperref}
 
 % Toggle switch macro
-\NewDocumentCommand{\itemtoggle}{mm}{% 
+\NewDocumentCommand{\itemtoggle}{mm}{%
   {\hypersetup{pdfborder=0 0 0}%
   \switchocg{#2}{%
     \begin{ocg}{#1}{#2}{off}\rlap{$\blacktriangledown$}\end{ocg}%

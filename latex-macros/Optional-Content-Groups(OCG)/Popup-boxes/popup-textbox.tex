@@ -1,18 +1,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % WARNING: This PDF uses OCG (Optional Content Groups) for toggles.
 % SUPPORTED VIEWERS: Okular, Evince, Chrome, Firefox, Acrobat (Desktop).
-% NOT SUPPORTED: Zathura, Mobile PDF Viewers, Preview (macOS).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}
-\usepackage{amsmath, amsthm}
+\usepackage{amsmath, amsthm, amssymb}
 \usepackage{hyperref}
 \usepackage[tikz]{ocgx2}
 
-\usetikzlibrary{calc, shapes.callouts}
+\usetikzlibrary{calc, shapes.callouts, arrows.meta, shadows}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    pdfborder={0 0 0}
+}
 
 % Helper for clickable text anchors
 \newcommand{\jymanchor}[1]{\tikz[remember picture,baseline=(#1.base)]{\node(#1){};}}
@@ -28,46 +33,101 @@
 	}%
 }
 
+\section*{Atmospheric Science \& Physics}
+
 \begin{itemize}
-	% Example 1: Popup + dimming
-	\item \textbf{Style 1 (Dimming):} By the
-	      \switchocg{mvt_details}{%
-		      \textcolor{blue}{\textbf{Mean Value Theorem\jymanchor{mvt_link}}}%
-	      }, we find the slope...
+	% Trigger 1: Hydrostatic (Dimming)
+	\item \textbf{Vertical Dynamics:}
+	      \switchocg{hydro_text}{%
+		      \textcolor{teal}{\textbf{Hydrostatic Balance\jymanchor{hydro_text_anchor}}}%
+	      } (Dimming style)
 
-	      \vspace{2cm}
-
-	      % Example 2: Just popup
-	\item \textbf{Style 2 (Simple):} Large scale flow is influenced by the
+	      % Trigger 2: Coriolis (Simple)
+	\item \textbf{Style 2 (Simple):}
 	      \switchocg{cor_details}{%
 		      \textcolor{purple}{\textbf{Coriolis Effect\jymanchor{cor_link}}}%
-	      } due to rotation.
+	      } (Floating style)
+
+	      % Trigger 3: Hydrostatic (Diagram)
+	\item \textbf{Style 3 (Diagram):}
+	      \hideocg{geo_diag}{%  <-- Auto-closes Geostrophic if open
+		      \switchocg{hydro_diag}{%
+			      \textcolor{teal}{\textbf{Hydrostatic Balance\jymanchor{hydro_diag_anchor}}}%
+		      }%
+	      } (Diagram style)
+
+	      % Trigger 4: Geostrophic Wind (Mutually Exclusive with Style 3)
+	\item \textbf{Style 4 (Dynamics):}
+	      \hideocg{hydro_diag}{% <-- Auto-closes Hydrostatic if open
+		      \switchocg{geo_diag}{%
+			      \textcolor{blue}{\textbf{Geostrophic Wind\jymanchor{geo_link}}}%
+		      }%
+	      } (Mutually exclusive with Style 3)
 \end{itemize}
 
-% layer 1: pop-up + dimming background
+% --- Layer 1: Hydrostatic Text (Dimming) ---
 \begin{tikzpicture}[remember picture, overlay]
-	\begin{ocg}{MVT}{mvt_details}{off}
-		% 1. The Dimming: Fills the whole page
+	\begin{ocg}{Hydrostatic Text}{hydro_text}{off}
 		\fill[white, opacity=0.8] (current page.south west) rectangle (current page.north east);
-		% 2. The Box
-		\node[draw=blue, fill=blue!5, rectangle callout, rounded corners,
-			callout absolute pointer=(mvt_link), text width=5cm]
-		at ($(mvt_link)+(3,2)$) {
-			\textbf{With Dimming}\\
-			This style focuses attention by fading the background.
+		\node[draw=teal, fill=teal!5, thick, rectangle callout, rounded corners,
+			callout absolute pointer=(hydro_text_anchor), text width=6cm, inner sep=12pt, drop shadow]
+		at ($(hydro_text_anchor)+(4,2)$) {
+			\textbf{Hydrostatic Equation}\\
+			\[ \frac{\partial p}{\partial z} = -\rho g \]
 		};
 	\end{ocg}
 \end{tikzpicture}
 
-% Layer 2: just the pop-up (simple)
+% --- Layer 2: Coriolis (Simple Pop-up) ---
 \begin{tikzpicture}[remember picture, overlay]
 	\begin{ocg}{Coriolis}{cor_details}{off}
-		% No \fill here, so the background stays sharp
 		\node[draw=purple, fill=purple!5, rectangle callout, rounded corners,
 			callout absolute pointer=(cor_link), text width=5cm]
 		at ($(cor_link)+(3,-2)$) {
-			\textbf{Simple Pop-up}\\
-			No background dimming. Good for quick side-notes.
+			\textbf{Coriolis Force}\\
+			Deflects motion to the right in the Northern Hemisphere.
+		};
+	\end{ocg}
+\end{tikzpicture}
+
+% --- Layer 3: Hydrostatic Diagram ---
+\begin{tikzpicture}[remember picture, overlay]
+	\begin{ocg}{Hydrostatic Diagram}{hydro_diag}{off}
+		\fill[black, opacity=0.1] (current page.south west) rectangle (current page.north east);
+		\node[draw=teal, fill=white, thick, rounded corners,
+			text width=7.5cm, inner sep=15pt, drop shadow]
+		at ($(current page.center)+(0,3)$) {
+			\textbf{Hydrostatic Balance Diagram}\\
+			\vspace{0.3cm}
+			\begin{tikzpicture}[scale=0.9]
+				\draw[thick, fill=teal!10] (0,0) rectangle (3,1.5);
+				\draw[-{Latex}, red, ultra thick] (1.5,1.5) -- (1.5,2.5) node[right] {$P_{bottom}$};
+				\draw[-{Latex}, blue, ultra thick] (1.5,0) -- (1.5,-1) node[right] {$P_{top} + g$};
+				\node at (1.5,-1.8) {\large $\frac{\partial p}{\partial z} = -\rho g$};
+			\end{tikzpicture}
+		};
+	\end{ocg}
+\end{tikzpicture}
+
+% --- Layer 4: Geostrophic Diagram ---
+\begin{tikzpicture}[remember picture, overlay]
+	\begin{ocg}{Geostrophic Diagram}{geo_diag}{off}
+		\fill[black, opacity=0.1] (current page.south west) rectangle (current page.north east);
+		\node[draw=blue, fill=white, thick, rounded corners,
+			text width=7.5cm, inner sep=15pt, drop shadow]
+		at ($(current page.center)+(0,3)$) {
+			\textbf{Geostrophic Balance}\\
+			\vspace{0.3cm}
+
+			\begin{tikzpicture}[scale=0.8]
+				\draw[dashed, gray] (0,0) -- (5,0) node[right] {High $P$};
+				\draw[dashed, gray] (0,2) -- (5,2) node[right] {Low $P$};
+				% Vectors
+				\draw[-{Stealth}, green!60!black, ultra thick] (2.5,1) -- (4.5,1) node[right] {$V_g$};
+				\draw[-{Latex}, red, thick] (2.5,1) -- (2.5,2.5) node[above] {PGF};
+				\draw[-{Latex}, blue, thick] (2.5,1) -- (2.5,-0.5) node[below] {$F_{cor}$};
+			\end{tikzpicture}
+			\small Wind flows parallel to isobars.
 		};
 	\end{ocg}
 \end{tikzpicture}

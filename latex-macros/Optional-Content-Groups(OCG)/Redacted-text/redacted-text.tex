@@ -1,0 +1,79 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INSTRUCTIONS: 
+% 1. Use 'pdflatex' and compile TWICE.
+% 2. Works in Evince, Okular, and Chrome/Firefox.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage[tikz]{ocgx2}
+
+\usetikzlibrary{calc, fit}
+
+\hypersetup{colorlinks=true, linkcolor=blue}
+
+% --- THE REVERSIBLE REVEAL COMMAND ---
+\newsavebox{\revspoilerbox}
+\newcommand{\reveal}[2]{%
+    \sbox{\revspoilerbox}{#2}% Pre-render the hidden text
+    \begin{tikzpicture}[baseline=(hidden_text.base)]
+        % 1. The actual hidden text (Static, always there)
+        \node[inner sep=0pt] (hidden_text) {\usebox{\revspoilerbox}};
+        
+        % 2. The Interactive Shutter
+        % We place the \switchocg OUTSIDE the \begin{ocg} 
+        % so the "hit area" remains active even when the box is hidden.
+        \node[inner sep=0pt] at (hidden_text) {%
+            \switchocg{#1}{%
+                \begin{tikzpicture}
+                    \begin{ocg}{shutter}{#1}{on}
+                        \node[fill=black, rounded corners=1pt, 
+                              fit=(hidden_text), inner sep=1.5pt] {};
+                    \end{ocg}
+                    % Transparent box that stays clickable when OCG is OFF
+                    \begin{ocg}{trigger}{#1_trigger}{on}
+                         \node[fill=white, opacity=0, 
+                               fit=(hidden_text), inner sep=1.5pt] {};
+                    \end{ocg}
+                \end{tikzpicture}%
+            }%
+        };
+    \end{tikzpicture}%
+}
+
+\begin{document}
+
+\section*{Atmospheric Physics: Reversible Study Guide}
+
+Click any black box to reveal the value. Click the text again to re-hide it.
+
+\bigskip
+
+\noindent \textbf{The Poisson Equation:} \\
+The potential temperature is calculated as:
+\[ \theta = T \left( \frac{p_0}{p} \right)^{\text{\reveal{exp}{$\kappa$}}} \]
+
+
+
+\bigskip
+
+\noindent \textbf{Thermodynamic Constants:} \\
+\begin{itemize}
+	\item Dry air gas constant $R_d$: \reveal{rd}{$287.05$ J kg$^{-1}$ K$^{-1}$}
+	\item Specific heat at constant pressure $c_p$: \reveal{cp}{$1005$ J kg$^{-1}$ K$^{-1}$}
+	\item Calculated ratio $\kappa$: \reveal{kappa}{$0.286$}
+\end{itemize}
+
+\bigskip
+
+\noindent \textbf{Hydrostatic Balance:} \\
+The pressure change with height is given by:
+\[ \frac{dp}{dz} = \text{\reveal{hydro}{$-\rho g$}} \]
+
+
+
+\end{document}

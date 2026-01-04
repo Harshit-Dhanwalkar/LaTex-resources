@@ -1,0 +1,121 @@
+% My recreation of Epstein file from facebook post https://www.facebook.com/SethMoulton/posts/a-redacted-statement-on-the-release-of-the-incomplete-excessively-redacted-epste/1426604922168754/
+
+\documentclass[8pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{geometry}
+
+\usepackage{amsmath, amssymb}
+\usepackage[tikz]{ocgx2}
+% Main body font (Sans Serif)
+\usepackage[sfdefault]{inter}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue}
+
+\usepackage[pages=all]{background}
+\usetikzlibrary{calc, fit}
+
+\backgroundsetup{
+    scale=1,
+    color=black,
+    opacity=0.08,
+    angle=0,
+    contents={%
+      \begin{tikzpicture}[remember picture, overlay]
+        % \node[font=\fontfamily{phv}\fontseries{bc}\fontsize{120}{120}\selectfont, anchor=north west]
+        \node[font=\fontfamily{qhv}\fontseries{bc}\fontsize{120}{120}\selectfont, anchor=north west]
+        % \node[font=\fontsize{120}{120}\selectfont\bfseries, anchor=north west]
+          at ($(current page.north west)+(0.9in,-1.8in)$) {``};
+        % \node[font=\fontfamily{phv}\fontseries{bc}\fontsize{120}{120}\selectfont, anchor=south east]
+        \node[font=\fontfamily{qhv}\fontsize{120}{120}\selectfont\bfseries, anchor=south east]
+        % \node[font=\fontsize{120}{120}\selectfont\bfseries, anchor=south east]
+          at ($(current page.south east)+(-0.9in,0.8in)$) {''};
+      \end{tikzpicture}%
+    }
+}
+
+% \geometry{letterpaper, margin=2in}
+\geometry{paperwidth=6in, paperheight=8in, margin=1.11in}
+\usetikzlibrary{calc, fit}
+
+% Reversible redaction command
+\newsavebox{\revspoilerbox}
+\newcommand{\reveal}[2]{%
+    \sbox{\revspoilerbox}{#2}%
+    \begin{tikzpicture}[baseline={($(hidden_text.base)+(0,-0.1\baselineskip)$)}]
+        \node[inner sep=0pt, outer sep=0pt] (hidden_text) {\usebox{\revspoilerbox}};
+        \node[inner sep=0pt, outer sep=0pt] at (hidden_text) {%
+            \switchocg{#1}{%
+                \begin{tikzpicture}
+                    \begin{ocg}{shutter}{#1}{on}
+                        \node[fill=black,
+                              inner sep=0pt,
+                              outer sep=0pt,
+                              minimum height=\baselineskip,
+                              fit=(hidden_text)] {};
+                    \end{ocg}
+                    \begin{ocg}{trigger}{#1_trigger}{on}
+                        \node[fill=white,
+                               opacity=0,
+                               inner sep=0pt,
+                               outer sep=0pt,
+                               minimum height=\baselineskip, 
+                               fit=(hidden_text)] {};
+                    \end{ocg}
+                \end{tikzpicture}%
+            }%
+        };
+    \end{tikzpicture}%
+}
+
+\begin{document}
+\sloppy
+
+% Logo header
+\begin{center}
+	{\fontfamily{ybv}\selectfont
+		{\Huge \textbf{\textcolor[HTML]{2E4A85}{Seth}}}
+		{\LARGE \textit{\textcolor[HTML]{BD3D3D}{for}}} \hfill \\
+		\vspace{-0.15cm}
+		\hspace{1.3cm} {\LARGE \textit{\textcolor[HTML]{BD3D3D}{Massachusetts}}}
+	}
+\end{center}
+
+\vspace{0.8cm}
+
+% The content
+\noindent
+Donald Trump is \reveal{r1}{extensively detailed list} in the Epstein Files \reveal{r2}{as a associate of the subject in unsealed records and} \reveal{r4}{repeated social visits.}
+
+\bigskip
+
+\noindent
+\reveal{r6}{Substantial} evidence \reveal{r7}{contradicts the narrative of bah ba} \reveal{r8}{New brah bha baha baha bah baha baah} prevails \reveal{r9}{bhaha} \reveal{r10}{Bha baha baha baha} testimony that \reveal{r11}{bababab} Donald Trump knowingly participated in and enabled Jeffrey Epstein's criminal enterprise that exploited underage girls. \reveal{r13}{His levels of bah bahdcas asba ba ah asaha} access was intentional, \reveal{r14}{unusually asascasfdsa} sustained, sickening, criminal, and well-documented.
+
+\bigskip
+
+\noindent
+\reveal{r15}{Repeatedly} Trump \reveal{r16}{deny maintained active proximity bab} \reveal{r17}{the new records show he b} shielded his involvement with \newline Epstein \reveal{r18}{through legally ashshashahssa} and obstructed \reveal{r19}{the course of baha baha baha baha basaha} justice.
+
+\bigskip
+
+\noindent
+\reveal{r20}{The investigative committee found that bah baha bah ba} Trump's repeated attempts to recast himself as unaware are directly contradicted by the evidence.
+
+\bigskip
+
+\noindent
+\reveal{r21}{The Prosecution conclude} Trump is fully implicated in the crimes \reveal{r22}{revealed in the latest deposition transcripts ba.}
+
+\vspace{0.4cm}
+
+% Signature block
+\begin{center}
+	\begin{tikzpicture}
+		\node (sig) at (0,0) {\Large \textit{Seth Moulton}};
+	\end{tikzpicture}
+\end{center}
+
+\end{document}

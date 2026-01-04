@@ -1,7 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INSTRUCTIONS: 
-% 1. Use 'pdflatex' and compile TWICE.
-% 2. Works in Evince, Okular, and Chrome/Firefox.
+% 1. Works in Evince, Okular, and Chrome/Firefox.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass{article}
@@ -16,14 +15,13 @@
 
 \hypersetup{colorlinks=true, linkcolor=blue}
 
-% --- THE REVERSIBLE REVEAL COMMAND ---
+% The reversible reveal command 
 \newsavebox{\revspoilerbox}
 \newcommand{\reveal}[2]{%
     \sbox{\revspoilerbox}{#2}% Pre-render the hidden text
     \begin{tikzpicture}[baseline=(hidden_text.base)]
         % 1. The actual hidden text (Static, always there)
         \node[inner sep=0pt] (hidden_text) {\usebox{\revspoilerbox}};
-        
         % 2. The Interactive Shutter
         % We place the \switchocg OUTSIDE the \begin{ocg} 
         % so the "hit area" remains active even when the box is hidden.
@@ -31,13 +29,11 @@
             \switchocg{#1}{%
                 \begin{tikzpicture}
                     \begin{ocg}{shutter}{#1}{on}
-                        \node[fill=black, rounded corners=1pt, 
-                              fit=(hidden_text), inner sep=1.5pt] {};
+                        \node[fill=black, rounded corners=0pt, fit=(hidden_text), inner sep=1.5pt] {};
                     \end{ocg}
                     % Transparent box that stays clickable when OCG is OFF
                     \begin{ocg}{trigger}{#1_trigger}{on}
-                         \node[fill=white, opacity=0, 
-                               fit=(hidden_text), inner sep=1.5pt] {};
+                         \node[fill=white, opacity=0, fit=(hidden_text), inner sep=1.5pt] {};
                     \end{ocg}
                 \end{tikzpicture}%
             }%
@@ -56,8 +52,6 @@ Click any black box to reveal the value. Click the text again to re-hide it.
 \noindent \textbf{The Poisson Equation:} \\
 The potential temperature is calculated as:
 \[ \theta = T \left( \frac{p_0}{p} \right)^{\text{\reveal{exp}{$\kappa$}}} \]
-
-
 
 \bigskip
 

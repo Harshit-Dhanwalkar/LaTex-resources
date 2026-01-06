@@ -1,10 +1,14 @@
-\documentclass[border=10pt]{standalone}%
-\usepackage[dvipsnames]{xcolor} 
-\usepackage{tikz}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+\documentclass[tikz,border=5pt]{standalone}
+
+\usepackage{xcolor}
+  \pagecolor{black}
+
 \usepackage{ifthen}
 \makeatletter
 \newcommand\binomialCoefficient[2]{%
-    % Store values 
+    % Store values
     \c@pgf@counta=#1% n
     \c@pgf@countb=#2% k
     %

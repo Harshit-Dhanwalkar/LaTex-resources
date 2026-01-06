@@ -1,6 +1,13 @@
-\documentclass{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+\documentclass[border=5pt]{standalone}
+
+\usepackage{xcolor}
+\pagecolor{black}
+\color{white}
+
 \usepackage{tikz}
-\usetikzlibrary{fit}
+\usetikzlibrary{fit, positioning}
 \tikzset{%
   highlight/.style={rectangle,rounded corners,fill=blue!20,draw,fill opacity=0.5,thick,inner sep=0pt}
 }
@@ -10,8 +17,9 @@
     \tikz[overlay,remember picture]{
     \node[highlight,fit=(left.north west) (right.south east)] (#1) {};}
 }
+
 \begin{document}
-\[
+$
 	M = \left(\begin{array}{*5{c}}
 			\tikzmark{left}{1} & 2  & 3                    & 4  & 5  \\
 			6                  & 7  & 8                    & 9  & 10 \\
@@ -27,12 +35,12 @@
 			4                  & 9  & 14                   & 19 \\
 			5                  & 10 & 15                   & 20
 		\end{array}\right)
-\]
-\Highlight[second]
+	\Highlight[second]
+$
 
-\tikz[overlay,remember picture] {
-	\draw[->,thick,blue,dashed] (first) -- (second) node [pos=0.66,above] {Transpose};
-	\node[above of=first] {$N$};
-	\node[above of=second] {$N^T$};
-}
+\begin{tikzpicture}[overlay, remember picture]
+	\node[above=0.5cm of first] (N) {$N$};
+	\node[above=0.5cm of second] (NT) {$N^T$};
+	\draw[->, thick, blue, dashed] (first) -- node[midway, above] {Transpose} (second);
+\end{tikzpicture}
 \end{document}

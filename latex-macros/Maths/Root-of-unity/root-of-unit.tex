@@ -1,0 +1,228 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+\documentclass[border=4pt, tikz]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{calc}
+% \usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+  \pagecolor{black}
+  \color{white}
+\usepackage{contour}
+  \contourlength{2pt}
+\usepackage{pdfrender}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+
+\setmainfont{XITS}
+\setmathfont{XITS Math}
+
+\tikzset{axis/.style={{Stealth}-{Stealth}, thick}}
+\tikzset{rootvec/.style={-{Latex}, ultra thick}}
+\tikzset{sumvec1/.style={-{Latex}, thick}}
+\tikzset{sumeqvec1/.style={dash pattern=on 1em off 0.5em, -{Latex}}}
+\tikzset{sumvec2/.style={-{Latex}, gray}}
+\tikzset{sumeqvec2/.style={ dash pattern=on 1em off 0.5em, -{Latex}, thin, gray}}
+\tikzset{bi/.style={{Latex}-{Latex}, thick}}
+\tikzset{cota/.style={midway, sloped, fill=black}}
+\tikzset{coordmark/.style={dash pattern=on 0.5em off 0.5em, darkgray}}
+
+\newcommand{\cota}[3]{\draw[bi] (#1) -- (#2)  node[cota, inner sep=2pt] {\small#3};}
+\newcommand{\cotaround}[3]{\draw[bi] (#1) -- (#2)  node[cota, inner sep=1pt, ellipse] {\small#3};}
+
+\newcommand{\xaxismark}[3]{\draw[thick] ({#1},-1pt) -- ({#1},1pt)  node[shift={#2}] {\small\textcolor{gray}{#3}};}
+\newcommand{\yaxismark}[3]{\draw[thick] (-1pt,{#1}) -- (1pt,{#1})  node[shift={#2}] {\small\textcolor{gray}{#3}};}
+
+\newcommand{\etiq}[2]{
+    \node at (#1) {%
+      \textpdfrender{
+        TextRenderingMode=FillStrokeClip,
+        LineWidth=6pt,
+        FillColor=black,
+        StrokeColor=black,
+        MiterLimit=1
+      }{#2}%
+    };
+    \node at (#1) {\textcolor{gray}{#2}};
+}
+
+\pgfmathsetmacro{\PHI}{(1+sqrt(5))/2}
+
+\begin{document}
+
+\begin{tikzpicture}[scale=5.04]
+	% Coordenadas de las raíces
+	\foreach \i in {0,...,4}{
+			\coordinate (P\i) at (72*\i:1);
+		}
+
+	% Coordenada del origen
+	\coordinate (O) at (0,0);
+
+
+	% Distancia entre raíces contiguas: |z^i - z^(i + 1)|
+	\draw[very thin] (P0) \foreach \i in {1,...,4}{ -- (P\i)} -- cycle;
+
+	% Distancia entre raíces diagonales: |z^i - z^(i + 2)|
+	\foreach \i in {0,...,4}{
+			\pgfmathtruncatemacro{\isuccsucc}{mod(\i+2,5)}
+			\draw[bi, gray] (P\i) -- (P\isuccsucc);
+		}
+
+	% Distancia entre sumas de raíces contiguas: |(z^i + z^(i + 1)) - (z^(i + 1) + z^(i + 2))|
+	\foreach \i in {0,...,4}{
+			\pgfmathtruncatemacro{\isucc}{mod(\i+1,5)}
+			\pgfmathtruncatemacro{\isuccsucc}{mod(\i+2,5)}
+			\draw[bi, thin, gray] ($(P\i) + (P\isucc)$) -- ($(P\isucc) + (P\isuccsucc)$);
+		}
+
+
+	% Marcas de las coordenadas
+	\foreach \i/\label in {0/a,1/b,2/c,3/d,4/e}{
+			\path (P\i);
+			\pgfgetlastxy{\Px\label}{\Py\label}
+
+			\draw[coordmark] (P\i) -- (\Px\label/5.04,0);
+			\draw[coordmark] (P\i) -- (0,\Py\label/5.04);
+		}
+
+	\foreach \i/\labelone/\labeltwo in {0/a/b,1/b/c,2/c/d,3/d/e,4/e/a}{
+			\pgfmathtruncatemacro{\isucc}{mod(\i+1,5)}
+
+			\path ($(P\i) + (P\isucc)$);
+			\pgfgetlastxy{\Px\labelone\labeltwo}{\Py\labelone\labeltwo}
+
+			\draw[coordmark] ($(P\i) + (P\isucc)$) -- (\Px\labelone\labeltwo/5.04,0);
+			\draw[coordmark] ($(P\i) + (P\isucc)$) -- (0,\Py\labelone\labeltwo/5.04);
+		}
+
+	\foreach \i/\labelone/\labeltwo in {0/a/c,1/b/d,2/c/e,3/d/a,4/e/b}{
+			\pgfmathtruncatemacro{\isuccsucc}{mod(\i+2,5)}
+
+			\path ($(P\i) + (P\isuccsucc)$);
+			\pgfgetlastxy{\Px\labelone\labeltwo}{\Py\labelone\labeltwo}
+
+			\draw[coordmark] ($(P\i) + (P\isuccsucc)$) -- (\Px\labelone\labeltwo/5.04,0);
+			\draw[coordmark] ($(P\i) + (P\isuccsucc)$) -- (0,\Py\labelone\labeltwo/5.04);
+		}
+
+
+	% Circunferencia unitaria
+	\draw[thin] (O) circle (1);
+
+	% Suma de raíces contiguas: z^i + z^(i + 1)
+	\foreach \i in {0,...,4}{
+			\pgfmathtruncatemacro{\isucc}{mod(\i+1,5)}
+			\draw[sumeqvec1] (P\i) -- +(P\isucc);
+			\draw[sumeqvec1] (P\isucc) -- +(P\i);
+
+			\draw[sumvec1] (O) -- ($(P\i) + (P\isucc)$);
+		}
+
+	% Suma de raíces diagonales: z^i + z^(i + 2)
+	\foreach \i in {0,...,4}{
+			\pgfmathtruncatemacro{\isuccsucc}{mod(\i+2,5)}
+			\draw[sumeqvec2] (P\i) -- +(P\isuccsucc);
+			\draw[sumeqvec2] (P\isuccsucc) -- +(P\i);
+
+			\draw[sumvec2] (O) -- ($(P\i) + (P\isuccsucc)$);
+		}
+
+	% Raíces: z^i
+	\foreach \i in {0,...,4}{
+			\draw[rootvec] (O) -- (72*\i:1);
+		}
+
+
+	% Ejes
+	\draw[axis] (-2,0) -- (2,0)
+	node[shift={(-0.2,0.3)}] {Re};
+	\draw[axis] (0,-2) -- (0,2)
+	node[shift={(0.35,-0.15)}] {Im};
+
+	% Marcas principales en los ejes
+	\draw[thick] (-1,-1.5pt) -- (-1,1.5pt)
+	node[shift={(0.3,-0.45)}] {$-1$};
+	\draw[thick] (1,-1.5pt) -- (1,1.5pt)
+	node[shift={(0.25,-0.45)}] {$1$};
+	\draw[thick] (-1.5pt,-1) -- (1.5pt,-1)
+	node[shift={(0.05,-0.25)}] {$-i$};
+	\draw[thick] (-1.5pt,1) -- (1.5pt,1)
+	node[shift={(0.05,0.25)}] {$i$};
+
+	% Marcas secundarias en los ejes
+	\xaxismark{\PHI*\PHI/2}{(0.5em,0.45em)}{$\frac{\varphi^2}{2}$}
+	\xaxismark{\PHI*\PHI/2}{(-0.75em,-1.4em)}{$\frac{\varphi+1}{2}$}
+
+	\xaxismark{\PHI-1}{(-0.75em,0.45em)}{$\frac{1}{\varphi}$}
+	\xaxismark{\PHI-1}{(1em,-1.3em)}{$\varphi-1$}
+
+	\xaxismark{(\PHI-1)/2}{(-0.55em,0.45em)}{$\frac{1}{2\varphi}$}
+	\xaxismark{(\PHI-1)/2}{(0.75em,-1.4em)}{$\frac{\varphi-1}{2}$}
+
+	\xaxismark{(2-\PHI)/2}{(0.75em,-1.4em)}{$\frac{2-\varphi}{2}$}
+
+	\xaxismark{-0.5}{(-0.65em,0.45em)}{$-\frac{1}{2}$}
+
+	\xaxismark{-\PHI/2}{(0.75em,0.45em)}{$-\frac{\varphi}{2}$}
+
+	\xaxismark{-\PHI}{(-0.75em,-1.3em)}{$-\varphi$}
+
+	\yaxismark{sqrt(4*\PHI+3)/2}{(1em,-1em)}{$\frac{\sqrt{4\varphi+3}}{2}i$}
+	\yaxismark{sqrt(4*\PHI+3)/2}{(-2.75em,0.85em)}{$\frac{\varphi}{2}\sqrt{2+\varphi}i$}
+
+	\yaxismark{sqrt(\PHI+2)/2}{(-2.25em,-0.5em)}{$\frac{\sqrt{\varphi+2}}{2}i$}
+
+	\yaxismark{sqrt(3-\PHI)/2}{(-1.85em,-0.85em)}{$\frac{\sqrt{3-\varphi}}{2}i$}
+
+	\yaxismark{sqrt(3-\PHI)/(2*\PHI)}{(0.55em,1.65em)}{$\frac{\sqrt{3-\varphi}}{2\varphi}i$}
+
+	\yaxismark{-sqrt(3-\PHI)/(2*\PHI)}{(-1.5em,1.25em)}{$-\frac{\sqrt{3-\varphi}}{2\varphi}i$}
+
+	\yaxismark{-sqrt(3-\PHI)/2}{(0.25em,1em)}{$-\frac{\sqrt{3-\varphi}}{2}i$}
+
+	\yaxismark{-sqrt(\PHI+2)/2}{(-2.35em,0.55em)}{$-\frac{\sqrt{\varphi+2}}{2}i$}
+
+	\yaxismark{-sqrt(4*\PHI+3)/2}{(1.3em,1em)}{$-\frac{\sqrt{4\varphi+3}}{2}i$}
+	\yaxismark{-sqrt(4*\PHI+3)/2}{(-3em,-0.85em)}{$-\frac{\varphi}{2}\sqrt{2+\varphi}i$}
+
+	% Cotas
+	\cota{P2}{P1}{$\sqrt{3-\varphi}\,$}
+	\cota{P1}{P3}{$\sqrt{2+\varphi}\,$}
+	\cotaround{O}{$(P3) + (P4)$}{$\varphi$}
+	\cota{O}{$(P3) + (P0)$}{$\varphi-1$}
+	\cotaround{P2}{$(P4) + (P0)$}{$\varphi^2$}
+	\cota{P1}{P3}{$\sqrt{2+\varphi}\,$}
+	\cota{P3}{$(P0) + (P1)$}{$\varphi+1$}
+	\cota{O}{$(P4) + (P2)$}{$\frac{1}{\varphi}$}
+
+	% Origen
+	\draw (-115:0.115)  node[circle, fill=black, inner sep=1pt] {$O$};
+
+
+	% Etiquetas de z^i
+	\node at (4.5:1.1) {\LARGE$\zeta^0$};
+	\foreach \i in {1,...,4}{
+			\node at (72*\i:1.1) {\LARGE$\zeta^{\i}$};
+		}
+
+	% Etiquetas de z^i + z^(i + 1)
+	\node at (36:1.75) {\Large$1+\zeta$};
+	\node at (108:1.7) {\Large$\zeta+\zeta^2$};
+	\node at (176.5:1.75) {\Large$\zeta^2+\zeta^3$};
+	\node at (252:1.7) {\Large$\zeta^3+\zeta^4$};
+	\node at (324:1.75) {\Large$\zeta^4+1$};
+
+	% Etiquetas de z^i + z^(i + 2)
+	\etiq{7.1:0.75}{$\zeta^4+\zeta$}
+	\etiq{59.9:0.71}{$1+\zeta^2$}
+	\etiq{153.7:0.73}{$\zeta^3+\zeta$}
+	\etiq{229.5:0.48}{$\zeta^4+\zeta^2$}
+	\etiq{300.1:0.71}{$\zeta^3+1$}
+\end{tikzpicture}
+
+\end{document}

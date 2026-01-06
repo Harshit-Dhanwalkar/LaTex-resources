@@ -1,5 +1,11 @@
-\documentclass[landscape]{article}
-\usepackage[landscape,margin=1cm]{geometry}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+\documentclass[tikz,border=5pt]{standalone}
+
+\usepackage{xcolor}
+  \pagecolor{black}
+  \color{white}
+
 \pagestyle{empty}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -7,10 +13,11 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning,shadows,backgrounds}
 
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{5pt}%
-
+% \documentclass[tikz,border=5pt]{article}
+% \usepackage[active,tightpage]{preview} % works only with article
+% \PreviewEnvironment{tikzpicture}
+% \setlength\PreviewBorder{5pt}%
+% \usepackage[landscape,margin=1cm]{geometry}
 
 \begin{document}
 \centering

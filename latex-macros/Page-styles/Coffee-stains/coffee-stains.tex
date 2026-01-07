@@ -1,10 +1,33 @@
-\documentclass{article}
-\usepackage{coffee}  % REMOVED [bleed] option
+\documentclass[12pt,letterpaper,twoside]{book}
+% \documentclass{article}
+
+\usepackage[T1]{fontenc}
+% \usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{anysize}
+\marginsize{1.0in}{1.0in}{0.5in}{0.5in}
+\usepackage[]{hyperref}
+\usepackage{eso-pic}
+\usepackage{changepage}
+\strictpagecheck
+\usepackage{blindtext}
+
+\usepackage{coffee}
+% \usepackage[bleed]{coffee}
 
 \usepackage{verbatim}
 \usepackage{lipsum}
 
+
 \begin{document}
+\AddToShipoutPicture{\checkoddpage
+	\ifoddpage
+		\put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{Textures/odd_page.jpg}}
+	\else
+		\put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{Textures/even_page.jpg}}
+	\fi
+}
+
 \title{LaTeX Coffee Stains}
 \author{Harshit Prashant Dhanwalar\\
 	Github : \texttt{https://github.com/Harshit-Dhanwlkar}}
@@ -84,3 +107,4 @@ offsets \texttt{xoff} and \texttt{yoff}.
 \cofeSplash{}
 
 \end{document}
+

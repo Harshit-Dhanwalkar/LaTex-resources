@@ -1,0 +1,25 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+\documentclass[11pt]{article}
+% \documentclass[12pt,a4paper,openany]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella, newpxmath} % successor to mathpazo
+\usepackage{yfonts} % For gothic font
+
+\DeclareTextFontCommand{\textgoth}{\gothfamily}
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	{\Huge\bfseries\scshape Topic of Thesis}\\
+	{\bfseries\Large By ......}\\
+	{\bfseries Session year--year}\\
+	{\bfseries\Large Department of Subject}\\
+	{\bfseries\Large\gothfamily Some University Somewhere}\\
+	{\bfseries\Large City, Country}
+\end{titlepage}
+
+\end{document}

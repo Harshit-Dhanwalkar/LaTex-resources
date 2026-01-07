@@ -1,0 +1,24 @@
+\documentclass[12pt,letterpaper,twoside]{book}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{anysize}
+\marginsize{1.0in}{1.0in}{0.5in}{0.5in}
+\usepackage[]{hyperref}
+\usepackage{eso-pic}
+\usepackage{changepage}
+\strictpagecheck
+\usepackage{blindtext}
+
+\begin{document}
+
+\AddToShipoutPicture{\checkoddpage
+	\ifoddpage
+		\put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{Textures/odd_page.jpg}}
+	\else
+		\put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{Textures/even_page.jpg}}
+	\fi
+}
+
+\Blinddocument
+\end{document}

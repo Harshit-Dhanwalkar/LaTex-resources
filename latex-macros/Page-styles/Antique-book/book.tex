@@ -1,0 +1,63 @@
+\documentclass{antiquebook}
+
+\usepackage{biblatex}
+\addbibresource{references.bib}
+
+\usepackage{lipsum}
+\usepackage[math]{blindtext}
+
+\author{Harshit Prashant Dhanwalkar \and Author Two}
+\title{{Testing Antique Book}}
+
+\input{glossary.tex}
+
+\begin{document}
+\frontmatter
+\maketitle
+\tableofcontents
+
+\printglossary[type=\acronymtype,title=Abbreviations]
+\printglossary[title=Terms]
+
+\mainmatter
+\pagestyle{fancy}
+
+\chapter{First}
+
+\section{Instructions}
+\section{Instructions}
+To remove background stain page texture comment out last 3 line from class file (antiquebook.cls)
+
+\section{Dummy}
+\blindmathtrue
+\blindmathpaper
+
+\section{Second}
+\blindmathpaper
+
+\textbf{Some bold text.}
+\begin{align*}
+	\parenthesis{\squarebracket{\floor{\dfrac{x}{n}}}}
+	 & \leq \curlybrace{\ceiling{\dfrac{x}{n}}} \\
+	\prod_{p\leq x}p
+	 & \leq\sqrt[4]{avbc}
+\end{align*}
+
+$a,b,c,\alpha,\beta,\gamma,\phi,\varphi,\psi,\Psi,\rho,\partial$. \textsc{This is SmallCaps text}
+
+% Use glossary entries
+First use: \gls{imo}. Next use: \gls{imo}.
+
+The \gls{phi} is important in number theory.
+
+According to \gls{erdos}, \gls{mobius} is useful.
+
+The work of Euler \cite{euler1748} laid the foundation for modern mathematics.
+
+According to Knuth \cite{knuth1997}, algorithms should be efficient.
+
+The Erd\H{o}s-Selberg proof \cite{erdos1949} was groundbreaking.
+
+\printbibliography[title={References}]
+
+\end{document}

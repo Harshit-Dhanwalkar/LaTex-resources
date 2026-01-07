@@ -1,15 +1,17 @@
 \documentclass[11pt]{article}
-\usepackage{tikz} 
+
+\usepackage{tikz}
 \usepackage[active,tightpage]{preview}
 \PreviewEnvironment{tikzpicture}
 \setlength\PreviewBorder{5pt}%
 \usetikzlibrary{shadows,arrows}
+
 % Define the layers to draw the diagram
 \pgfdeclarelayer{background}
 \pgfdeclarelayer{foreground}
 \pgfsetlayers{background,main,foreground}
- 
-% Define block styles  
+
+% Define block styles
 \tikzstyle{materia}=[draw, fill=blue!20, text width=6.0em, text centered,
   minimum height=1.5em,drop shadow]
 \tikzstyle{practica} = [materia, text width=8em, minimum width=10em,

@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage{coffee}  % REMOVED [bleed] option
+
+\usepackage{verbatim}
+\usepackage{lipsum}
+
+\begin{document}
+\title{LaTeX Coffee Stains}
+\author{Harshit Prashant Dhanwalar\\
+	Github : \texttt{https://github.com/Harshit-Dhanwlkar}}
+\maketitle
+
+\section{Introduction}
+This package provides an essential feature to \LaTeX~that has been missing for too long. It adds a coffee stain to your documents. A lot of time can be saved by printing stains directly on the page rather than adding it manually. You can choose from four different stain types:
+\begin{enumerate}
+	\item $270^\circ$ circle stain with two tiny splashes
+	\item $60^\circ$ circle stain
+	\item two splashes with light colours
+	\item and a colourful twin splash.
+\end{enumerate}
+
+\section{Usage}
+To use the package, simply place the \texttt{coffee.sty} file in the directory with all of your
+other \texttt{.tex} files \textit{or} install it properly (consult your distribution's manual).
+Then include the following line in the header of your document:
+
+\begin{verbatim}
+\usepackage{coffee}
+\end{verbatim}
+
+To place a coffee stain on a page, put one of the following commands in the source code of the relevant page:
+
+\begin{verbatim}
+\cofeAm{alpha}{scale}{angle}{xoff}{yoff}
+\cofeBm{alpha}{scale}{angle}{xoff}{yoff}
+\cofeCm{alpha}{scale}{angle}{xoff}{yoff}
+\cofeDm{alpha}{scale}{angle}{xoff}{yoff}
+\end{verbatim}
+
+where alpha is the transparency factor $\in [0,1]$. The scale factor is {\tt scale}, and the standard is {\tt scale}=1.
+The angle is in degrees $\in [0,360]$.
+The position relative to the centre of the page is given by x and y
+offsets \texttt{xoff} and \texttt{yoff}.
+
+\begin{verbatim}
+\usepackage[onEveryPage]{coffee}
+\end{verbatim}
+
+\newpage
+
+\section{Showcase of All Coffee Stain Types}
+
+\subsection*{Type A: $270^\circ$ circle stain with two tiny splashes}
+\subsubsection{Nonsense text with coffee splashes - just as in real papers}
+\lipsum[1-3]
+\cofeAm{0.5}{1}{0}{0}{0}
+
+\newpage
+
+\subsection*{Type B: $60^\circ$ circle stain}
+\subsubsection{Nonsense text with coffee splashes - just as in real papers}
+\lipsum[1-3]
+\cofeBm{0.5}{1}{0}{0}{0}
+
+\newpage
+
+\subsection*{Type C: Two splashes with light colours}
+\subsubsection{Nonsense text with coffee splashes - just as in real papers}
+\lipsum[1-3]
+\cofeCm{0.5}{1}{0}{0}{0}
+
+\newpage
+
+\subsection*{Type D: Colourful twin splash}
+\subsubsection{Nonsense text with coffee splashes - just as in real papers}
+\lipsum[1-3]
+\cofeDm{0.5}{1}{0}{0}{0}
+
+\newpage
+
+\subsection*{Random Splash}
+\subsubsection{Nonsense text with coffee splashes - just as in real papers}
+\lipsum[1-3]
+\cofeSplash{}
+
+\end{document}

@@ -1,10 +1,13 @@
+% !TeX program = lualatex
+
 \documentclass{article}
 \usepackage[textwidth=6cm]{geometry}% just for the preview
+\usetikzlibrary{lindenmayersystems}
 \usepackage{tikz}
+
 \usepackage[active,tightpage]{preview}
 \PreviewEnvironment{center}
-\setlength\PreviewBorder{10pt}%
-\usetikzlibrary{lindenmayersystems}
+\setlength\PreviewBorder{5pt}%
 
 \pgfdeclarelindenmayersystem{A}{
     \rule{F -> FF[+F][-F]}
@@ -28,7 +31,7 @@
 
 \tikzset{
     type/.style={l-system={#1, axiom=F,order=3,step=4pt,angle=60},
-      blue, opacity=0.4, line width=.5mm, line cap=round   
+      blue, opacity=0.4, line width=.5mm, line cap=round
     },
 }
 
@@ -40,6 +43,7 @@
 }
 
 \begin{document}
+
 \begin{center}
 	\foreach \width in {.2,.4,...,.8}
 		{  \drawsnowflake[scale=0.3]{type=A, line width=\width mm} }
@@ -63,4 +67,5 @@
 	\drawsnowflake[scale=0.38]{type=D, l-system={order=4,angle=60,axiom=FG}, line width=0.7mm}
 	\drawsnowflake[scale=0.38]{type=D, l-system={order=4,angle=60,axiom=FfG}, line width=0.7mm}
 \end{center}
+
 \end{document}

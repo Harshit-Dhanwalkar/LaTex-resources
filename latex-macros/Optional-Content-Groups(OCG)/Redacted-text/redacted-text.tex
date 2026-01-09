@@ -1,5 +1,7 @@
+% !TEX program = lualatex
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% INSTRUCTIONS: 
+% INSTRUCTIONS:
 % 1. Works in Evince, Okular, and Chrome/Firefox.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -23,7 +25,7 @@
         % 1. The actual hidden text (Static, always there)
         \node[inner sep=0pt] (hidden_text) {\usebox{\revspoilerbox}};
         % 2. The Interactive Shutter
-        % We place the \switchocg OUTSIDE the \begin{ocg} 
+        % We place the \switchocg OUTSIDE the \begin{ocg}
         % so the "hit area" remains active even when the box is hidden.
         \node[inner sep=0pt] at (hidden_text) {%
             \switchocg{#1}{%
@@ -67,7 +69,5 @@ The potential temperature is calculated as:
 \noindent \textbf{Hydrostatic Balance:} \\
 The pressure change with height is given by:
 \[ \frac{dp}{dz} = \text{\reveal{hydro}{$-\rho g$}} \]
-
-
 
 \end{document}

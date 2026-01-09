@@ -1,10 +1,18 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
 \documentclass{article}
 \usepackage[usenames,dvipsnames,pdftex]{xcolor}
 \usepackage{tikz,ifthen}
 
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}
+
 \begin{document}
 \newcounter{density}
 \setcounter{density}{20}
+
 \begin{tikzpicture}
 	\def\couleur{MidnightBlue}
 	\path[coordinate] (0,0)  coordinate(A)
@@ -21,4 +29,5 @@
 			\draw[fill=\couleur!\thedensity] (A)--(B)--(C)--cycle;
 		}
 \end{tikzpicture}
+
 \end{document}

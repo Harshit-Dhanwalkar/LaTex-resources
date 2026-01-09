@@ -1,8 +1,12 @@
-\documentclass [12pt]{scrartcl}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[12pt]{scrartcl}
 \usepackage{tikz}
+
 \usepackage[active,tightpage]{preview}
 \PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{10pt}
+\setlength\PreviewBorder{5pt}
 
 \usetikzlibrary{shapes}
 
@@ -14,6 +18,7 @@
 
 \begin{document}
 \thispagestyle{empty}
+
 \begin{tikzpicture}
 	\draw (-1, 1) node{$_n\backslash^d$};
 	\foreach \d in {1, 2, ..., \rows} {
@@ -39,4 +44,5 @@
 	\draw (2.5 * \rows / 2 - 1, - 2.5 * \columns) node [rounded rectangle, draw]
 	{$r = \sin\left(\frac{\Theta \cdot n}{d}\right)$};
 \end{tikzpicture}
+
 \end{document}

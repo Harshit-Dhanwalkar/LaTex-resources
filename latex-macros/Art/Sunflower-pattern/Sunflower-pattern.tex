@@ -1,4 +1,7 @@
+% !TeX program = lualatex
+
 \documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz}
 \usetikzlibrary{calc}
 
 \def\nbrcircles {377}
@@ -10,8 +13,8 @@
 \setcounter{cumulArea}{0}
 
 \begin{document}
-\begin{tikzpicture}[scale=.32]
 
+\begin{tikzpicture}[scale=.32]
 	\pgfmathsetmacro {\goldenRatio} {(1+sqrt(5))}
 	\pgfmathsetmacro {\meanArea}
 	{pow(\outerradius * 10 / \nbrcircles, 2) * pi}
@@ -34,4 +37,5 @@
 			\fill[] (\angle:\pgfmathresult) circle [radius=\smRadius] ;
 		}
 \end{tikzpicture}
+
 \end{document}

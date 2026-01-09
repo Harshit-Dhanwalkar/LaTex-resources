@@ -1,3 +1,6 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
 \documentclass{article}
 \usepackage[margin=0.3cm, paperwidth=9.5cm, paperheight=9.5cm]{geometry}
 \usepackage{tikz}
@@ -25,7 +28,7 @@
 
 \def\petald{[rotate=-90] \petala}
 
-\def\petiolea{         
+\def\petiolea{
   [rounded corners=2] (0.25,-7) %
   .. controls (0.7,-5.5) and (0.3,-3) .. (0.25,-2) %
   .. controls (0.2,-1.5) and (0.33,-0.4) .. (0,0) %
@@ -33,7 +36,7 @@
   .. controls (0.4,-3) and (0.82,-5.5) .. (0.42,-7)
 }
 
-\def\petioleb{         
+\def\petioleb{
   [rounded corners=2] (0.1,-7) %
   .. controls (0.3,-3) and (-0.85,-1.05) .. (-2.3,-1) %
   arc (270:230:0.2)%
@@ -44,7 +47,7 @@
   .. controls (-1.1,-0.75) and (0.4,-2.45) .. (0.2,-7)
 }
 
-\def\petiolec{         
+\def\petiolec{
   [rounded corners=2] (-0.3,-7) %
   .. controls (-0.9,-3.5) and (-1.5,-2.7) .. (-2,-2.5) %
   .. controls (-2.5,-2.3) and (-3.2,-2.35) .. (-3.47,-3.5) %
@@ -114,20 +117,19 @@ outer color=transparent!100]
 }
 
 %%% -----------POPPIES---------------- %%%
-
 % beautiful poppy
-\def\poppy[#1,#2]{         
+\def\poppy[#1,#2]{
   \begin{scope}[shift={#1},scale=#2]
     % draw the flower
     \flower;	
-    
+
     % draw petioles
     \petioles[darkgreen]
   \end{scope}
 }
 
 % poppy with uniform color
-\def\poppyu[#1,#2]{         
+\def\poppyu[#1,#2]{
   \begin{scope}[shift={#1},scale=#2]
     % draw the flower
     \foreach \a in {\petala,\petalb,\petalc,\petald} 
@@ -142,7 +144,7 @@ outer color=transparent!100]
 }
 
 % black and white poppy
-\def\poppybw[#1,#2]{         
+\def\poppybw[#1,#2]{
   \begin{scope}[shift={#1},scale=#2]
     % draw the flower
     \foreach \a in {\petala,\petalb,\petalc,\petald} 

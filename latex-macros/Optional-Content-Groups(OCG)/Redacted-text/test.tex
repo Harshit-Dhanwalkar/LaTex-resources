@@ -1,3 +1,5 @@
+% !TEX program = lualatex
+
 % My recreation of Epstein file from facebook post https://www.facebook.com/SethMoulton/posts/a-redacted-statement-on-the-release-of-the-incomplete-excessively-redacted-epste/1426604922168754/
 
 \documentclass[8pt]{article}
@@ -9,29 +11,47 @@
 
 \usepackage{amsmath, amssymb}
 \usepackage[tikz]{ocgx2}
-% Main body font (Sans Serif)
-\usepackage[sfdefault]{inter}
+% Main body font
+% \usepackage[sfdefault]{lato}
+% \usepackage[sfdefault]{opensans}
+% \usepackage[sfdefault]{sourcesanspro}
+\usepackage[sfdefault]{roboto}
+
+% for signature
+\newcommand{\fPath}{./fonts}
+\newfontfamily\signature{LastFriday.otf}[Path=\fPath/last-friday/, Scale=1.8]
+% \newfontfamily\signature{Secretoria.ttf}[Path=\fPath/secretoria/, Scale=1.1]
+% \newfontfamily\signature{Whispers-Regular.otf}[Path=\fPath/whispers/, Scale=1.1]
+% \newfontfamily\signature{SoulSignature.ttf}[Path=\fPath/soul-signature/, Scale=1.9]
+% \newfontfamily\signature{WinterSolace.otf}[Path=\fPath/winter-solace/, Scale=1.1]
+
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, linkcolor=blue}
 
-\usepackage[pages=all]{background}
+% \usepackage[pages=all]{background}
+\usepackage[firstpage=true]{background}
 \usetikzlibrary{calc, fit}
+
+\definecolor{header1}{HTML}{2E4A85}
+\definecolor{header2}{HTML}{BD3D3D}
+\definecolor{inkblue}{HTML}{1f2b5c}       % Deep royal blue
+\definecolor{inkyblue}{HTML}{0a1f4e}      % Darker blue
+\definecolor{inkyblue2}{HTML}{2c3e50}     % Blue-black
+\definecolor{inkyblue3}{HTML}{2d3748}     % Dark slate blue
+\definecolor{sepia}{HTML}{704214}         % Sepia/brown ink
+\definecolor{fountainblue}{HTML}{1a365d}  % Fountain pen blue
 
 \backgroundsetup{
     scale=1,
     color=black,
-    opacity=0.08,
+    opacity=0.09,
     angle=0,
     contents={%
       \begin{tikzpicture}[remember picture, overlay]
-        % \node[font=\fontfamily{phv}\fontseries{bc}\fontsize{120}{120}\selectfont, anchor=north west]
-        \node[font=\fontfamily{qhv}\fontseries{bc}\fontsize{120}{120}\selectfont, anchor=north west]
-        % \node[font=\fontsize{120}{120}\selectfont\bfseries, anchor=north west]
-          at ($(current page.north west)+(0.9in,-1.8in)$) {``};
-        % \node[font=\fontfamily{phv}\fontseries{bc}\fontsize{120}{120}\selectfont, anchor=south east]
-        \node[font=\fontfamily{qhv}\fontsize{120}{120}\selectfont\bfseries, anchor=south east]
-        % \node[font=\fontsize{120}{120}\selectfont\bfseries, anchor=south east]
-          at ($(current page.south east)+(-0.9in,0.8in)$) {''};
+        \node[font=\sffamily\fontsize{120}{120}\selectfont\bfseries, anchor=north west]
+          at ($(current page.north west)+(0.8in,-1.7in)$) {``};
+        \node[font=\sffamily\fontsize{120}{120}\selectfont\bfseries, anchor=south east]
+          at ($(current page.south east)+(-0.8in,1.1in)$) {''};
       \end{tikzpicture}%
     }
 }
@@ -71,19 +91,20 @@
 }
 
 \begin{document}
+\thispagestyle{empty}
 \sloppy
 
 % Logo header
 \begin{center}
 	{\fontfamily{ybv}\selectfont
-		{\Huge \textbf{\textcolor[HTML]{2E4A85}{Seth}}}
-		{\LARGE \textit{\textcolor[HTML]{BD3D3D}{for}}} \hfill \\
-		\vspace{-0.15cm}
-		\hspace{1.3cm} {\LARGE \textit{\textcolor[HTML]{BD3D3D}{Massachusetts}}}
+		{\Huge \textbf{\textcolor{header1}{Seth}}}
+		{\LARGE \textit{\textcolor{header2}{for}}} \hfill \\
+		\vspace{-0.06cm}
+		\hspace{1.6cm} {\LARGE \textit{\textcolor{header2}{Massachusetts}}}
 	}
 \end{center}
 
-\vspace{0.8cm}
+\vspace{0.7cm}
 
 % The content
 \noindent
@@ -109,12 +130,13 @@ Donald Trump is \reveal{r1}{extensively detailed list} in the Epstein Files \rev
 \noindent
 \reveal{r21}{The Prosecution conclude} Trump is fully implicated in the crimes \reveal{r22}{revealed in the latest deposition transcripts ba.}
 
-\vspace{0.4cm}
+% \vspace{0.2cm}
+\bigskip
 
 % Signature block
 \begin{center}
 	\begin{tikzpicture}
-		\node (sig) at (0,0) {\Large \textit{Seth Moulton}};
+		\node[font=\signature, rotate=5, text=inkblue] at (0, 0) {\fontsize{16}{16}\selectfont Seth Moulton};
 	\end{tikzpicture}
 \end{center}
 

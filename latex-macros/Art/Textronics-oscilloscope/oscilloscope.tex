@@ -1,11 +1,15 @@
+% !TeX program = lualatex
+
 \documentclass[a4paper,12pt,oneside]{article}
 \usepackage{tikz}
+
 \usepackage[active,tightpage]{preview}
 \PreviewEnvironment{tikzpicture}
 \setlength\PreviewBorder{5pt}%
 
 \begin{document}
 \def\scl{0.6}%scaling factor of the picture
+
 \begin{tikzpicture}[
 		scale=\scl,
 		controlpanels/.style={yellow!30!brown!20!,rounded corners,draw=black,thick},
@@ -130,4 +134,5 @@
 		% X-pos
 	\end{scope}
 \end{tikzpicture}
+
 \end{document}

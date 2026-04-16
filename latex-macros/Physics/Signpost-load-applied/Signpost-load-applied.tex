@@ -1,8 +1,9 @@
-\documentclass{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[x11names, border=5pt]{standalone}
+
 \usepackage{tikz}
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{center}
-\setlength\PreviewBorder{10pt}%
 % Vector Styles
 \tikzstyle{load}   = [ultra thick,-latex]
 \tikzstyle{stress} = [-latex]
@@ -16,7 +17,6 @@
 \tikzstyle{trimetric}=[x={(0.926cm,-0.207cm)},y={(0cm,0.837cm)},z={(-0.378cm,-0.507cm)}]
 
 \begin{document}
-\begin{center}
 	\begin{tikzpicture}
 		\node (origin) at (0,0) {}; % shift relative baseline
 		\coordinate (O) at (2,3);
@@ -68,5 +68,4 @@
 			}
 		\draw (-0.2,0,0) -- ++(-2,0,5) node[above,xshift=0.5cm] {$w_{x}=\frac{z}{h_1+h_2} w_0$};
 	\end{tikzpicture} %
-\end{center}
 \end{document}

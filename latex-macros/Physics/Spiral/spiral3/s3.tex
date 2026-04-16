@@ -1,9 +1,9 @@
-\documentclass{article}
-\usepackage{tikz}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
 
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{10pt}%
+\documentclass[x11names, border=5pt]{standalone}
+
+\usepackage{tikz}
 
 \newcommand\spiral{}% Just for safety so \def won't overwrite something
 \def\spiral[#1](#2)(#3:#4:#5){% \spiral[draw options](placement)(end angle:revolutions:final radius)
@@ -12,7 +12,6 @@
 }
 
 \begin{document}
-\begin{preview}
 	\begin{tikzpicture}
 		\spiral[red](0,0)(0:6:6);
 		\spiral[blue](0,0)(0:6:-6);
@@ -21,5 +20,4 @@
 		\spiral[blue](-12,0)(90:2:-2.25);
 		\spiral[red](12,0)(90:2:2.25);
 	\end{tikzpicture}
-\end{preview}
 \end{document}

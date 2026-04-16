@@ -1,10 +1,15 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
 \documentclass[a5paper]{article}
-\usepackage{lipsum}   % To generate test text 
+
+\usepackage{lipsum}
 \usepackage{framed}
 \usepackage{tikz}
 \usepackage[margin=1cm]{geometry}% for screen preview
 \usetikzlibrary{decorations.pathmorphing,calc}
 \pgfmathsetseed{1} % To have predictable results
+
 % Define a background layer, in which the parchment shape is drawn
 \pgfdeclarelayer{background}
 \pgfsetlayers{background,main}
@@ -85,8 +90,6 @@
           anchor=west, overlay] at (0em, 2em) {\sffamily#1};\par}%
 {\endMakeFramed}
 
-% Main document, example of usage
-\pagestyle{empty}
 \begin{document}
 \begin{parchment}[Short text]
 	\lipsum[11]

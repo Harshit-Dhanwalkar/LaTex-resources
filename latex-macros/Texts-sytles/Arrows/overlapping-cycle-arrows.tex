@@ -1,5 +1,8 @@
-\documentclass{article}
-\usepackage[margin=0.3cm, paperwidth=3.3cm, paperheight=3.3cm]{geometry}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[x11names, border=5pt]{standalone}
+
 \usepackage{tikz}
 \usetikzlibrary{shadows}
 
@@ -18,7 +21,7 @@
   ashadow/.style={opacity=.25, shadow xshift=0.07, shadow yshift=-0.07},
 }
 
-\def\arrows[#1]{         
+\def\arrows[#1]{
   \begin{scope}[scale=#1]
     \draw[color=darkred, %
     drop shadow={ashadow, color=red!60!black}] \arrow;
@@ -35,10 +38,7 @@
 }
 
 \begin{document}
-\thispagestyle{empty}
-\begin{center}
 	\begin{tikzpicture}
 		\arrows[1];
 	\end{tikzpicture}
-\end{center}
 \end{document}

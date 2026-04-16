@@ -1,13 +1,11 @@
+% FIX:
 % !TeX program = lualatex
 % !TeX encoding = UTF-8
-
-% WARN: This does take time to compile because of heavy maths operations
 
 \documentclass[x11names, border=5pt]{standalone}
 
 \usepackage{tikz}
 \usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
 
 \begin{document}
 \begin{tikzpicture}[]
@@ -41,20 +39,24 @@
 			xmax = \xmax,
 			ymax = \ymax,
 			domain = \xmin:\xmax,
-			samples = 100,
-			point meta min=-1,
-			point meta max=1,
+			samples = 50
 		]
-		\addplot3[surf, shader=interp, samples=100] 
-			{1./7.*(
-				cos(deg(\Date - 2*pi*sqrt((x-\CentreI)^2 + y^2)/\Lambda - 0)) +
-				cos(deg(\Date - 2*pi*sqrt((x-\CentreII)^2 + y^2)/\Lambda - \RetardIIvsI)) +
-				cos(deg(\Date - 2*pi*sqrt((x-\CentreIII)^2 + y^2)/\Lambda - 2*\RetardIIvsI)) +
-				cos(deg(\Date - 2*pi*sqrt((x-\CentreIV)^2 + y^2)/\Lambda - 3*\RetardIIvsI)) +
-				cos(deg(\Date - 2*pi*sqrt((x-\CentreV)^2 + y^2)/\Lambda - 4*\RetardIIvsI)) +
-				cos(deg(\Date - 2*pi*sqrt((x-\CentreVI)^2 + y^2)/\Lambda - 5*\RetardIIvsI)) +
-				cos(deg(\Date - 2*pi*sqrt((x-\CentreVII)^2 + y^2)/\Lambda - 6*\RetardIIvsI))
-			)};
+		\addplot3[surf,shader=interp,raw gnuplot] gnuplot {
+				set isosamples 50,50;
+				amorti (centre,xy,y,cutoff)= 1;
+				interf(centre,date,x,y,cutoff,lambda,retard) =%
+				amorti(centre,x,y,cutoff)%
+				* cos(date-2*pi*sqrt((x-centre)**2 + y**2)/lambda-retard);
+				splot [x=\xmin:\xmax] [y=\ymin:\ymax] 1./7.*(%
+				interf(\CentreI,\Date,x,y,\Cutoff,\Lambda,0)%
+				+ interf(\CentreII,\Date,x,y,\Cutoff,\Lambda,\RetardIIvsI)%
+				+ interf(\CentreIII,\Date,x,y,\Cutoff,\Lambda,2*\RetardIIvsI)%
+				+ interf(\CentreIV,\Date,x,y,\Cutoff,\Lambda,3*\RetardIIvsI)%
+				+ interf(\CentreV,\Date,x,y,\Cutoff,\Lambda,4*\RetardIIvsI)%
+				+ interf(\CentreVI,\Date,x,y,\Cutoff,\Lambda,5*\RetardIIvsI)%
+				+ interf(\CentreVII,\Date,x,y,\Cutoff,\Lambda,6*\RetardIIvsI)%
+				)
+			};
 	\end{axis}
 \end{tikzpicture}
 \end{document}

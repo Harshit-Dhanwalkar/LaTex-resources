@@ -1,9 +1,9 @@
-\documentclass[11pt]{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[x11names, border=5pt]{standalone}
 
 \usepackage{tikz}
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{5pt}%
 \usetikzlibrary{shadows,arrows}
 
 % Define the layers to draw the diagram
@@ -48,7 +48,6 @@
 
 \begin{document}
 \begin{tikzpicture}[scale=0.7,transform shape]
-
 	% Draw diagram elements
 	\path \practica {1}{Diferencias en componentes electr\'onicos};
 	\path (p1.south)+(0.0,-1.0) \practica{2}{Serie de Fourier};

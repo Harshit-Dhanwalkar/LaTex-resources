@@ -1,8 +1,7 @@
-\documentclass{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
 
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{10pt}%
+\documentclass[x11names, border=5pt]{standalone}
 
 \usepackage{tikz}
 \usetikzlibrary{decorations.pathmorphing}
@@ -10,7 +9,6 @@
 \usetikzlibrary{arrows.meta,bending}
 
 \begin{document}
-\begin{preview}
 	\begin{tikzpicture}
 		\draw[dotted] (-4,-3) grid (4,7);
 		\draw[thick] (0,0) ellipse (2cm and 0.5cm);
@@ -18,5 +16,4 @@
 					amplitude=2cm,coil},decorate,arrows = {<[bend]-}] (0,4) --(0,1);
 		\node[draw,fill=white,circle,inner sep=1pt] at (0,1){};
 	\end{tikzpicture}
-\end{preview}
 \end{document}

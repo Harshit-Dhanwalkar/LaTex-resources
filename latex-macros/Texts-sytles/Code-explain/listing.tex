@@ -1,5 +1,8 @@
-\documentclass[border={35pt 10pt 150pt 60pt}, % left bottom right top
-  svgnames]{standalone}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[x11names, border={35pt 10pt 150pt 60pt}, svgnames]{standalone}
+
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usepackage{listings}
@@ -17,7 +20,6 @@
 }
 
 \begin{document}
-
 \begin{lstlisting}[language = C++, numbers = none, escapechar = !,
     basicstyle = \ttfamily\bfseries, linewidth = .6\linewidth]
  int!
@@ -59,5 +61,4 @@
 	\draw (E.west) edge (e.east) ;
 	\draw (F.west) edge (f.east) ;
 \end{tikzpicture}
-
 \end{document}

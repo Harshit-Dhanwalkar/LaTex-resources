@@ -1,7 +1,9 @@
-\documentclass{standalone}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[x11names, border=5pt]{standalone}
 
 \usepackage[cmyk]{xcolor}
-\definecolor{wave}{cmyk}{1,0.35,0,0}
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \tikzset{
@@ -15,8 +17,9 @@
 \pgfmathsetmacro\N{5}
 \pgfmathsetmacro\D{\N*\T}
 
-\begin{document}
+\definecolor{wave}{cmyk}{1,0.35,0,0}
 
+\begin{document}
 \begin{tikzpicture}
 	\begin{axis}[
 			view={0}{90},
@@ -37,7 +40,6 @@
 
 	\end{axis}
 \end{tikzpicture}
-
 
 \begin{tikzpicture}
 	% Shading

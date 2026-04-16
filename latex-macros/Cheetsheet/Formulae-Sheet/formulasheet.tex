@@ -25,9 +25,9 @@
 \pgfplotsset{compat=1.18}
 
 \usetikzlibrary{
-    shadings, calc, patterns, angles, quotes, arrows.meta, 
-    decorations.pathmorphing, decorations.pathreplacing, 
-    fadings, 3d, perspective, backgrounds, intersections, 
+    shadings, calc, patterns, angles, quotes, arrows.meta,
+    fadings, 3d, perspective, backgrounds, intersections,
+    decorations.pathmorphing, decorations.pathreplacing,
     decorations.markings, bending
 }
 
@@ -35,6 +35,13 @@
     groupplots, external, colormaps, patchplots, fillbetween
 }
 
+\geometry{
+    letterpaper,
+    left=0.25in,
+    right=0.25in,
+    top=0.15in,
+    bottom=0.25in
+}
 
 \setlength{\baselineskip}{1.2em}
 \setlength{\parskip}{-0.75em}
@@ -82,17 +89,7 @@
 \definecolor{b}{HTML}{222222}
 \definecolor{lightgrey}{HTML}{cccccc}
 
-\geometry{
-    letterpaper,
-    left=0.25in,
-    right=0.25in,
-    top=0.15in,
-    bottom=0.25in
-}
-
-
 \newcommand{\hr}{\centerline{\rule{3.5in}{1pt}}}
-
 
 \newcommand{\nc}[2][b]{%
 \tikz \draw [draw=#1,thick]

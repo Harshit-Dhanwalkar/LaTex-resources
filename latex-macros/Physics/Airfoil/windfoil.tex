@@ -1,17 +1,15 @@
-\documentclass[border=5mm]{standalone}
-\usepackage{tikz}
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{10pt}%
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
 
+\documentclass[border=5pt]{standalone}
+
+\usepackage{tikz}
 \usetikzlibrary{patterns}
+
 \tikzset{dashed/.style={dash pattern=on 4pt off 1.5pt,line width=0.5pt},
     wing/.style={smooth,line width=1pt,fill=black!5},
     point/.style={circle,inner sep=0pt, minimum width=4pt,fill=black}
 }
-
-\author{Harshit Prashant Dhanwalkar}
-\title{Air foil}
 
 \def\lenghtOfString{2cm} % k_\alpha
 \def\groundWidth{3cm}
@@ -84,7 +82,6 @@
             }
 
 \begin{document}
-\begin{preview}
 	\begin{tikzpicture}[>=latex,scale=1,line width=0.5pt]
 		\begin{scope}[rotate around={-\wingAngle:(0,0)}]
 			% wings
@@ -133,9 +130,5 @@
 
 		\draw[line width=1pt] (SpringEnd)-- node[right]{$k_\alpha$} (Ground.south);
 		\draw (Ground.south west) -- (Ground.south east);
-
-		\node[anchor=north east] at (current bounding box.north east) {\footnotesize By Harshit Prashant Dhanwalkar};
 	\end{tikzpicture}
-\end{preview}
-
 \end{document}

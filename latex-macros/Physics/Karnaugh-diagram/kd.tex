@@ -1,6 +1,11 @@
-\documentclass[x11names,border=10pt,tikz]{standalone}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[x11names, border=5pt]{standalone}
+
 \usepackage{xstring}    % needed for string manipulations
 \usepackage{fmtcount}   % needed for some binary printing
+\usepackage{tikz}
 \usetikzlibrary{calc,math}
 \newif\ifKaddress
 \newif\ifKInd
@@ -30,15 +35,15 @@
 }
 \pgfkeys{
   /K,
-  default/.style = { plot addresses      = true, 
+  default/.style = { plot addresses      = true,
                      plot indicators     = true,
-                     x bits              = 2, 
+                     x bits              = 2,
                      y bits              = 2,
                      address scale       = 0.5,
                      address sep         = 1pt,
-                     variable names      = {$A$,$B$,$C$,$D$,$E$,$F$,$G$}, 
+                     variable names      = {$A$,$B$,$C$,$D$,$E$,$F$,$G$},
                      label               = $X$,
-                     label scale         = 1.4, 
+                     label scale         = 1.4,
                      variable scale      = 0.7,
                      variable sep        = 2pt,
                      value scale         = 1.5,
@@ -64,7 +69,6 @@
 }
 \let\ol\overline% just to abbreviate
 
-%==============================================================================
 % K[options]{table}
 %
 % takes the address,value pairs from the comma-separated list {table} and
@@ -212,7 +216,7 @@
         \xmax = \x + 2^(\xbits-\i+1);
         if \xmax > (2^(\xbits)-0.5) then {\xmax=2^(\xbits)-0.5;};
         {
-          \StrBetween[\i,\numexpr\i+1]{,\KVars,}{,}{,}[\tlabel] 
+          \StrBetween[\i,\numexpr\i+1]{,\KVars,}{,}{,}[\tlabel]
           \path [KInd] (\x,\y) -- (\xmax,\y) node[anchor = south east,
                inner sep = \KIndsep, scale = \KIndscale] {\tlabel};
           \path [KInd] (\x,\y)++(0,-0.1)    -- ++(0,+0.2);
@@ -234,7 +238,7 @@
           \StrBetween[\numexpr\i+\xbits,\numexpr\i+\xbits+1]
             {,\KVars,}{,}{,}[\tlabel]
           \path [KInd] ($(\x,-\y)-\ybits*(1.4ex,0)$)
-            -- ($(\x,-\ymax)-\ybits*(1.4ex,0)$) node[anchor=south west, 
+            -- ($(\x,-\ymax)-\ybits*(1.4ex,0)$) node[anchor=south west,
                 rotate=90, inner sep=\KIndsep, scale=\KIndscale]{\tlabel};
           \path [KInd] ($(\x,-\y)-\ybits*(1.4ex,0)$)++(-0.1,0) -- ++(+0.2,0);
           \path [KInd] ($(\x,-\ymax)-\ybits*(1.4ex,0)$)++(-0.1,0) -- ++(+0.2,0);
@@ -247,7 +251,6 @@
     inner sep = 2pt, scale = \KLabelscale] {\KLabel};
 }
 
-%==============================================================================
 % KG[options]{from}{to}
 %
 % groups together the fields between {from} and {to} by drawing a frame around 
@@ -286,7 +289,7 @@
   {
     if (\xfrompos <= \xtopos) && (\yfrompos >= \ytopos) then %
     {
-      { 
+      {
         \path[Kfill] ($(\xfrompos,-\yfrompos)-(\KGdist,\KGdist)$)
           rectangle ($(\xtopos,-\ytopos)+(\KGdist,\KGdist)$);
         \path[Kline] ($(\xfrompos,-\yfrompos)-(\KGdist,\KGdist)$)
@@ -369,7 +372,6 @@
       };
     };
   }
-  
 }
 
 \newcommand*\ul[2]{\tikz[baseline = (char.base)]{
@@ -411,9 +413,8 @@
 	\myKG     {group color = teal,   group distance=0.45}{101100}{101110}
 	\myKG[0.0]{group color = yellow, group distance=0.40}{101111}{101011}
 	\myKG[0.0]{group color = yellow, group distance=0.45}{101010}{100011}
-	%=====================================================================
+
 	% in picture comments
-	%=====================================================================
 	\begin{scope}[latex-,red]
 		\draw (6.7,-1.55)  -- ++(2,1)  node[right] {grouping, opacity = 0};
 		\draw (6.5,-6.0)   -- ++(2,1)  node[right] {grouping, opacity = 0.1};
@@ -451,4 +452,3 @@
 			$};
 \end{tikzpicture}
 \end{document}
-

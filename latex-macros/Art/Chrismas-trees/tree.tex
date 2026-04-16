@@ -1,4 +1,5 @@
 \documentclass[border=5mm]{standalone}
+
 \usepackage[dvipsnames,svgnames]{xcolor}
 \usepackage{tikz}
 \usepackage{pgfplots}
@@ -16,7 +17,8 @@
   shapes.geometric,
   calc
 }
-%%%%%%
+
+%
 \tikzset{
   tinsel/.style={
     #1,
@@ -56,14 +58,16 @@
     }
   }
 }
-%%%
+%
 
 \newsavebox{\mycandle}
-\savebox{\mycandle}{ 
+\savebox{\mycandle}{%
 \begin{tikzpicture}[scale=.1]
 \shade[top color=yellow,bottom color=red] (0,0) .. controls (1,.2) and (1,.5) .. (0,2) .. controls (-1,.5)  and  (-1,.2) .. (0,0);
-\fill[yellow!90!black] (.8,0) rectangle (-.8,-5); 
-\end{tikzpicture} } 
+\fill[yellow!90!black] (.8,0) rectangle (-.8,-5);
+\end{tikzpicture}
+}
+
 \PreviewEnvironment{tikzpicture}
 
 \tikzset{
@@ -73,7 +77,8 @@
 }
 
 \begin{document}
-% 1st tree 
+
+% 1st tree
 \begin{tikzpicture}[scale=2]
 	\begin{axis}[
 			hide axis, clip=false,
@@ -187,8 +192,7 @@
 		};
 \end{tikzpicture}
 
-%3rd tree
-
+% 3rd tree
 \begin{tikzpicture}
 	\coordinate (star) at (0,-1);
 	\path (star) +(-50:7) coordinate (rhs) +(-130:7) coordinate (lhs);
@@ -230,7 +234,5 @@
 			\draw[baubles=\colour] (star) -- ++(\angle:7);
 		}
 	\node[star,star point ratio=2.5,fill=yellow,minimum size=1cm] at (star) {};
-
-	\node[anchor=north east] at (current bounding box.south east) {\footnotesize By Harshit Prashant Dhanwalkar};
 \end{tikzpicture}
 \end{document}

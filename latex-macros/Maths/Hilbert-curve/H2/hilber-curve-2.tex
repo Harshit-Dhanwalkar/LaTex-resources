@@ -1,0 +1,28 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+% FAIL: Code gets memory errors due too millions of lines
+
+\documentclass[12pt]{article}
+\usepackage{xcolor}
+  \pagecolor{black}
+  \color{white}
+\usepackage{tikz}
+\usepackage{subfig}
+
+\directlua{require("hilbert")}
+
+\newcommand\hilbertlua[2]{%
+  \directlua{draw_hilbert(#1, #2)}%
+}
+
+\begin{document}
+\begin{figure}
+\centering
+\subfloat[$n=1$]{\hilbertlua{1}{18}}~~
+\subfloat[$n=2$]{\hilbertlua{2}{6}}~~
+\subfloat[$n=3$]{\hilbertlua{3}{2.6}}~~
+\subfloat[$n=4$]{\hilbertlua{4}{1.2}}~~
+\subfloat[$n=5$]{\hilbertlua{5}{0.58}}
+\end{figure}
+\end{document}

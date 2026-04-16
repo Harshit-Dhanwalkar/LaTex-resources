@@ -1,0 +1,93 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[x11names, border=5pt]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc,fadings,decorations.markings}
+\usepackage{amsmath}
+
+% Simplified fading line decoration
+\pgfdeclaredecoration{fading line}{initial}{%
+  \state{initial}[width=0pt, next state=draw]{}
+  \state{draw}[width=\pgfdecoratedpathlength]{%
+    \pgfsetlinewidth{\pgflinewidth}%
+    \pgfpathmoveto{\pgfpointorigin}%
+    \pgfpathlineto{\pgfpoint{\pgfdecoratedpathlength}{0pt}}%
+    \pgfsetstrokecolor{red!\pgfdecorationsegmentlength/\pgfdecoratedpathlength*100!white}%
+    \pgfusepath{stroke}%
+  }%
+}
+
+% commands
+\def\pr#1{\directlua{tex.print(#1)}}
+
+\def\rnd{.%
+\pdfuniformdeviate10%
+\pdfuniformdeviate10%
+\pdfuniformdeviate10%
+}
+
+\begin{document}
+
+% parameters
+\definecolor{sand}{RGB}{193,154,107} % particles color (fixed RGB syntax)
+\def\cols{20}                        % number of columns
+\def\rows{40}                        % number of rows
+\def\squareunit{.35}                 % lengths of unit square edges (cm)
+\pgfmathsetmacro\rmaxparticle{.1}    % maximum particle radius
+\def\beforelight{5}                  % light path before particle cloud
+
+\begin{tikzpicture}[x = \squareunit cm,
+		y = \squareunit cm,
+		line width = 2pt
+	]
+	
+	% light path before particles cloud
+	\draw[red,
+		decoration = {markings,
+				mark = at position 0.5 with {\arrow[red]{latex}}},
+		postaction = {decorate}] (-\beforelight,{\rows*\squareunit/2})--++
+	(\beforelight,0) node[midway, above, black] {$i_0$};
+
+	% light path through particles cloud (using simple fading)
+	\foreach \x in {0,0.1,...,\cols} {
+		\pgfmathsetmacro{\opacity}{1 - \x/\cols}
+		\draw[red, opacity=\opacity, line width=2pt] 
+			(\x*\squareunit,{\rows*\squareunit/2}) -- 
+			({(\x+0.1)*\squareunit},{\rows*\squareunit/2});
+	}
+
+	% light path after particles cloud
+	\draw[red!20!white,
+		decoration = {markings,
+				mark = at position 0.5 with {\arrow[red!20!white]{latex}}},
+		postaction = {decorate}] ({\cols*\squareunit},{\rows*\squareunit/2})--++
+	(\beforelight,0) node[midway, above, black] {$i$};
+
+	% particles cloud (Lua version)
+	\directlua{
+		math.randomseed(os.time())
+		for i = 1, \cols do
+			for j = 1, \rows do
+				local radius = \rmaxparticle * math.random()
+				local l = \squareunit - 2 * radius
+				local x = (i-1) * \squareunit + radius + l * math.random()
+				local y = (j-1) * \squareunit + radius + l * math.random()
+				tex.print(string.format("\\fill[sand] (%.3f,%.3f) circle[radius=%.3f];", x, y, radius))
+			end
+		end
+	}
+
+	% length quoting
+	\draw[|<->|,
+		> = latex,
+		line width = .8pt] ($(0,\rows*\squareunit)+(0,1)$)--++
+	(\cols*\squareunit,0) node[midway, above] {$l$};
+
+	% Lambert-Beer law
+	\node[anchor = north,
+		inner sep = 1ex] at (current bounding box.south) 
+		{$\dfrac{i}{i_0}=\exp(-\gamma l)$};
+\end{tikzpicture}
+\end{document}

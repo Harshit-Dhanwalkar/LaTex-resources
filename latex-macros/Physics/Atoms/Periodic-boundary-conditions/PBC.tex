@@ -1,14 +1,10 @@
-\documentclass[11pt,a4paper]{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
 
-\usepackage[utf8]{inputenc}
-\usepackage{graphicx}
+\documentclass[border=5pt]{standalone}
 
 \usepackage{tikz}
-
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{5pt}%
-
+\usepackage{graphicx}
 
 \title{Periodic boundaries conditions}
 
@@ -44,16 +40,13 @@
 		% an arrow
 		\path[draw,ultra thick,->] (2.5,4) -- (4.5,4);
 
-		% dashed lines 
+		% dashed lines
 		\foreach \x in {5,7,9,11} {
 				% vertical
 				\path[draw,dashed,thick] (\x,0) -- (\x,1) (\x,7) -- (\x,8);
 				% horizontal
 				\path[draw,dashed,thick] (4,\x-4) -- (5,\x-4) (11,\x-4) -- (12,\x-4);
 			}
-
 	\end{tikzpicture}
-
 \end{center}
-
 \end{document}

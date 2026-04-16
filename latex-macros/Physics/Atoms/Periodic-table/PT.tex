@@ -1,8 +1,10 @@
-\documentclass[]{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[border=5pt]{standalone}
 
 \usepackage{ifpdf}
 \usepackage{tikz}
-\usepackage[active,tightpage]{preview}
 \usetikzlibrary{shapes,calc}
 
 \ifpdf
@@ -13,7 +15,6 @@
 \fi
 
 \begin{document}
-
 \newcommand{\CommonElementTextFormat}[4]
 {
 	\begin{minipage}{2.2cm}
@@ -62,7 +63,6 @@
 	\fi
 }
 
-\begin{preview}
 	\begin{tikzpicture}[font=\sffamily, scale=0.45, transform shape]
 
 		%% Fill Color Styles
@@ -319,5 +319,4 @@
 		{(Mendeleev's) Periodic Table of Chemical Elements via Ti\emph{k}Z};
 
 	\end{tikzpicture}
-\end{preview}
 \end{document}

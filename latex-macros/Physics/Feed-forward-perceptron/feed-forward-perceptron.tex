@@ -1,6 +1,9 @@
-\documentclass{article}
-\usepackage[pdftex,active,tightpage]{preview}
-\setlength\PreviewBorder{2mm}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+% FIX: makefile gif operation
+
+\documentclass[border=5pt]{standalone}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows, arrows.meta}
@@ -13,7 +16,6 @@
 \tikzstyle{arrow}=[arrows={{Latex[scale=0.5]}-}, thick]  % , in=90, out=-90
 
 \begin{document}
-\begin{preview}
 	\begin{tikzpicture}
 		\node (b1)[bias] at (-1,0) {};
 		\node (b2)[bias] at (-0.5,1*\dist) {};
@@ -39,5 +41,4 @@
 				\draw (h\j) edge[arrow] (b1);
 			}
 	\end{tikzpicture}
-\end{preview}
 \end{document}

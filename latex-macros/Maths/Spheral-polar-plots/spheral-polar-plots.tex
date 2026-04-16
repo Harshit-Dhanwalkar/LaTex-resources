@@ -1,13 +1,14 @@
-\documentclass{minimal}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
 
-\usepackage{tikz}           %for TikZ graphics
-\usepackage{tikz-3dplot} %for 3dplot functionality
+\documentclass[varwidth=true, border=5pt]{standalone}
 
-\usepackage[active,tightpage]{preview}      %generates a tightly fitting border around the work
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{2mm}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
 
 \begin{document}
+
+% First plot - L=0
 \tdplotsetmaincoords{70}{135}
 \begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
 	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
@@ -17,8 +18,8 @@
 	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%
 \end{tikzpicture}
 
-%Here's some more examples.
-L = 0
+% L=0 (spherical harmonic)
+$L = 0$
 \begin{tikzpicture}[scale=2,line join=bevel,tdplot_main_coords, fill opacity=.7]
 	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
 	{1}{black}{0}%
@@ -75,7 +76,7 @@ $L = 2, M_L = -1$
 $L = 2, M_L = 0$
 \begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]
 	\tdplotsphericalsurfaceplot[parametricfill]{72}{36}%
-	{sqrt(5)/2*(3*cos(\tdplottheta)^2 - 1 )}{black}{-\tdplotphi}%
+	{sqrt(5)/2*(3*cos(\tdplottheta)^2 - 1)}{black}{0}%
 	{\draw[color=black,thick,->] (0,0,0) -- (2,0,0) node[anchor=north east]{$x$};}%
 	{\draw[color=black,thick,->] (0,0,0) -- (0,2,0) node[anchor=north west]{$y$};}%
 	{\draw[color=black,thick,->] (0,0,0) -- (0,0,2) node[anchor=south]{$z$};}%

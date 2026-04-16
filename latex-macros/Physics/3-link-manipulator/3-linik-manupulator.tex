@@ -1,15 +1,12 @@
-\documentclass{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
 
-\usepackage[latin1]{inputenc}
+\documentclass[border=5pt]{standalone}
+
 \usepackage{tikz}
 \usetikzlibrary{patterns}
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{5pt}%
 
 \begin{document}
-\pagestyle{empty}
-
 % Define a variable as a length
 \newcommand{\nvar}[2]{%
 	\newlength{#1}

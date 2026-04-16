@@ -1,17 +1,18 @@
-\documentclass{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[x11names, border=5pt]{standalone}
+
 \usepackage{tikz}
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{10pt}%
 \tikzset{
 	MyPersp/.style={scale=1.8,x={(-0.8cm,-0.4cm)},y={(0.8cm,-0.4cm)},
     z={(0cm,1cm)}},
 %  MyPersp/.style={scale=1.5,x={(0cm,0cm)},y={(1cm,0cm)},
 %    z={(0cm,1cm)}}, % uncomment the two lines to get a lateral view
 	MyPoints/.style={fill=white,draw=black,thick}
-		}
-\begin{document}
+}
 
+\begin{document}
 \begin{tikzpicture}[MyPersp,font=\large]
 	% the base circle is the unit circle in plane Oxy
 	\def\h{2.5}% Heigth of the ellipse center (on the axis of the cylinder)
@@ -95,5 +96,4 @@
 	\fill[MyPoints] (PA) circle (1pt)node[below right]{$P_1$};
 	\fill[MyPoints] (PB) circle (1pt)node[above right]{$P_2$};
 \end{tikzpicture}
-
 \end{document}

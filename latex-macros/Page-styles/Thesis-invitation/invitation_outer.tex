@@ -1,12 +1,8 @@
-\documentclass[12pt,a4paper]{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+% FIX: This works only for XeLatex
 
-% Invitation outer page
-%
-% Typeset by Tristan Miller <http://www.nothingisreal.com/>
-% February 2016
-% 
-% This source code is released under the Creative Commons
-% Attribution 4.0 International (CC BY 4.0) licence.
+\documentclass[12pt,a4paper]{article}
 
 \usepackage[svgnames]{xcolor}
 \usepackage{wallpaper}
@@ -18,29 +14,23 @@
 \pagestyle{empty}
 \newcommand{\h}[1]{\textcolor{FireBrick}{#1}}
 \newcommand{\cover}[1]{\mbox{}\newpage\mbox{}\vfill \textsc{#1} \vfill\vfill\newpage}
-\begin{document}
-\centering\huge
-\cover{Erika Mustermann}%
-\cover{Ivan Ivanov}%
-\cover{Jan Jansen}%
-\cover{Jan Publiek}%
-\cover{Jane Roe}%
-\cover{Jean Dupont}%
-\cover{Jef Van Pijperzele}%
-\cover{Joe Bloggs}%
-\cover{John Doe}%
-\cover{Jonas Petraitis}%
-\cover{Lieschen Müller}%
-\cover{Mario Rossi}%
-\cover{Max Mustermann}%
-\cover{Minta János}%
-\cover{Numerius Negidius}%
-\cover{Otto Normalverbraucher}%
-\end{document}
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-PDF-mode: t
-%%% TeX-engine: xetex
-%%% TeX-master: t
-%%% End:
+\begin{document}
+  \centering\huge
+  \cover{Erika Mustermann}%
+  \cover{Ivan Ivanov}%
+  \cover{Jan Jansen}%
+  \cover{Jan Publiek}%
+  \cover{Jane Roe}%
+  \cover{Jean Dupont}%
+  \cover{Jef Van Pijperzele}%
+  \cover{Joe Bloggs}%
+  \cover{John Doe}%
+  \cover{Jonas Petraitis}%
+  \cover{Lieschen Müller}%
+  \cover{Mario Rossi}%
+  \cover{Max Mustermann}%
+  \cover{Minta János}%
+  \cover{Numerius Negidius}%
+  \cover{Otto Normalverbraucher}%
+\end{document}

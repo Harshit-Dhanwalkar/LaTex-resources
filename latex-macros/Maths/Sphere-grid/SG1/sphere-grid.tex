@@ -1,4 +1,7 @@
-\documentclass[12pt]{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[varwidth=true, border=5pt]{standalone}
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
@@ -7,11 +10,10 @@
 
 \newcommand{\InterSec}[3]{%
   \path[name intersections={of=#1 and #2, by=#3, sort by=#1,total=\t}]
-  \pgfextra{\xdef\InterNb{\t}}; 
+  \pgfextra{\xdef\InterNb{\t}};
 }
 
-
- \newcommand\getEquator[2]
+\newcommand\getEquator[2]
   {
     \def\yt{#1}
     \def\zt{#2}
@@ -25,9 +27,8 @@
     }
     {
       \pgfmathsetmacro{\alphav}{asin(\yt/(sin(\betav))}
-    };
+   };
   }
-
 
    % to color a line
         \tikzset{test/.style={
@@ -49,20 +50,13 @@
           }
         }
 
-
-
-
 \begin{document}
 \begin{center}
 	\begin{tikzpicture}
-
 		\pgfmathsetmacro\R{2}
 		\fill[ball color=white!10, opacity=0.2] (0,0,0) circle (\R); % 3D lighting effect
 
-
-
 		\foreach \angle[count=\n from 1] in {-5,225,290} {
-
 				\begin{scope}[rotate=\angle]
 					\path[draw,dashed,name path global=d\n] (2,0) arc [start angle=0,
 							end angle=180,
@@ -73,7 +67,7 @@
 							x radius=2cm,
 							y radius=1cm] ;
 				\end{scope}
-			}
+		}
 		\InterSec{s1}{s2}{I3} ;
 		\InterSec{s1}{s3}{I2} ;
 		\InterSec{s3}{s2}{I1} ;
@@ -88,7 +82,6 @@
 
 		\fill[fill=blue,opacity=0.5] (J1) to [bend right=8.5]  (J2) to [bend left=7]
 		(J3) to [bend left=6] (J1);
-
 	\end{tikzpicture}
 \end{center}
 
@@ -106,7 +99,6 @@
 			\pgfmathsetmacro{\gammav}{0};
 			\tdplotsetrotatedcoords{\phivec}{\thetavec}{\gammav};
 
-
 			\def\angA{90}
 			\def\angB{60}
 			\pgfmathsetmacro{\ax}{cos(\angA)}
@@ -121,9 +113,6 @@
 
 			\coordinate (A) at (\aax,\aay,\z);
 			\coordinate (B) at (\bbx,\bby,\z);
-
-
-
 
 			\getEquator{\ay}{\z};
 			\tdplotsetrotatedcoords{\alphav}{\betav}{\gammav};
@@ -148,8 +137,6 @@
 			%\draw[color=red] (A) arc (\angA:\angB:\R); 
 			\draw[test=0.2mm] (A) arc (\angA:\angB:\R);
 
-
-
 			\InterSec{GF}{BF}{F};
 			\InterSec{GB}{BB}{B};
 			\InterSec{C}{GF}{CG};
@@ -165,9 +152,6 @@
 			%\draw[] (RBF) circle (1pt) node[] {\; \; \tiny RBF};
 			%\draw[] (T) circle (1pt) node[] {\tiny T};
 			%\draw[] (RC) circle (1pt) node[] {\tiny RC};
-
-
-
 
 			%axis
 			\coordinate (X) at (4,0,0) ;
@@ -187,11 +171,8 @@
 			[bend right=10]  (RBF) to [bend left ] (B);
 			\shade[left color=green, right color=blue, opacity=0.8] (F) to [bend left=10] (RC) to
 			[bend right=10]  (T) to [bend right] (F);
-
 		\end{scope}
 	\end{tikzpicture}
-
 \end{center}
-
 
 \end{document}

@@ -1,18 +1,13 @@
-\documentclass[12pt]{article}
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[varwidth=true, border=5pt]{standalone}
 \usepackage{tikz}
-
-\usepackage[active,tightpage]{preview}
-\PreviewEnvironment{tikzpicture}
-\setlength\PreviewBorder{5pt}%
-
-
-
-
 \usetikzlibrary{positioning}
 %% helper macros
 
-% The 3D code is based on The drawing is based on Tomas M. Trzeciak's 
-% `Stereographic and cylindrical map projections example`: 
+% The 3D code is based on The drawing is based on Tomas M. Trzeciak's
+% `Stereographic and cylindrical map projections example`:
 % http://www.texample.net/tikz/examples/map-projections/
 \newcommand\pgfmathsinandcos[3]{%
   \pgfmathsetmacro#1{sin(#3)}%
@@ -87,7 +82,6 @@
   \pgfmathsetmacro\angVis{asin(min(1,max(\sinVis,-1)))}
   %\draw[current plane,red,thick] (-\angVis-50:1) arc (-\angVis-50:-\angVis-20:1);
 \draw[current plane,red,thick] (-50:1) arc (-50:-35:1);
-
 }
 
 \tikzset{%
@@ -103,7 +97,6 @@
 \begin{figure}[ht!]
 	\begin{tikzpicture}[scale=1,every node/.style={minimum size=1cm}]
 		%% some definitions
-
 		\def\R{4} % sphere radius
 
 		\def\angEl{25} % elevation angle
@@ -113,7 +106,6 @@
 		\def\angBeta{30} % latitude of point P and Q
 
 		%% working planes
-
 		\pgfmathsetmacro\H{\R*cos(\angEl)} % distance to north pole
 		\LongitudePlane[xzplane]{\angEl}{\angAz}
 		\LongitudePlane[pzplane]{\angEl}{\angPhiOne}
@@ -137,7 +129,6 @@
 
 		\path[qzplane] (\R,0) coordinate (QE);
 		\path[qzplane] (\R+4,0) coordinate (QEd);%sfora di una quantità 10 dalla sfera sul piano equat.
-
 
 		\DrawLongitudeCircle[\R]{\angPhiOne} % pzplane
 		\DrawLongitudeCircle[\R]{\angPhiTwo} % qzplane
@@ -177,7 +168,6 @@
 		\foreach \t in {130,133,...,145} { \DrawLongitudeCirclered[\R]{\t} }
 
 		%drawing grids on the spere invoking DLongredd and DrawLongitudeCirclered
-
 		\foreach \t in {130,145,...,145} { \DLongredd[\R+3]{\t} }
 		\foreach \t in {130,133,...,145} { \DrawLongitudeCirclered[\R+3]{\t} }
 
@@ -185,11 +175,11 @@
 		\foreach \t in {0,2,...,30} { \DrawLatitudeCirclered[\R+3]{\t} }
 
 		%labelling
-		\draw[-latex,thick](4,-5.5)node[left]{$\mathsf{Grid(s)\ in\ Fig. \ (\ref{fig:Grid})}$}
+		\draw[-latex,thick](4,-5.5)node[left]{$\mathsf{Grid(s)\ in\ Fig. \(\ref{fig:Grid}\)}$}
 		to[out=0,in=270] (5.8,-2.3);
 		\draw[thick](3.6,-6)node[left]{$[\mathsf{Rectilinear}]$};
-
 	\end{tikzpicture}
+
 	\caption[Representation of spherical and regular computational grids used by SWAN]
 	{Representation of spherical (red) and cartesian (black) co-ordinate systems. Latter
 		gives an example of unstructured grids. Both unstructured. Conversion from former
@@ -199,7 +189,5 @@
 		Fig.(\ref{fig:Grid}). \\Mathematically frames change accordingly: see Eq.(\ref{eq:actbal2sph}).}
 	\label{fig:frames}
 \end{figure}
-
-
 
 \end{document}

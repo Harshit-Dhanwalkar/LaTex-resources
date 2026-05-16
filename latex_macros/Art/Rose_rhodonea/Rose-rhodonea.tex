@@ -1,0 +1,47 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[12pt]{scrartcl}
+
+\usepackage{tikz}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}
+
+\usetikzlibrary{shapes}
+
+\title{Rose-rhodonea-curve}
+\author{harshit Prashant Dhanwalkar}
+
+\def\rows{4}
+\def\columns{4}
+
+\begin{document}
+\thispagestyle{empty}
+
+\begin{tikzpicture}
+	\draw (-1, 1) node{$_n\backslash^d$};
+	\foreach \d in {1, 2, ..., \rows} {
+			\draw (2.5 * \d - 2, 1) node{\d};
+		}
+	\foreach \n in {1, 2, ..., \columns} {
+			\draw (-1, -2.5 * \n + 2) node{\n};
+			\foreach \d in {1, 2, ..., \rows} {
+					\fill[black!10!white] (2.5 * \d - 2, -2.5 * \n + 2) circle (1cm);
+					\ifnum\n=\d
+						\draw (2.5 * \d - 2, -2.5 * \n + 2) circle (0.5cm);
+					\else
+						\pgfplothandlerlineto
+						\pgfplotfunction{\x}{0, \d, ..., 180\d}{
+							\pgfpointxy
+							{2.5 * \d + cos(\x) * sin(\n / \d * \x) - 2}
+							{-2.5 * \n + sin(\x) * sin(\n / \d * \x) + 2}
+						}
+						\pgfusepath{stroke}
+					\fi
+				}
+		}
+	\draw (2.5 * \rows / 2 - 1, - 2.5 * \columns) node [rounded rectangle, draw]
+	{$r = \sin\left(\frac{\Theta \cdot n}{d}\right)$};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,53 @@
+
+\documentclass{article}
+\usepackage{lipsum}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+\newsavebox{\midbox}
+\savebox{\midbox}{%
+  \begin{tcolorbox}[width=0.4\textwidth,
+      colback=white, colframe=black, arc=0mm,
+      left=3mm, right=3mm, top=3mm, bottom=3mm, boxsep=0pt]
+    \small
+    \textbf{Lorem ipsum dolor sit amet...}\\
+    Lorem ipsum dolor sit amet, consectetur
+    adipiscing elit. Sed do eiusmod tempor.
+  \end{tcolorbox}%
+}
+
+\begin{document}
+
+\noindent\begin{tikzpicture}[remember picture]
+  \coordinate (boxanchor);
+\end{tikzpicture}%
+\begin{tikzpicture}[remember picture, overlay]
+  \node[anchor=north] at ([yshift=-5.5\baselineskip]boxanchor -| current page.center)
+    {\usebox{\midbox}};
+\end{tikzpicture}%
+
+\noindent
+\begin{minipage}[t]{0.47\textwidth}
+\parshape 14
+  0pt \linewidth 0pt \linewidth 0pt \linewidth 0pt \linewidth 0pt \linewidth
+  0pt 0.55\linewidth 0pt 0.55\linewidth 0pt 0.55\linewidth 0pt 0.55\linewidth
+  0pt 0.55\linewidth 0pt 0.55\linewidth 0pt 0.55\linewidth 0pt 0.55\linewidth
+  0pt \linewidth
+\lipsum*[1-2]
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+\parshape 14
+  0pt \linewidth 0pt \linewidth 0pt \linewidth 0pt \linewidth 0pt \linewidth
+  0.45\linewidth 0.55\linewidth 0.45\linewidth 0.55\linewidth
+  0.45\linewidth 0.55\linewidth 0.45\linewidth 0.55\linewidth
+  0.45\linewidth 0.55\linewidth 0.45\linewidth 0.55\linewidth
+  0.45\linewidth 0.55\linewidth 0.45\linewidth 0.55\linewidth
+  0pt \linewidth
+\lipsum*[3-4]
+\end{minipage}
+
+\end{document}

@@ -1,0 +1,134 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
+\documentclass[12pt]{article}
+
+\usepackage[a4paper,landscape,margin=0.5cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{fontspec}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{luacode}
+
+\setmainfont{TeX Gyre Pagella}
+
+% ---------- Color palette ----------
+\definecolor{Primary}{HTML}{1F4E79}
+\definecolor{Secondary}{HTML}{2E86AB}
+\definecolor{Accent}{HTML}{D97706}
+\definecolor{LightBlue}{HTML}{EAF3F8}
+
+% % ---------- Lua Helper Function ----------
+% \begin{luacode*}
+% function print_split_reference_table()
+%     for i = 1, 50 do
+%         local col1 = i
+%         local col2 = i + 50
+%         local col3 = i + 100
+%         local col4 = i + 150
+%         local col5 = i + 200
+%         local col6 = i + 250
+%         local col7 = i + 300
+%
+%         local function format_cell(num)
+%             if math.fmod(num, 10) == 0 then
+%                 return string.format([[\textbf{\textcolor{Accent}{%d}} & \textbf{\textcolor{Accent}{%d}} & \textbf{\textcolor{Accent}{%d}}]], num, num*num, num*num*num)
+%             else
+%                 return string.format([[%d & %d & %d]], num, num*num, num*num*num)
+%             end
+%         end
+%
+%         local str1 = format_cell(col1)
+%         local str2 = format_cell(col2)
+%         local str3 = format_cell(col3)
+%         local str4 = format_cell(col4)
+%         local str5 = format_cell(col5)
+%         local str6 = format_cell(col6)
+%         local str7 = format_cell(col7)
+%
+%         tex.print(str1 .. [[ & & ]] .. str2 .. [[ & & ]] .. str3 .. [[ & & ]] .. str4 .. [[ & & ]] .. str5 .. [[ & & ]] .. str6 .. [[ & & ]] .. str7 .. [[ \\]])
+%     end
+% end
+% \end{luacode*}
+% ---------- Lua Helper Function ----------
+\begin{luacode*}
+function format_with_commas(n)
+    local str = string.format("%.0f", n)
+    if #str <= 3 then return str end
+
+    local last3 = str:sub(-3)
+    local rest = str:sub(1, -4)
+
+    -- Insert commas every 2 digits for the remaining numbers
+    rest = rest:reverse():gsub("(%d%d)", "%1,"):reverse()
+
+    -- Remove trailing comma if it starts with one
+    if rest:sub(1, 1) == "," then
+        rest = rest:sub(2)
+    end
+
+    return rest .. "," .. last3
+end
+
+function print_split_reference_table()
+    for i = 1, 50 do
+        local col1 = i
+        local col2 = i + 50
+        local col3 = i + 100
+        local col4 = i + 150
+        local col5 = i + 200
+        local col6 = i + 250
+        local col7 = i + 300
+
+        local function format_cell(num)
+            local n_str = format_with_commas(num)
+            local sq_str = format_with_commas(num * num)
+            local cb_str = format_with_commas(num * num * num)
+
+            if math.fmod(num, 10) == 0 then
+                return string.format([[\textbf{\textcolor{Accent}{%s}} & \textbf{\textcolor{Accent}{%s}} & \textbf{\textcolor{Accent}{%s}}]], n_str, sq_str, cb_str)
+            else
+                return string.format([[%s & %s & %s]], n_str, sq_str, cb_str)
+            end
+        end
+
+        local str1 = format_cell(col1)
+        local str2 = format_cell(col2)
+        local str3 = format_cell(col3)
+        local str4 = format_cell(col4)
+        local str5 = format_cell(col5)
+        local str6 = format_cell(col6)
+        local str7 = format_cell(col7)
+
+        tex.print(str1 .. [[ & & ]] .. str2 .. [[ & & ]] .. str3 .. [[ & & ]] .. str4 .. [[ & & ]] .. str5 .. [[ & & ]] .. str6 .. [[ & & ]] .. str7 .. [[ \\]])
+    end
+end
+\end{luacode*}
+
+\begin{document}
+
+\centering
+\small
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{0.75}
+
+\begin{tabular}{>{\bfseries}r r r !{\vrule width 0.4pt} c >{\bfseries}r r r !{\vrule width 0.4pt} c >{\bfseries}r r r !{\vrule width 0.4pt} c >{\bfseries}r r r !{\vrule width 0.4pt} c >{\bfseries}r r r !{\vrule width 0.4pt} c >{\bfseries}r r r !{\vrule width 0.4pt} c >{\bfseries}r r r}
+    \toprule
+    \rowcolor{LightBlue}
+    \textcolor{Primary}{$n$} & \textcolor{Primary}{$n^2$} & \textcolor{Primary}{$n^3$} & &
+    \textcolor{Primary}{$n$} & \textcolor{Primary}{$n^2$} & \textcolor{Primary}{$n^3$} & &
+    \textcolor{Primary}{$n$} & \textcolor{Primary}{$n^2$} & \textcolor{Primary}{$n^3$} & &
+    \textcolor{Primary}{$n$} & \textcolor{Primary}{$n^2$} & \textcolor{Primary}{$n^3$} & &
+    \textcolor{Primary}{$n$} & \textcolor{Primary}{$n^2$} & \textcolor{Primary}{$n^3$} & &
+    \textcolor{Primary}{$n$} & \textcolor{Primary}{$n^2$} & \textcolor{Primary}{$n^3$} & &
+    \textcolor{Primary}{$n$} & \textcolor{Primary}{$n^2$} & \textcolor{Primary}{$n^3$} \\
+    \midrule
+
+    \luadirect{print_split_reference_table()}
+
+    \bottomrule
+\end{tabular}
+
+\end{document}

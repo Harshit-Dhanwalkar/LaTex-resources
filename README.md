@@ -1,8 +1,8 @@
 # LaTex-resources
 
-Collection of templates, macros, etc for LaTex
+Collection of templates, macros, etc for $\LaTeX$
 
-## Usefull links
+## Useful links
 
 - https://tikz.org/
 - https://latexguide.org/

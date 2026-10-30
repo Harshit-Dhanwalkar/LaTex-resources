@@ -1,0 +1,250 @@
+name: build-all
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  # Discover every standalone .tex root and default to LuaLaTeX
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.find.outputs.matrix }}
+      count:  ${{ steps.find.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: find
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, re, pathlib
+
+          SKIP_DIRS  = {'.git', 'venv', '.venv', 'node_modules', 'gallery',
+                        'frames', '__pycache__'}
+
+          projects = []
+          for p in pathlib.Path('.').rglob('*.tex'):
+              if any(part in SKIP_DIRS or part.startswith('.') for part in p.parts):
+                  continue
+              try:
+                  text = p.read_text(encoding='utf-8', errors='ignore')
+              except Exception:
+                  continue
+              if '\\documentclass' not in text:
+                  continue
+
+              d = p.parent
+              rel_dir = str(d).replace('\\', '/') if str(d) != '.' else '.'
+              pid = (rel_dir.replace('/', '__') if rel_dir != '.' else 'root') + '__' + p.stem
+
+              projects.append({
+                  'id':     pid,
+                  'dir':    rel_dir,
+                  'file':   p.name,
+                  'out':    p.stem + '.pdf',
+              })
+
+          seen = {pr['id']: pr for pr in projects}
+          include = sorted(seen.values(), key=lambda r: r['id'])
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+              fh.write('matrix=' + json.dumps({'include': include}) + '\n')
+              fh.write('count='  + str(len(include)) + '\n')
+
+          print(f'Discovered {len(include)} LaTeX roots')
+          PY
+
+  # Build each project with LuaLaTeX. Failures are skipped
+  build:
+    needs: discover
+    if: needs.discover.outputs.count != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile ${{ matrix.id }} (lualatex)
+        id: compile
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: ${{ matrix.dir }}
+          root_file:         ${{ matrix.file }}
+          latexmk_use_lualatex: true
+          latexmk_shell_escape: true
+          args: -file-line-error -interaction=nonstopmode
+          extra_packages: biber
+          extra_system_packages: >-
+            python3 py3-pillow py3-pygments poppler-utils ghostscript
+
+      - name: Collect PDF
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          src="${{ matrix.dir }}/${{ matrix.out }}"
+          dst="out/${{ matrix.id }}.pdf"
+          if [[ -f "$src" ]]; then
+            cp "$src" "$dst"
+          else
+            newest=$(find "${{ matrix.dir }}" -maxdepth 1 -name '*.pdf' \
+                       -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2- || true)
+            if [[ -z "${newest:-}" ]]; then
+              echo "::error::No PDF produced for ${{ matrix.id }}"
+              exit 1
+            fi
+            cp "$newest" "$dst"
+          fi
+          ls -l "$dst"
+
+      - name: Upload PDF
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-${{ matrix.id }}
+          path: out/${{ matrix.id }}.pdf
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Mark failure
+        if: failure()
+        run: |
+          echo "Failed: ${{ matrix.id }} (${{ matrix.dir }}/${{ matrix.file }})" >> "$GITHUB_STEP_SUMMARY"
+
+  # Report which projects failed, if any
+  summarize:
+    needs: [discover, build]
+    if: always() && needs.discover.outputs.count != '0'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build summary
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          {
+            echo "## Build Summary"
+            echo ""
+            echo "- Projects discovered: **${{ needs.discover.outputs.count }}**"
+            echo "- Build job result: **${{ needs.build.result }}**"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "${{ needs.build.result }}" == "success" ]]; then
+            echo "=== All projects compiled successfully. ===" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "=== Some projects failed:" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Project ID | Directory | Root File |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+
+          gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" \
+            --paginate \
+            --jq '.jobs[]
+                  | select(.conclusion == "failure" and (.name | startswith("build")))
+                  | .name' \
+          | sed -E 's/^build \(([^,]+), ([^)]+)\)$/| \1 | | \2 |/' \
+          >> "$GITHUB_STEP_SUMMARY"
+
+  # Deploy PDFs to GitHub Pages
+  deploy:
+    needs: [discover, build]
+    if: >
+      always()
+      && github.ref == 'refs/heads/main'
+      && needs.discover.outputs.count != '0'
+      && needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download all PDF artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pdf-*
+          path: _site
+          merge-multiple: true
+
+      - name: Generate index.html
+        shell: bash
+        run: |
+          cat > _site/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <title>LaTeX PDF Gallery</title>
+            <style>
+              body { font-family: system-ui, sans-serif; margin: 2rem; }
+              li { margin: 0.5rem 0; }
+              a { text-decoration: none; color: #0366d6; }
+              a:hover { text-decoration: underline; }
+            </style>
+          </head>
+          <body>
+            <h1>LaTeX PDF Gallery</h1>
+            <p>Latest builds from the main branch.</p>
+            <ul>
+          EOF
+
+          for pdf in _site/*.pdf; do
+            name=$(basename "$pdf" .pdf)
+            echo "      <li><a href=\"$name.pdf\">$name</a></li>" >> _site/index.html
+          done
+
+          cat >> _site/index.html <<'EOF'
+            </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # # Merge all PDFs into one release
+  # release:
+  #   needs: [discover, build]
+  #   if: >
+  #     always()
+  #     && startsWith(github.ref, 'refs/tags/')
+  #     && needs.discover.outputs.count != '0'
+  #     && needs.build.result == 'success'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         pattern: pdf-*
+  #         path: dist
+  #         merge-multiple: true
+  #     - run: ls -lR dist
+  #     - uses: softprops/action-gh-release@v2
+  #       with:
+  #         files: dist/**/*.pdf
+  #         generate_release_notes: true

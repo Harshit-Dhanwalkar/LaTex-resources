@@ -35,7 +35,7 @@
 \usepackage{multicol}
 \usepackage[makeroom]{cancel}
 
-\graphicspath{{./figures/},}
+\graphicspath{{./figures/}}
 
 \AtBeginSection{\frame{\sectionpage}}
 
@@ -56,7 +56,7 @@
 \author{Fname Lname}
 
 \institute[]{%
-Institute Name
+	Institute Name
 }
 \date{}
 
@@ -64,21 +64,19 @@ Institute Name
 
 % \usepackage{mydefs}
 
-\setbeamercovered{transparent} 
-\setbeamertemplate{navigation symbols}{} 
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
 \titlegraphic{
-\begin{center}
-\vspace*{-30pt}
-\includegraphics[height=0.15\tH]{figures/uni_logo.png}
+	\begin{center}
+		\vspace*{-30pt}
+		\includegraphics[height=0.2\textheight]{assets/uni_logo.jpg}
 
-\vspace*{10pt}
-% \includegraphics[height=0.03\tH]{figures/mail_logo.png}\hspace*{2pt}
-% {\scriptsize \href{mailto:abarik@jhu.edu}{email@example.com}}\hspace*{20pt}
-\end{center}
+		\vspace*{10pt}
+		% \includegraphics[height=0.2\textheight]{figures/mail_logo.png}\hspace*{2pt}
+		% {\scriptsize \href{mailto:abarik@jhu.edu}{email@example.com}}\hspace*{20pt}
+	\end{center}
 }
-%\institute[JHU]{Planetary Interiors}
-
-
+%\institute[UNI]{Eg. Planetary Interiors}
 
 \begin{document}
 
@@ -93,8 +91,8 @@ Institute Name
 \end{frame}
 
 \begin{frame}{References}
-	\bibliographystyle{apalike}
-	\bibliography{bib}
+	% \bibliographystyle{apalike}
+	% \bibliography{bib}
 \end{frame}
 
 \end{document}

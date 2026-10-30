@@ -1,0 +1,172 @@
+%! TeX program = lualatex
+%! TeX encoding = UTF-8
+
+%% showcase.tex - what grown margin does besides growing: it reads the text.
+%% LuaLaTeX, two passes (the option aging reads the page count of the first):
+%%   lualatex showcase.tex && lualatex showcase.tex
+\documentclass[11pt,a4paper]{article}
+\renewcommand\rmdefault{cmr}\renewcommand\sfdefault{cmss}\renewcommand\ttdefault{cmtt}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,left=68mm,right=22mm,top=32mm,bottom=30mm,headsep=8mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage[grown,sections,aging]{florilegium}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[R]{\small\textsc{A year in the margin}}
+\fancyfoot[R]{\small\thepage}
+\renewcommand\headrulewidth{0pt}
+\newcommand\code[1]{\texttt{\small #1}}
+
+\begin{document}
+\section{Spring}
+
+\florilegiuminitial[5]{E}{very} page of this document grows its own
+garden, but the
+gardens here also read the text they surround. This first page is
+spring: the plant is
+young, its leaves are small and pale, and it is mostly in bud; the
+last page is autumn.
+The document loads the package with three options, and the sections
+that follow show what
+each of them does, along with a few things that need no option at all:
+\begin{center}\code{\textbackslash
+  usepackage[grown,sections,aging]\{florilegium\}}
+\end{center}
+
+The letter that opens this paragraph is one of them. It was set with
+\code{\textbackslash florilegiuminitial[5]\{E\}}, which reads the
+outline of the letter from an OpenType font (Latin
+  Modern Bold, the OpenType twin of Computer Modern, unless another is
+named), paints it
+like a petal, and sets it in a tile five lines tall. A vine crosses
+the tile and passes
+over and under the strokes of the letter in turn; where it passes
+over, a thin halo of
+paper parts it from the letter. Leaves go where they fit and small
+flowers into the
+largest gaps, which for a B or an O are its counters. The letter is
+also typeset in the
+text, invisibly, so the paragraph still copies and searches as \emph{Every}.
+
+\subsection{Flowers at the headings}
+
+With the option \code{sections}, every numbered section and
+subsection gets a flower in the
+margin, beside its heading: a large one for a section, a spray of
+small ones for a
+subsection, painted in the copper of the accents, the way headings
+were once picked out in
+red. The heading carries an invisible mark. When the page is shipped out, the
+garden is drawn and the page box is searched for these marks, so the
+garden knows the
+height of each heading on the same page in the same run. Where the
+margin is already
+taken, by the large flower at the top of the page for example, the
+flower is made
+smaller or left out.
+
+\subsection{A flower where the text asks for one}
+
+The same mark can be placed by hand. \code{\textbackslash
+florilegiumbloom} puts a flower
+in the margin beside the line in which it stands, like this
+one\florilegiumbloom, and \code{\textbackslash
+florilegiumbloom[lily]} asks for any of the
+motifs the garden is made of: \code{lily}, \code{blossoms},
+\code{cyme}, \code{umbel},
+\code{bud}, or a \code{butterfly}. It costs nothing on pages that
+have no marks and does
+not move the text.
+
+\section{Summer}
+
+By the middle of the document the garden is in full bloom: open
+flowers, star lilies,
+forget-me-nots curling at their tips, umbels. The page count needed
+to know where the
+middle is comes from the previous run, which is why the option
+\code{aging} asks for two;
+on the first run every page is summer, and LaTeX says so with a
+request to rerun.
+
+The seasons change what grows, not where. In spring sprays of closed
+buds take the place of
+most open flowers, the two shorter stems end in buds instead of a
+lily and a flower, the
+leaves are smaller and paler, and there are more tendrils. Summer is
+the garden as it
+always was, which is also what a document without the option gets.
+
+\subsection{Visitors}
+
+Most pages have visitors: one or two butterflies and bees in the open
+spaces, a snail
+crawling up one of the main stems, and on about one page in five a
+bird perched on a twig
+of its own. They are drawn from their own random stream, so a page
+without them is
+exactly the page it would have been, and the option \code{novisitors}
+leaves them all out.
+In the growth animation the butterflies and bees fly in, the bird
+glides onto its twig
+and the snail crawls up its stem until the last frame.
+
+\subsection{Watching it grow}
+
+Every garden can be watched as it grows. \code{make grow-7} records
+the growth of seed 7
+once, while the page is laid out: every stem is also drawn as shorter
+prefixes of itself,
+and every motif at a few smaller sizes with the same random draws.
+Each frame is then a
+page that writes the pieces whose time has come, in their original
+painting order, so the
+last frame is exactly the finished page. A short script turns the
+frames into a GIF and an
+MP4; \code{EXPLAIN=1} adds a dashed circle for each free space the
+loop picks, just before
+a branch grows to it. The stems rise first and the leaves open as
+their tips pass; then
+the large holes fill, slowly, and the small ones last, quickly.
+
+\subsection{One seed, one garden}
+
+Nothing changes from one run to the next. A page's seed comes from
+its page number, or
+from \code{\textbackslash def\textbackslash florilegiumseed\{7\}} for
+all of them, and
+every decision is drawn from random streams derived from it: the
+layout from one, each
+primitive from a fork of another, and the visitors and the season
+each from their own.
+A page without visitors, or without an age, is therefore exactly the
+page it would have
+been without those features. The same source always gives the same PDF.
+
+\subsection{Colors}
+
+The whole palette comes from one color, called \code{ink}. Defining it with
+\code{\textbackslash definecolor\{ink\}\{HTML\}\{5B2A1F\}} paints the
+garden in sepia, \code{2F6B4F} in green, \code{8E1B3A} in crimson: the ramp from
+the darkest stroke to the palest wash is computed from that one hue,
+so the light end of
+it never turns gray. A second color, \code{accent}, is the copper of
+the hairlines, the
+sparkles and the flowers' eyes, and in autumn of some of the leaves.
+
+\section{Autumn}
+
+On the last page the garden goes to seed. Fewer flowers open; the
+shorter stems end in
+seed heads, dandelion clocks whose seeds drift away from them; loose
+petals have fallen
+into the space below the flowers; and some of the leaves have turned copper.
+\code{\textbackslash florilegiumage\{0.8\}} sets the age by hand
+instead, from 0, spring,
+through 0.5, summer, to 1, autumn, for all the pages that follow.
+
+The text ends here, early on its page, and \code{\textbackslash
+florilegiumtextend} tells
+the garden so: it grows into the space below these lines as well.
+\florilegiumtextend
+\end{document}

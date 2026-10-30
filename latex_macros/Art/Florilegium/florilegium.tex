@@ -1,0 +1,31 @@
+%! TeX program = lualatex
+%! TeX encoding = UTF-8
+
+%% florilegium.tex - authored composition. LuaLaTeX, one pass:
+%%   lualatex florilegium.tex
+%% Margin is drawn by florilegium.sty (authored.lua); body text describes how
+\documentclass[11pt,a4paper]{article}
+\renewcommand\rmdefault{cmr}\renewcommand\sfdefault{cmss}\renewcommand\ttdefault{cmtt}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[a4paper,left=68mm,right=22mm,top=32mm,bottom=30mm,headsep=8mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{florilegium}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[R]{\small\textsc{3\quad Procedural ornament}}
+\fancyfoot[R]{\small\thepage}
+\renewcommand\headrulewidth{0pt}
+
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{definition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{construction}[proposition]{Construction}
+\newtheorem{remark}[proposition]{Remark}
+\newtheorem{exercise}[proposition]{Exercise}
+
+\begin{document}
+\input{text-methods}
+\input{text-sharing}
+\end{document}

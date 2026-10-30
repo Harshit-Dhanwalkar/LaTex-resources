@@ -1,0 +1,51 @@
+%! TeX program = lualatex
+%! TeX encoding = UTF-8
+
+%% animation.tex -- the growth of one garden, one page per frame;
+% used by tools/animate.py.
+%%   lualatex -jobname=build/anim
+% "\def\florilegiumseed{7}\def\animframes{260}\input{animation.tex}"
+%% Optional: \def\animfrom{..}\def\animto{..} for a range of frames
+% (parallel jobs),
+%% \def\animexplain{explain} to mark the free disc that each branch grows to.
+\documentclass[11pt,a4paper]{article}
+\renewcommand\rmdefault{cmr}\renewcommand\sfdefault{cmss}\renewcommand\ttdefault{cmtt}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,left=68mm,right=22mm,top=32mm,bottom=30mm,headsep=8mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage[grown]{florilegium}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[R]{\small\textsc{3\quad Procedural ornament}}
+\renewcommand\headrulewidth{0pt}
+\ifdefined\animframes\else\def\animframes{260}\fi
+\ifdefined\animfrom\else\def\animfrom{1}\fi
+\ifdefined\animto\else\let\animto\animframes\fi
+\ifdefined\animexplain\else\def\animexplain{}\fi
+\newcount\animk
+\begin{document}
+\animk=\animfrom\relax
+\loop
+% every frame is the same page: same number, same text, same seed
+\setcounter{page}{1}\setcounter{section}{3}\setcounter{subsection}{2}
+\florilegiumframe[\animexplain]{\the\animk}{\animframes}
+\subsection{Watch it grow}
+
+This garden grows from seed \texttt{\ifx\florilegiumseed\empty
+page\else\florilegiumseed\fi}.
+Three stems rise from a root in the corner, leaves open at their
+nodes as the tips pass,
+and each stem ends in a flower. Then a greedy loop takes over: it
+finds the largest
+circle of free space within reach of a
+stem\ifx\animexplain\empty\else{} (dashed)\fi,
+chooses a motif that fits it, and grows a branch to it from the
+nearest stem point. Big
+holes come first, so flowers and lilies land early; the last small
+gaps get leaflets,
+buds and florets. The final frame is exactly the page that this seed
+always gives.
+\florilegiumtextend
+\clearpage
+\advance\animk by 1
+\ifnum\animk<\numexpr\animto+1\relax\repeat
+\end{document}

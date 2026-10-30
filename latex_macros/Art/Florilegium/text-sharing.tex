@@ -1,0 +1,40 @@
+%! TeX program = lualatex
+%! TeX encoding = UTF-8
+
+%% text-sharing.tex - shared closing section
+\subsubsection{Building and sharing}
+
+The package is \texttt{florilegium.sty} with six Lua files beside it:
+\texttt{ink.lua}
+(geometry, color and PDF output), \texttt{flora.lua} (the primitives),
+\texttt{authored.lua} and \texttt{grow.lua} (the two compositions),
+\texttt{initial.lua}
+(the decorated initials) and \texttt{florilegium.lua} (the glue to
+\TeX). It needs Lua\LaTeX\ and one compilation, at
+about a second per page. To share it, the three routes that work are,
+in increasing order
+of effort: paste the files into a blank Overleaf project with the
+compiler set to
+Lua\LaTeX\ and share the link; put them in a Git repository with a
+continuous integration
+job that compiles the PDFs on every push and attaches them to tagged
+releases; or publish
+the package so that any document can \texttt{\textbackslash
+usepackage} the garden and
+choose its own seed, column and hue.
+
+\begin{remark}
+  Two mistakes cost time and are worth recording. A literal written
+  into the page bypasses
+  TikZ, so it also bypasses TikZ's transformations: a primitive called inside
+  \verb|\begin{scope}[shift=...,rotate=...]| must read pgf's current
+  matrix itself (it is in
+    \verb|\pgf@pt@aa| to \verb|\pgf@pt@bb| and the dimensions \verb|\pgf@pt@x|,
+  \verb|\pgf@pt@y|) and apply it in Lua. And a Lua function that
+  returns two values, placed
+  in the middle of a table constructor such as
+  \verb|{x0, y0, f(t), x1, y1}|, contributes only
+  its first value; the rest of the table shifts, and the error
+  surfaces three functions
+  later as arithmetic on \texttt{nil}.
+\end{remark}

@@ -1,0 +1,34 @@
+%! TeX program = lualatex
+%! TeX encoding = UTF-8
+
+%% florilegium-grow.tex -- the grown composition. LuaLaTeX, one pass:
+%%   lualatex florilegium-grow.tex
+%% The layout is computed by grow.lua and drawn by flora.lua/ink.lua through
+%% florilegium.sty; the body text describes all three.
+\documentclass[11pt,a4paper]{article}
+\renewcommand\rmdefault{cmr}\renewcommand\sfdefault{cmss}\renewcommand\ttdefault{cmtt}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[a4paper,left=68mm,right=22mm,top=32mm,bottom=30mm,headsep=8mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage[grown]{florilegium}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[R]{\small\textsc{3\quad Procedural ornament}}
+\fancyfoot[R]{\small\thepage}
+\renewcommand\headrulewidth{0pt}
+
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{definition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{construction}[proposition]{Construction}
+\newtheorem{remark}[proposition]{Remark}
+\newtheorem{exercise}[proposition]{Exercise}
+
+\begin{document}
+\input{text-methods}
+\input{text-growth}
+\input{text-sharing}
+\florilegiumtextend
+\end{document}

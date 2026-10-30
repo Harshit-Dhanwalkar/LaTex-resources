@@ -3,7 +3,7 @@ name: build-all
 on:
   push:
     branches: [main]
-    tags: ['v*']
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.find.outputs.matrix }}
-      count:  ${{ steps.find.outputs.count }}
+      count: ${{ steps.find.outputs.count }}
     steps:
       - uses: actions/checkout@v4
 
@@ -30,13 +30,22 @@ jobs:
           python3 - <<'PY'
           import json, os, re, pathlib
 
-          SKIP_DIRS  = {'.git', 'venv', '.venv', 'node_modules', 'gallery',
-                        'frames', '__pycache__'}
+          SKIP_DIRS  = {'.git', 'venv', '.venv', 'node_modules', 'gallery', 'frames', '__pycache__'}
+          # skip animation and glossary fragment
+          SKIP_FILES = {
+              'latex_macros/Art/Florilegium/animation.tex',
+              'latex_macros/Page_styles/Antique_book/glossary.tex'
+          }
 
           projects = []
           for p in pathlib.Path('.').rglob('*.tex'):
               if any(part in SKIP_DIRS or part.startswith('.') for part in p.parts):
                   continue
+
+              rel_path = str(p).replace('\\', '/')
+              if rel_path in SKIP_FILES:
+                  continue
+
               try:
                   text = p.read_text(encoding='utf-8', errors='ignore')
               except Exception:
@@ -70,7 +79,7 @@ jobs:
     needs: discover
     if: needs.discover.outputs.count != '0'
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
@@ -82,13 +91,12 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           working_directory: ${{ matrix.dir }}
-          root_file:         ${{ matrix.file }}
+          root_file: ${{ matrix.file }}
           latexmk_use_lualatex: true
           latexmk_shell_escape: true
           args: -file-line-error -interaction=nonstopmode
-          extra_packages: biber
           extra_system_packages: >-
-            python3 py3-pillow py3-pygments poppler-utils ghostscript
+            python3 py3-pillow py3-pygments poppler-utils ghostscript biber
 
       - name: Collect PDF
         if: success()
@@ -119,11 +127,6 @@ jobs:
           path: out/${{ matrix.id }}.pdf
           if-no-files-found: error
           retention-days: 14
-
-      - name: Mark failure
-        if: failure()
-        run: |
-          echo "Failed: ${{ matrix.id }} (${{ matrix.dir }}/${{ matrix.file }})" >> "$GITHUB_STEP_SUMMARY"
 
   # Report which projects failed, if any
   summarize:
@@ -169,7 +172,6 @@ jobs:
       always()
       && github.ref == 'refs/heads/main'
       && needs.discover.outputs.count != '0'
-      && needs.build.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read

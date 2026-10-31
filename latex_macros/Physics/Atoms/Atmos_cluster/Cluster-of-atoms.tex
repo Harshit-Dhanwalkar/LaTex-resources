@@ -1,7 +1,8 @@
 % !TeX program = lualatex
 % !TeX encoding = UTF-8
 
-\documentclass[border=5pt]{standalone}
+\documentclass[varwidth=true, border=5pt]{standalone}
+
 \usepackage[gray]{xcolor}
 \usepackage{tikz,pgffor,graphicx}
 \usetikzlibrary{shadows,3d}
@@ -11,12 +12,13 @@
 	\centering
 	\begin{tikzpicture}
 
-		%\draw[help lines] (0,0) grid (10,10); %used just for visualising the positions of objects during construction
+		%\draw[help lines] (0,0) grid (10,10); %used just for visualising
+		% the positions of objects during construction
 
 		\begin{scope}[yshift=-180,yslant=0.5,xslant=-1]
 			%the rectangular surface onto which the clusters are located
 			\filldraw[black!10,very thick] (0.5,1) rectangle (10,7);
-			%circle circumventing the smallest cluster 
+			%circle circumventing the smallest cluster
 			\node[circle,circular glow,fill=red!20,draw=red,thick]
 			at (4.1,4.9) {\phantom{perimetro}};
 		\end{scope}
@@ -30,7 +32,8 @@
 			{$\mathsf{Non-metallic\; molecule}$} to[out=180,in=0] (2.6,-3);
 			\draw[-latex,thick](-3,-1)node[above]
 			{$\mathsf{extra \; electrons}$} to[out=-90,in=180] (-1.4,-2);
-			%now we start with the clusters (maybe this code could be improved by a tikz expert)
+			%now we start with the clusters (maybe this code could be improved
+			% by a tikz expert)
 			%the layers are built starting from the very lowest one
 
 			%largest cluster
@@ -55,7 +58,7 @@
 			\shadedraw [ball color= red] (\x,1,3.5) circle (0.25cm);
 			\foreach \x  in {1.5,2,2.5,3,3.5,4}%
 			\shadedraw [ball color= red] (\x,1,4) circle (0.25cm);
-			%second row 
+			%second row
 			\foreach \x  in {1.75,2.25,2.75,3.25,3.75}
 			\shadedraw [ball color=yellow] (\x,1.5,0) circle (0.25cm);
 			\foreach \x  in {1.5,2,2.5,3,3.5,4}
@@ -74,7 +77,7 @@
 			\shadedraw [ball color=yellow] (\x,1.5,3.5) circle (0.25cm);
 			\foreach \x  in {1.75,2.25,2.75,3.25,3.75}
 			\shadedraw [ball color=yellow] (\x,1.5,4) circle (0.25cm);
-			%third row 
+			%third row
 			\foreach \x  in {2,2.5,3,3.5}
 			\shadedraw [ball color=yellow] (\x,2,1) circle (0.25cm);
 			\foreach \x  in {1.75,2.25,2.75,3.25,3.75}
@@ -113,7 +116,8 @@
 			\foreach \x  in {6.75,7.25}
 			\shadedraw [ball color=yellow] (\x,2.5,15) circle (0.25);
 			%second row
-			\foreach \x  in {7} %this foreach is used to be general, but it makes no sense if we put just one sphere!
+			\foreach \x  in {7} %this foreach is used to be general, but it
+			% makes no sense if we put just one sphere!
 			\shadedraw [ball color=yellow] (\x,3,13.25) circle (0.25cm);
 			\foreach \x  in {6.75,7.25}
 			\shadedraw [ball color=yellow] (\x,3,13.75) circle (0.25cm);

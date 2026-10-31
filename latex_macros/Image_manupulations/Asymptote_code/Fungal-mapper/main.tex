@@ -1,3 +1,7 @@
+% vim: set noautoindent nocindent nosmartindent indentexpr=:
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
 % sudo apt install asymptote
 %
 % To process it with `latexmk`, create file `latexmkrc`:
@@ -7,49 +11,52 @@
 %     add_cus_dep("asy","pdf",0,"asy");
 %     add_cus_dep("asy","tex",0,"asy");
 %
-% and run `latexmk -pdf igrid.tex`.
-% it will generate main-1_0.tex and main-1_1.tex and corresponding pdfs with main mergered pdf
+% and run `latexmk -pdf igrid.tex`
+% It will generate main-1_0.tex and main-1_1.tex and corresponding
+% pdfs with main mergered pdf
 
-\documentclass{article}
+\documentclass[border=5pt,float]{standalone}
+
 \usepackage[inline]{asymptote}
 \usepackage{lmodern}
 
 \begin{document}
-\begin{figure}
-	\begin{asy}
-		import graph;
-		import math;
+% Do not intend before \begin{asy} and \end{asy} in any scenario (eg. inside figure env)
+\begin{asy}
+	import graph;
+	import math;
 
-		defaultpen(fontsize(10pt));
-		real sc=2;
-		unitsize(sc*1bp);
-		real wd=200*sc;
-		real ht=120*sc;
+	defaultpen(fontsize(10pt));
+	real sc=2;
+	unitsize(sc*1bp);
+	real wd=200*sc;
+	real ht=120*sc;
 
-		// Image used from http://upload.wikimedia.org/wikipedia/commons/1/16/Mycena_interrupta.jpg
-		label(
+	// Image used from
+	// http://upload.wikimedia.org/wikipedia/commons/1/16/Mycena_interrupta.jpg
+	label(
 		shift(wd/2,ht/2)*
 		graphic("Mycena_interrupta.jpg"
-		,"width="+string(wd)+"bp"
-		+",height="+string(ht)+"bp"
-		+",scale="+string(sc)
+			,"width="+string(wd)+"bp"
+			+",height="+string(ht)+"bp"
+			+",scale="+string(sc)
 		),(0,0)
-		);
-		layer();
+	);
+	layer();
 
-		draw(((0,0)--(wd,ht)/sc),blue+2pt);
+	draw(((0,0)--(wd,ht)/sc),blue+2pt);
 
-		int ngrid=10;
-		int n=(int)(wd/ngrid/sc);
-		int m=(int)(ht/ngrid/sc);
-		add(scale(ngrid)*grid(n,m,yellow));
+	int ngrid=10;
+	int n=(int)(wd/ngrid/sc);
+	int m=(int)(ht/ngrid/sc);
+	add(scale(ngrid)*grid(n,m,yellow));
 
-		//xlimits(0,wd/sc,crop=true);
-		//ylimits(0,ht/sc,crop=true);
-		xaxis( 0,wd/sc,RightTicks(Step=ngrid));
-		yaxis(0,ht/sc,LeftTicks(Step=ngrid));
+	//xlimits(0,wd/sc,crop=true);
+	//ylimits(0,ht/sc,crop=true);
+	xaxis( 0,wd/sc,RightTicks(Step=ngrid));
+	yaxis(0,ht/sc,LeftTicks(Step=ngrid));
 
-		pair[] P={
+	pair[] P={
 		(66,34),
 		(70,35),
 		(76,38),
@@ -113,10 +120,9 @@
 		(55,41),
 		(58,35),
 		(63,31),
-		};
-		guide g=graph(P,operator..)..cycle;
-		fill(g,white+opacity(0.8));
-		draw(g,orange+1bp);
-	\end{asy}
-\end{figure}
+	};
+	guide g=graph(P,operator..)..cycle;
+	fill(g,white+opacity(0.8));
+	draw(g,orange+1bp);
+\end{asy}
 \end{document}

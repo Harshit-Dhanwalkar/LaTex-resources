@@ -1,6 +1,8 @@
+% !TeX program = lualatex
+% !TeX encoding = UTF-8
+
 \documentclass[a4paper,10pt,landscape]{article}
-\usepackage[latin1]{inputenc}
-\usepackage[Gray]{SIunits}
+\usepackage{siunitx}
 \usepackage[dvipsnames,pdftex,fixpdftex]{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{decorations.pathmorphing}
@@ -32,7 +34,8 @@
 		\node[text width=4cm, font=\small,right] at (23,0.5)
 		{Water\\(cooling loop)};
 	\end{scope}
-	% 2nd loop --------------------------------------------------------------------
+
+	% 2nd Loop
 	\begin{scope}[xshift=7.25cm,yshift=3cm]
 		% vessel left
 		\filldraw[draw=blue,bottom color=blue!40,top color=Gray!30]
@@ -100,7 +103,8 @@
 		\node (ff) at (13.6,4.6) {};
 
 	\end{scope}
-	% 3 loop --------------------------------------------------------------------
+
+	% 3 Loop
 	\begin{scope}[xshift=23cm,yshift=1cm]
 		% circuit
 		\draw[draw=Blue,double=Blue!10,double distance=4pt]
@@ -139,7 +143,8 @@
 			(0,0) arc (240:180:0.4cm)  arc (200:280:0.4cm) ;
 		\end{scope}
 	\end{scope}
-	%1 loop --------------------------------------------------------------------
+
+	% 1 Loop
 	\begin{scope}[xshift=2cm,yshift=4cm]
 		% Reactor vessel
 		\filldraw[draw=red,fill=red!10] (0,-0.5) to[out=-20,in=200]
@@ -189,7 +194,8 @@
 		%labels
 		\draw[annotline] (0.6,0.5) -- ++(-3.3,-1.5)
 		node[text width=1cm,font=\small,left] {Reactor core};
-		\node[text width=2cm, text centered,font=\small] at (1.75,5.4) {Reactor vessel};
+		\node[text width=2cm, text centered,font=\small] at (1.75,5.4)
+		{Reactor vessel};
 		\draw[annotline] (0.9,2.8) -- ++(-3.3,1.5)
 		node[text width=2cm, text centered,font=\small,left=-8pt] {Control\\rods};
 		\draw[annotline] (4.2,3.7) -- ++(0.5,1.5)
@@ -203,7 +209,7 @@
 	\end{scope}
 	% clouds ----------------------------------
 	\begin{scope}[xshift=26cm,yshift=10cm, fill=blue!10, draw=Blue,
-			decoration={bumps,segment length=0.5cm}]
+		decoration={bumps,segment length=0.5cm}]
 		\filldraw[yshift=-1.5cm,rotate=-25,decorate]
 		(0,0) -- ++(-0.4,1.25)-- ++(-0.1,0.75)-- ++(0.2,0.5)-- ++(0.3,0.5)--
 		++(0.3,-0.5)-- ++(0.2,-0.5)-- ++(-0.1,-0.75)-- ++(-0.4,-1.25);

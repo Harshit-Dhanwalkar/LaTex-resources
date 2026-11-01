@@ -1,89 +1,116 @@
 % !TeX program = lualatex
 % !TeX encoding = UTF-8
 
-% TODO: make it more asthetic
+\documentclass[border=10pt]{standalone}
 
-\documentclass[border=5pt]{standalone}
-
+\usepackage{amsmath}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, decorations.markings}
-\usetikzlibrary{positioning}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{arrows.meta, decorations.markings, positioning}
 
 \tikzset{
-    midarrow/.style={
-        decoration={markings, mark=at position 0.53 with {\arrow{Latex}}},
-        postaction={decorate}
-    }
+	>={Stealth[scale=1.2]},
+	midarrow/.style={
+		decoration={markings, mark=at position 0.53 with
+		{\arrow{Stealth[scale=1.2]}}},
+		postaction={decorate}
+	}
 }
 
+% Set the 3D viewing angle (elevation, azimuth)
+\tdplotsetmaincoords{65}{120}
+
 \begin{document}
-\begin{tikzpicture}
-	\def\Rx{2.5}
-	\def\rx{1.75}
-	\def\Ry{1.5}
-	\def\ry{0.75}
 
-	\draw (-\rx,0) [x radius=\rx cm, y radius=\ry cm]
-	arc[start angle=180, end angle=0];
-	\draw (\Rx,0) [x radius=\Rx cm, y radius=\Ry cm]
-	arc[start angle=0, end angle=180];
+% First Picture: 3D Magnetic Lenses / Coils
+\begin{tikzpicture}[tdplot_main_coords, scale=1.5]
+	\def\R{1.5}
+	\def\zoffset{1.5}
 
-	\def\anglediff{30}
-	\def\sepx{1.5}
-	\draw[midarrow]
-	(-\sepx, -2)
-	to [out=90-\anglediff, in=-90+\anglediff]
-	(-\sepx,2);
-	\draw[midarrow]
-	(0, -2)
-	to [out=90, in=-90]
-	(0,2);
-	\draw[midarrow]
-	(\sepx, -2)
-	to [out=90+\anglediff, in=-90-\anglediff]
-	(\sepx,2);
+	% Top Coil (Blue-ish)
+	\draw[thick, blue!80!black] 
+		plot[variable=\t,domain=0:360,samples=100] ({\R*cos(\t)}, {\R*sin(\t)}, \zoffset);
+	\draw[thick, blue!80!black] 
+		plot[variable=\t,domain=0:360,samples=100] ({\R*cos(\t)}, {\R*sin(\t)}, \zoffset+0.1);
 
-	\fill[white] (-\rx,0) [x radius=\rx cm, y radius=\ry cm]
-	arc[start angle=180, end angle=360] --
-	(\Rx,0) [x radius=\Rx cm, y radius=\Ry cm]
-	arc[start angle=360, end angle=180] -- cycle;
+	% Bottom Coil (Red-ish)
+	\draw[thick, red!80!black] 
+		plot[variable=\t,domain=0:360,samples=100] ({\R*cos(\t)}, {\R*sin(\t)}, -\zoffset);
+	\draw[thick, red!80!black] 
+		plot[variable=\t,domain=0:360,samples=100] ({\R*cos(\t)}, {\R*sin(\t)}, -\zoffset-0.1);
 
-	\draw (-\rx,0) [x radius=\rx cm, y radius=\ry cm]
-	arc[start angle=180, end angle=360];
-	\draw (\Rx,0) [x radius=\Rx cm, y radius=\Ry cm]
-	arc[start angle=360, end angle=180];
+	% Cylinder Wireframe (To give depth)
+	\foreach \t in {0,30,...,330} {
+		\draw[blue!20, thin] ({\R*cos(\t)}, {\R*sin(\t)}, \zoffset) -- ({\R*cos(\t)}, {\R*sin(\t)}, -\zoffset);
+	}
 
-	\draw[midarrow]
-	(\Rx/2, -\Ry/3-\ry/2)
-	to [out=200, in=-20]
-	(-\Rx/2, -\Ry/3-\ry/2);
-	\node[anchor=north] at (0, -\Ry/2-\ry/2) {\small \( I \)};
+	% Particle Beams (Orange) - 3D Curves passing through
+	\draw[thick, orange!90!black, ->] 
+		plot[variable=\z,domain=-\zoffset-1:\zoffset+1,samples=50] ({-0.6}, {0}, {\z});
+	\draw[thick, orange!90!black, ->] 
+		plot[variable=\z,domain=-\zoffset-1:\zoffset+1,samples=50] ({0}, {0}, {\z});
+	\draw[thick, orange!90!black, ->] 
+		plot[variable=\z,domain=-\zoffset-1:\zoffset+1,samples=50] ({0.6}, {0}, {\z});
+
+	% Current I (Purple)
+	\draw[thick, purple!80!black, ->, samples=100] 
+		plot[variable=\t,domain=0:360] ({\R*cos(\t)}, {\R*sin(\t)}, -\zoffset-0.5);
+	\node[font=\small, text=purple!80!black, fill=white, inner sep=2pt, opacity=0.8, text opacity=1] 
+		at (0, 1, -\zoffset-1) {\(\boldsymbol{I}\)};
 \end{tikzpicture}
 
-\begin{tikzpicture}
-	\draw (0,0) ellipse [x radius=3cm, y radius=2cm];
-	\draw (0,0) ellipse [x radius=1.5cm, y radius=0.75cm];
-	\draw[dashed] (2.25,0) circle [radius=0.5cm];
+\vspace{1cm}
 
-	\draw[->]
-	(1.75,0.3)
-	to [out=60, in=120]
-	(2.75,0.3);
+% Second Picture: 3D Tokamak / Plasma Torus
+\begin{tikzpicture}[tdplot_main_coords, scale=1.2]
+	\def\R{2.5}
+	\def\r{0.8}
+	\def\rp{0.4}
 
-	\node at (2.25, 0) {\( B_\theta \)};
+	% Outer Vessel (3D Wireframe)
+	\foreach \u in {0,30,...,330} {
+		\draw[gray!40, thin] 
+			plot[variable=\v,domain=0:360,samples=50] 
+			({(\R+\r*cos(\v))*cos(\u)}, {(\R+\r*cos(\v))*sin(\u)}, {\r*sin(\v)});
+	}
+	\foreach \v in {0,30,...,330} {
+		\draw[gray!40, thin] 
+			plot[variable=\u,domain=0:360,samples=50] 
+			({(\R+\r*cos(\v))*cos(\u)}, {(\R+\r*cos(\v))*sin(\u)}, {\r*sin(\v)});
+	}
 
-	\draw[->]
-	(1,1)
-	to [out=165, in=15]
-	(-1,1);
+	% Inner Plasma Torus (Orange Mesh)
+	\foreach \u in {0,30,...,330} {
+		\draw[orange!70!black, thick] 
+			plot[variable=\v,domain=0:360,samples=50] 
+			({(\R+\rp*cos(\v))*cos(\u)}, {(\R+\rp*cos(\v))*sin(\u)}, {\rp*sin(\v)});
+	}
+	\foreach \v in {0,30,...,330} {
+		\draw[orange!70!black, thick] 
+			plot[variable=\u,domain=0:360,samples=50] 
+			({(\R+\rp*cos(\v))*cos(\u)}, {(\R+\rp*cos(\v))*sin(\u)}, {\rp*sin(\v)});
+	}
 
-	\node at (0, 1.4) {\( B_\phi \)};
+	% Toroidal Field B_theta (Helical)
+	\draw[thick, blue!80!black, ->, samples=200] 
+		plot[variable=\t,domain=0:360] 
+		({(\R+0.5*cos(3*\t))*cos(\t)}, {(\R+0.5*cos(3*\t))*sin(\t)}, {0.5*sin(3*\t)});
+	\node[text=blue!80!black, font=\small, fill=white, inner sep=2pt, opacity=0.8, text opacity=1] 
+		at (4, 0, 0) {\(\boldsymbol{B_\theta}\)};
 
-	\draw[->]
-	(-1,-1)
-	to [out=-15, in=195]
-	(1,-1);
+	% Poloidal Field B_phi (Loop around cross-section)
+	\draw[thick, red!80!black, ->, samples=100] 
+		plot[variable=\t,domain=0:360] 
+		({(\R+0.5*cos(\t))*cos(180)}, {(\R+0.5*cos(\t))*sin(180)}, {0.5*sin(\t)});
+	\node[text=red!80!black, font=\small, fill=white, inner sep=2pt, opacity=0.8, text opacity=1] 
+		at (-\R, 0, 1.5) {\(\boldsymbol{B_\phi}\)};
 
-	\node at (0, -1.4) {\( I_\phi \)};
+	% Plasma Current I_phi (Large loop along the torus)
+	\draw[thick, green!60!black, ->, samples=100] 
+		plot[variable=\t,domain=0:360] 
+		({(\R+0.5*cos(0))*cos(\t)}, {(\R+0.5*cos(0))*sin(\t)}, {0});
+	\node[text=green!60!black, font=\small, fill=white, inner sep=2pt, opacity=0.8, text opacity=1] 
+		at (0, \R+1, 0) {\(\boldsymbol{I_\phi}\)};
 \end{tikzpicture}
+
 \end{document}

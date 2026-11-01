@@ -1,16 +1,16 @@
 % !TeX program = lualatex
 % !TeX encoding = UTF-8
-% FIX: This works only for XeLatex
 
 \documentclass[a4paper,9pt,oneside,landscape]{memoir}
 
 \usepackage[svgnames]{xcolor}
 \usepackage{fontspec}
-\usepackage{xunicode}
 \usepackage{microtype}
 \usepackage{wasysym}
+
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont[RawFeature={+ss05,+dlig,+hlig,+calt,+liga},ItalicFeatures={RawFeature={+cv04,+clig,+swsh,+calt,+liga,+hlig,+ss05},CharacterVariant=5:0}]{EB Garamond}
+\setmainfont[RawFeature={+ss05,+dlig,+hlig,+calt,+liga},ItalicFeatures={RawFeature={+cv04,+clig,+swsh,+calt,+liga,+hlig,+ss05},CharacterVariant=5:0}]{EB
+Garamond}
 \usepackage[newdimens]{labels}
 \LabelCols=4%
 \LabelRows=4%
@@ -22,48 +22,49 @@
 \InterLabelRow=0mm%
 \LeftLabelBorder=5mm%
 \RightLabelBorder=5mm%
-\TopLabelBorder=8mm%
-\BottomLabelBorder=5mm%
+\TopLabelBorder=6mm%
+\BottomLabelBorder=3mm%
 \newcommand{\h}[1]{\textcolor{FireBrick}{#1}}
 \newcommand{\rsvp}[1]{\addresslabel[\fboxsep=5mm]{%
-\centering%
-{\Large \textsc{\h{R}.\,\kern-0.05em \h{S}.\,\kern-0.1em \h{V}\kern-0.15em .\,\h{P}\kern-0.1em .}}
+    \centering%
+    {\Large \textsc{\h{R}.\,\kern-0.05em \h{S}.\,\kern-0.1em
+    \h{V}\kern-0.15em .\,\h{P}\kern-0.1em .}}
 
-\bigskip
+    \bigskip
 
-\textsc{#1}
+    \textsc{#1}
 
-\bigskip
+    \bigskip
 
-\parbox{43mm}{%
-  \Square\ I will attend the thesis defence.\\
-  \Square\ I will attend the buffet dinner.\\
-  \Square\ I am unable to attend either event.
-}
+    \parbox{43mm}{%
+      \Square\ I will attend the thesis defence.\\
+      \Square\ I will attend the buffet dinner.\\
+      \Square\ I am unable to attend either event.
+    }
 
-\bigskip
+    \bigskip
 
-{%
-  \small\emph{Kindly return this card or send an e-mail to}\strut\\
-  \textsc{miller@ukp.informatik.tu-darmstadt.de}\strut\\
-  \emph{by March 8, 2016.}\strut}
+    {%
+      \small\emph{Kindly return this card or send an e-mail to}\strut\\
+      \textsc{miller@ukp.informatik.tu-darmstadt.de}\strut\\
+    \emph{by March 8, 2016.}\strut}
 }}
 
 \begin{document}
-  \rsvp{Erika Mustermann}%
-  \rsvp{Ivan Ivanov}%
-  \rsvp{Jan Jansen}%
-  \rsvp{Jan Publiek}%
-  \rsvp{Jane Roe}%
-  \rsvp{Jean Dupont}%
-  \rsvp{Jef Van Pijperzele}%
-  \rsvp{Joe Bloggs}%
-  \rsvp{John Doe}%
-  \rsvp{Jonas Petraitis}%
-  \rsvp{Lieschen Müller}%
-  \rsvp{Mario Rossi}%
-  \rsvp{Max Mustermann}%
-  \rsvp{Minta János}%
-  \rsvp{Numerius Negidius}%
-  \rsvp{Otto Normalverbraucher}%
+\rsvp{Erika Mustermann}%
+\rsvp{Ivan Ivanov}%
+\rsvp{Jan Jansen}%
+\rsvp{Jan Publiek}%
+\rsvp{Jane Roe}%
+\rsvp{Jean Dupont}%
+\rsvp{Jef Van Pijperzele}%
+\rsvp{Joe Bloggs}%
+\rsvp{John Doe}%
+\rsvp{Jonas Petraitis}%
+\rsvp{Lieschen Müller}%
+\rsvp{Mario Rossi}%
+\rsvp{Max Mustermann}%
+\rsvp{Minta János}%
+\rsvp{Numerius Negidius}%
+\rsvp{Otto Normalverbraucher}%
 \end{document}

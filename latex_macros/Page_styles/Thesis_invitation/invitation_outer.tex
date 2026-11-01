@@ -1,36 +1,37 @@
 % !TeX program = lualatex
 % !TeX encoding = UTF-8
-% FIX: This works only for XeLatex
 
 \documentclass[12pt,a4paper]{article}
 
 \usepackage[svgnames]{xcolor}
 \usepackage{wallpaper}
 \usepackage{fontspec}
-\usepackage{xunicode}
 \usepackage{microtype}
+
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont[RawFeature={+ss05,+dlig,+hlig,+calt,+liga},ItalicFeatures={RawFeature={+cv04,+clig,+swsh,+calt,+liga,+hlig,+ss05},CharacterVariant=5:0}]{EB Garamond}
+\setmainfont[RawFeature={+ss05,+dlig,+hlig,+calt,+liga},ItalicFeatures={RawFeature={+cv04,+clig,+swsh,+calt,+liga,+hlig,+ss05},CharacterVariant=5:0}]{EB
+Garamond}
 \pagestyle{empty}
 \newcommand{\h}[1]{\textcolor{FireBrick}{#1}}
-\newcommand{\cover}[1]{\mbox{}\newpage\mbox{}\vfill \textsc{#1} \vfill\vfill\newpage}
+\newcommand{\cover}[1]{\mbox{}\newpage\mbox{}\vfill \textsc{#1}
+\vfill\vfill\newpage}
 
 \begin{document}
-  \centering\huge
-  \cover{Erika Mustermann}%
-  \cover{Ivan Ivanov}%
-  \cover{Jan Jansen}%
-  \cover{Jan Publiek}%
-  \cover{Jane Roe}%
-  \cover{Jean Dupont}%
-  \cover{Jef Van Pijperzele}%
-  \cover{Joe Bloggs}%
-  \cover{John Doe}%
-  \cover{Jonas Petraitis}%
-  \cover{Lieschen Müller}%
-  \cover{Mario Rossi}%
-  \cover{Max Mustermann}%
-  \cover{Minta János}%
-  \cover{Numerius Negidius}%
-  \cover{Otto Normalverbraucher}%
+\centering\huge
+\cover{Erika Mustermann}%
+\cover{Ivan Ivanov}%
+\cover{Jan Jansen}%
+\cover{Jan Publiek}%
+\cover{Jane Roe}%
+\cover{Jean Dupont}%
+\cover{Jef Van Pijperzele}%
+\cover{Joe Bloggs}%
+\cover{John Doe}%
+\cover{Jonas Petraitis}%
+\cover{Lieschen Müller}%
+\cover{Mario Rossi}%
+\cover{Max Mustermann}%
+\cover{Minta János}%
+\cover{Numerius Negidius}%
+\cover{Otto Normalverbraucher}%
 \end{document}

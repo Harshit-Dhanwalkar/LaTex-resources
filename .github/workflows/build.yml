@@ -152,7 +152,7 @@ jobs:
             exit 0
           fi
 
-          echo "=== Some projects failed:" >> "$GITHUB_STEP_SUMMARY"
+          echo "=== Some projects failed ===" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "| Project ID | Directory | Root File |" >> "$GITHUB_STEP_SUMMARY"
           echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"

@@ -1,24 +1,43 @@
-\ProvidesPackage{drawproton}[Custom package for drawing proton structure]
+\ProvidesPackage{drawproton}[2025/01/01 v2.0 Custom proton structure drawing]
 \RequirePackage{tikz}
-\RequirePackage{pgfplots}
 
+% Draw a proton with partons
+% #1: tikz options
+% #2: proton radius in pt
+% #3: number of "valence" (red) partons
+% #4: number of "sea" (green) partons
 \newcommand{\drawproton}[4][]{%
-	% #1 = options
-	% #2 = radius
-	% #3 = parton level
-	% #4 = additional parameter
 	\begin{scope}[#1]
-		\draw[fill=blue!20, opacity=0.7] (0,0) circle (#2pt);
-		\foreach \i in {1,...,#3} {
-				\pgfmathsetmacro{\angle}{360*\i/#3 + 15*#4}
-				\pgfmathsetmacro{\r}{#2 * 0.6}
-				\fill[red!50] (\angle:\r pt) circle (3pt);
-			}
-		\foreach \i in {1,...,#4} {
-				\pgfmathsetmacro{\angle}{360*\i/#4 - 15*#3}
-				\pgfmathsetmacro{\r}{#2 * 0.8}
-				\fill[green!50] (\angle:\r pt) circle (2pt);
-			}
+		% Proton body with radial gradient
+		\shade[inner color=cyan!40!white,
+			outer color=blue!50!cyan!30,
+		opacity=0.9] (0,0) circle (#2pt);
+		\draw[blue!60!black, line width=0.4pt, opacity=0.6]
+		(0,0) circle (#2pt);
+
+		% Valence (red) partons - guarded loop
+		\pgfmathsetmacro{\nRed}{int(max(0,#3))}
+		\pgfmathparse{\nRed > 0 ? 1 : 0}
+		\ifnum\pgfmathresult=1\relax
+		\foreach \i in {1,...,\nRed} {
+			\pgfmathsetmacro{\angle}{360*\i/\nRed + 15*#4}
+			\pgfmathsetmacro{\rr}{#2 * 0.6}
+			\fill[red!30, opacity=0.5] (\angle:\rr pt) circle (3.2pt);
+			\fill[red!80!black] (\angle:\rr pt) circle (2pt);
+		}
+		\fi
+
+		% Sea (green) partons - guarded loop
+		\pgfmathsetmacro{\nGreen}{int(max(0,#4))}
+		\pgfmathparse{\nGreen > 0 ? 1 : 0}
+		\ifnum\pgfmathresult=1\relax
+		\foreach \i in {1,...,\nGreen} {
+			\pgfmathsetmacro{\angle}{360*\i/\nGreen - 15*#3}
+			\pgfmathsetmacro{\rr}{#2 * 0.8}
+			\fill[green!30, opacity=0.5] (\angle:\rr pt) circle (2.2pt);
+			\fill[green!70!black] (\angle:\rr pt) circle (1.3pt);
+		}
+		\fi
 	\end{scope}
 }
 \endinput

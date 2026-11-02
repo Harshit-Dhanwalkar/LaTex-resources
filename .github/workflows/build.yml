@@ -37,6 +37,10 @@ jobs:
               'latex_macros/Page_styles/Antique_book/glossary.tex'
           }
 
+          ASY_RE = re.compile(r'\\usepackage(\[[^\]]*\])?\{asymptote\}|\\begin\{asy\}')
+          ALPINE_PKGS  = 'python3 py3-pillow py3-pygments poppler-utils ghostscript biber'
+          DEBIAN_PKGS  = 'python3 python3-pil python3-pygments poppler-utils ghostscript biber asymptote'
+
           projects = []
           for p in pathlib.Path('.').rglob('*.tex'):
               if any(part in SKIP_DIRS or part.startswith('.') for part in p.parts):
@@ -57,12 +61,19 @@ jobs:
               rel_dir = str(d).replace('\\', '/') if str(d) != '.' else '.'
               pid = (rel_dir.replace('/', '__') if rel_dir != '.' else 'root') + '__' + p.stem
 
+              if ASY_RE.search(text):
+                  os_name, pkgs = 'debian', DEBIAN_PKGS
+              else:
+                  os_name, pkgs = 'alpine', ALPINE_PKGS
+
               projects.append({
                   'id':   (rel_dir + '/' if rel_dir != '.' else '') + p.stem,
                   'safe': ((rel_dir + '/' if rel_dir != '.' else '') + p.stem).replace('/', '__'),
                   'dir':  rel_dir,
                   'file': p.name,
                   'out':  p.stem + '.pdf',
+                  'os':   os_name,
+                  'pkgs': pkgs,
               })
 
           seen = {pr['id']: pr for pr in projects}
@@ -81,6 +92,7 @@ jobs:
     if: needs.discover.outputs.count != '0'
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    name: build (${{ matrix.id }}, ${{ matrix.file }})
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
@@ -89,15 +101,17 @@ jobs:
 
       - name: Compile ${{ matrix.id }} (lualatex)
         id: compile
-        uses: xu-cheng/latex-action@v3
+        uses: xu-cheng/latex-action@v4
         with:
+          # Debian image only for Asymptote projects (needs the `asy` binary);
+          # everything else stays on the default Alpine image.
+          os: ${{ matrix.os }}
           working_directory: ${{ matrix.dir }}
           root_file: ${{ matrix.file }}
           latexmk_use_lualatex: true
           latexmk_shell_escape: true
           args: -file-line-error -interaction=nonstopmode
-          extra_system_packages: >-
-            python3 py3-pillow py3-pygments poppler-utils ghostscript biber
+          extra_system_packages: ${{ matrix.pkgs }}
 
       - name: Collect PDF
         if: success()

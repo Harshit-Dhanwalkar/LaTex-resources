@@ -45,10 +45,10 @@
 	% Monte Carlo rays + cloud
 	\directlua{
 		config = config or {}
-		config.cols         = \number\cols\relax
-		config.rows         = \number\rows\relax
-		config.squareunit   = \squareunit
-		config.rmaxparticle = \rmaxparticle
+		config.cols         = (\cols)
+		config.rows         = (\rows)
+		config.squareunit   = (\squareunit)
+		config.rmaxparticle = (\rmaxparticle)
 		config.tau          = 2.0
 		dofile("particles.lua")
 	}

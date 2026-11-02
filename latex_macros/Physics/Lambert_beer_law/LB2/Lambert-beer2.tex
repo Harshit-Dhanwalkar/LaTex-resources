@@ -6,6 +6,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc,decorations.markings}
 \usepackage{amsmath}
+\usepackage{luacode}
 
 % commands
 \def\pr#1{\directlua{tex.print(#1)}}
@@ -46,12 +47,19 @@
 
 	% Particles cloud
 	\directlua{
+		config = config or {}
+		config.cols         = (\cols)
+		config.rows         = (\rows)
+		config.squareunit   = (\squareunit)
+		config.rmaxparticle = (\rmaxparticle)
+	}
+	\begin{luacode*}
 		math.randomseed(42)
 
-		local cols         = tonumber("\cols")
-		local rows         = tonumber("\rows")
-		local squareunit   = tonumber("\squareunit")
-		local rmaxparticle = tonumber("\rmaxparticle")
+		local cols         = config.cols
+		local rows         = config.rows
+		local squareunit   = config.squareunit
+		local rmaxparticle = config.rmaxparticle
 
 		for i = 1, cols do
 		for j = 1, rows do
@@ -59,11 +67,11 @@
 		local l      = squareunit - 2 * radius
 		local x      = (i-1) * squareunit + radius + l * math.random()
 		local y      = (j-1) * squareunit + radius + l * math.random()
-		tex.print(string.format("\\fill[sand] (\%.3f,\%.3f)
-		\% circle[radius=\%.3f];", x, y, radius))
+		tex.print(string.format("\\fill[sand] (%.3f,%.3f) " ..
+			"circle[radius=%.3f];", x, y, radius))
 		end
 		end
-	}
+\end{luacode*}
 
 	% Length quoting
 	\draw[|<->|, > = latex, line width = .8pt]

@@ -44,7 +44,9 @@ for k = 1, n_rays do
 		-- Ray absorbed at x = L; find nearest particle and flag it
 		local best, bestd = nil, math.huge
 		for _, p in ipairs(cloud) do
-			local d = math.hypot(p.x - L, p.y - y_ray)
+			-- Lua 5.3 (LuaLaTeX) has no math.hypot
+			local dx, dy = p.x - L, p.y - y_ray
+			local d = math.sqrt(dx * dx + dy * dy)
 			if d < bestd then
 				best, bestd = p, d
 			end

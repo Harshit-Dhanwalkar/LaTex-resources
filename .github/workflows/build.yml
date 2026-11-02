@@ -58,10 +58,11 @@ jobs:
               pid = (rel_dir.replace('/', '__') if rel_dir != '.' else 'root') + '__' + p.stem
 
               projects.append({
-                  'id':     pid,
-                  'dir':    rel_dir,
-                  'file':   p.name,
-                  'out':    p.stem + '.pdf',
+                  'id':   (rel_dir + '/' if rel_dir != '.' else '') + p.stem,
+                  'safe': ((rel_dir + '/' if rel_dir != '.' else '') + p.stem).replace('/', '__'),
+                  'dir':  rel_dir,
+                  'file': p.name,
+                  'out':  p.stem + '.pdf',
               })
 
           seen = {pr['id']: pr for pr in projects}
@@ -103,9 +104,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p out
           src="${{ matrix.dir }}/${{ matrix.out }}"
           dst="out/${{ matrix.id }}.pdf"
+          mkdir -p "$(dirname "$dst")"
           if [[ -f "$src" ]]; then
             cp "$src" "$dst"
           else
@@ -123,8 +124,8 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: pdf-${{ matrix.id }}
-          path: out/${{ matrix.id }}.pdf
+          name: pdf-${{ matrix.safe }}
+          path: out/
           if-no-files-found: error
           retention-days: 14
 
@@ -148,21 +149,21 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
           if [[ "${{ needs.build.result }}" == "success" ]]; then
-            echo "=== All projects compiled successfully. ===" >> "$GITHUB_STEP_SUMMARY"
+            echo "=== All projects compiled successfully ===" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
           echo "=== Some projects failed ===" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Project ID | Directory | Root File |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Project | Root File |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
 
           gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" \
             --paginate \
             --jq '.jobs[]
                   | select(.conclusion == "failure" and (.name | startswith("build")))
                   | .name' \
-          | sed -E 's/^build \(([^,]+), ([^)]+)\)$/| \1 | | \2 |/' \
+          | sed -E 's/^build \(([^,]+), ([^)]+)\)$/| \1 | \2 |/' \
           >> "$GITHUB_STEP_SUMMARY"
 
   # Deploy PDFs to GitHub Pages
@@ -210,9 +211,9 @@ jobs:
             <ul>
           EOF
 
-          for pdf in _site/*.pdf; do
-            name=$(basename "$pdf" .pdf)
-            echo "      <li><a href=\"$name.pdf\">$name</a></li>" >> _site/index.html
+          find _site -name '*.pdf' -type f | sort | while read -r pdf; do
+            rel="${pdf#_site/}"
+            echo "      <li><a href=\"$rel\">$rel</a></li>" >> _site/index.html
           done
 
           cat >> _site/index.html <<'EOF'

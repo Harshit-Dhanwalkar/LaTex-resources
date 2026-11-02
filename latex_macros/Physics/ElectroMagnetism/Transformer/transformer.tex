@@ -12,6 +12,7 @@
 	figureposition = bottom
 ]{caption}
 \usepackage{tikz}
+\usetikzlibrary{decorations.markings, arrows.meta}
 \usepackage{tikz-3dplot}
 \usepackage{amsmath}
 
@@ -31,11 +32,11 @@
 \tdplotsetmaincoords{70}{110}
 \begin{tikzpicture}[tdplot_main_coords, scale=1.2]
 	% Parameters
-	\def\R{4}       % Major radius of core
-	\def\r{1.5}     % Minor radius of core
-	\def\rWire{1.65} % Wire radius (slightly larger than tube)
-	\def\Np{40}     % Number of primary windings
-	\def\Ns{80}     % Number of secondary windings
+	\def\R{4}         % Major radius of core
+	\def\r{1.5}       % Minor radius of core
+	\def\rWire{1.65}  % Wire radius (slightly larger than tube)
+	\def\Np{40}       % Number of primary windings
+	\def\Ns{80}       % Number of secondary windings
 
 	% Draw Torus core Wireframe
 	% Cross-sections (rings)
@@ -53,8 +54,19 @@
 	% Draw Primary Coil, bottom half
 	\foreach \i in {0, 1, ..., 29} {
 		\pgfmathsetmacro{\thetaStart}{180 + \i * 6}
-		\draw[red!80!black, thick, line cap=round]
-		plot[variable=\t, domain=0:360, samples=12]
+
+		% wide dark "shadow" pass
+		\draw[red!40!black, line width=2.2pt,
+		line cap=round, line join=round, opacity=0.55]
+		plot[variable=\t, domain=0:360, samples=40]
+		({(\R+\rWire*cos(\t))*cos(\thetaStart + \t*6/360)},
+			{\rWire*sin(\t)},
+		{(\R+\rWire*cos(\t))*sin(\thetaStart + \t*6/360)});
+
+		% thin bright "highlight" pass
+		\draw[red!85!white, line width=1.1pt,
+		line cap=round, line join=round]
+		plot[variable=\t, domain=0:360, samples=40]
 		({(\R+\rWire*cos(\t))*cos(\thetaStart + \t*6/360)},
 			{\rWire*sin(\t)},
 		{(\R+\rWire*cos(\t))*sin(\thetaStart + \t*6/360)});
@@ -63,8 +75,19 @@
 	% Draw Secondary Coil, top half
 	\foreach \i in {0, 1, ..., 29} {
 		\pgfmathsetmacro{\thetaStart}{0 + \i * 6}
-		\draw[blue!80!black, thick, line cap=round]
-		plot[variable=\t, domain=0:360, samples=12]
+
+		% wide dark "shadow" pass
+		\draw[blue!40!black, line width=2.2pt,
+		line cap=round, line join=round, opacity=0.55]
+		plot[variable=\t, domain=0:360, samples=40]
+		({(\R+\rWire*cos(\t))*cos(\thetaStart + \t*6/360)},
+			{\rWire*sin(\t)},
+		{(\R+\rWire*cos(\t))*sin(\thetaStart + \t*6/360)});
+
+		% thin bright "highlight" pass
+		\draw[blue!85!white, line width=1.1pt,
+		line cap=round, line join=round]
+		plot[variable=\t, domain=0:360, samples=40]
 		({(\R+\rWire*cos(\t))*cos(\thetaStart + \t*6/360)},
 			{\rWire*sin(\t)},
 		{(\R+\rWire*cos(\t))*sin(\thetaStart + \t*6/360)});

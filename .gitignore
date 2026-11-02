@@ -24,6 +24,8 @@
 
 ## Generated if empty string is given at "Please type another file name for output:"
 .pdf
+!latex_macros/Page_styles/Blood/C_L_Blood.pdf
+!latex_macros/Page_styles/Blood/Office_and_residence_of_Dr_C_L_Blood.pdf
 .png
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):

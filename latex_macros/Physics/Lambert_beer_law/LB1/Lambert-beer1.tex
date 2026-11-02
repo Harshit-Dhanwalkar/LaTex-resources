@@ -4,90 +4,82 @@
 \documentclass[x11names, border=5pt]{standalone}
 
 \usepackage{tikz}
-\usetikzlibrary{calc,fadings,decorations.markings}
+\usetikzlibrary{calc, decorations.markings}
 \usepackage{amsmath}
-
-% Simplified fading line decoration
-\pgfdeclaredecoration{fading line}{initial}{%
-  \state{initial}[width=0pt, next state=draw]{}
-  \state{draw}[width=\pgfdecoratedpathlength]{%
-    \pgfsetlinewidth{\pgflinewidth}%
-    \pgfpathmoveto{\pgfpointorigin}%
-    \pgfpathlineto{\pgfpoint{\pgfdecoratedpathlength}{0pt}}%
-    \pgfsetstrokecolor{red!\pgfdecorationsegmentlength/\pgfdecoratedpathlength*100!white}%
-    \pgfusepath{stroke}%
-  }%
-}
-
-% commands
-\def\pr#1{\directlua{tex.print(#1)}}
-
-\def\rnd{.%
-\pdfuniformdeviate10%
-\pdfuniformdeviate10%
-\pdfuniformdeviate10%
-}
 
 \begin{document}
 
-% parameters
-\definecolor{sand}{RGB}{193,154,107} % particles color (fixed RGB syntax)
-\def\cols{20}                        % number of columns
-\def\rows{40}                        % number of rows
-\def\squareunit{.35}                 % lengths of unit square edges (cm)
-\pgfmathsetmacro\rmaxparticle{.1}    % maximum particle radius
-\def\beforelight{5}                  % light path before particle cloud
+\definecolor{sand}{RGB}{193,154,107}
+\def\cols{20}
+\def\rows{40}
+\def\squareunit{0.35}
+\def\rmaxparticle{0.1}
+\def\beforelight{5}
+\def\tauVal{2}
 
-\begin{tikzpicture}[x = \squareunit cm,
-		y = \squareunit cm,
-		line width = 2pt
-	]
-	
-	% light path before particles cloud
+\begin{tikzpicture}[x=\squareunit cm, y=\squareunit cm, line width=2pt]
+
+	% incoming beam
 	\draw[red,
-		decoration = {markings,
-				mark = at position 0.5 with {\arrow[red]{latex}}},
-		postaction = {decorate}] (-\beforelight,{\rows*\squareunit/2})--++
-	(\beforelight,0) node[midway, above, black] {$i_0$};
+		decoration={markings, mark=at position 0.5 with {\arrow[red]{latex}}},
+	postaction={decorate}]
+	(-\beforelight,{\rows*\squareunit/2}) -- ++(\beforelight,0)
+	node[midway, above, black] {$I_0$};
 
-	% light path through particles cloud (using simple fading)
-	\foreach \x in {0,0.1,...,\cols} {
-		\pgfmathsetmacro{\opacity}{1 - \x/\cols}
-		\draw[red, opacity=\opacity, line width=2pt] 
-			(\x*\squareunit,{\rows*\squareunit/2}) -- 
-			({(\x+0.1)*\squareunit},{\rows*\squareunit/2});
+	% beam through cloud: EXPONENTIAL fade
+	\foreach \x in {0,0.05,...,\cols} {
+		\pgfmathsetmacro{\opacity}{exp(-\tauVal*\x/\cols)}
+		\draw[red, opacity=\opacity, line width=2pt]
+		(\x*\squareunit,{\rows*\squareunit/2}) --
+		({(\x+0.05)*\squareunit},{\rows*\squareunit/2});
 	}
 
-	% light path after particles cloud
-	\draw[red!20!white,
-		decoration = {markings,
-				mark = at position 0.5 with {\arrow[red!20!white]{latex}}},
-		postaction = {decorate}] ({\cols*\squareunit},{\rows*\squareunit/2})--++
-	(\beforelight,0) node[midway, above, black] {$i$};
+	% outgoing beam
+	\draw[red!13.5!white,
+		decoration={markings, mark=at position 0.5 with
+		{\arrow[red!13.5!white]{latex}}},
+	postaction={decorate}]
+	({\cols*\squareunit},{\rows*\squareunit/2}) -- ++(\beforelight,0)
+	node[midway, above, black] {$I = I_0 e^{-\tau}$};
 
-	% particles cloud (Lua version)
+	% Monte Carlo rays + cloud
 	\directlua{
-		math.randomseed(os.time())
-		for i = 1, \cols do
-			for j = 1, \rows do
-				local radius = \rmaxparticle * math.random()
-				local l = \squareunit - 2 * radius
-				local x = (i-1) * \squareunit + radius + l * math.random()
-				local y = (j-1) * \squareunit + radius + l * math.random()
-				tex.print(string.format("\\fill[sand] (%.3f,%.3f) circle[radius=%.3f];", x, y, radius))
-			end
-		end
+		config = config or {}
+		config.cols         = \number\cols\relax
+		config.rows         = \number\rows\relax
+		config.squareunit   = \squareunit
+		config.rmaxparticle = \rmaxparticle
+		config.tau          = 2.0
+		dofile("particles.lua")
 	}
 
 	% length quoting
-	\draw[|<->|,
-		> = latex,
-		line width = .8pt] ($(0,\rows*\squareunit)+(0,1)$)--++
-	(\cols*\squareunit,0) node[midway, above] {$l$};
+	\draw[|<->|, > = latex, line width=.8pt]
+	($(0,\rows*\squareunit)+(0,1)$) -- ++(\cols*\squareunit,0)
+	node[midway, above] {$l$};
 
-	% Lambert-Beer law
-	\node[anchor = north,
-		inner sep = 1ex] at (current bounding box.south) 
-		{$\dfrac{i}{i_0}=\exp(-\gamma l)$};
+	% Physics annotation block
+	\node[anchor=north, align=left, font=\small,
+		text=black!80, fill=white, fill opacity=0.85,
+	text opacity=1, inner sep=1ex, rounded corners=2pt]
+	at ({1}, 3)
+	{$\gamma = n\,\sigma$ \;\;(density $\times$ cross-section)\\[1pt]
+		$\tau = \gamma l =
+		\pgfmathparse{\tauVal}\pgfmathprintnumber{\pgfmathresult}$ (optical
+		depth)\\[1pt]
+	$\dfrac{I}{I_0} = e^{-\tau} = e^{-\gamma l} \approx 0.135$};
+
+	% Inset: I/I0 vs x
+	\begin{scope}[shift={(\cols*\squareunit + 1.5, -1.8)},
+		x=1.6cm, y=1.6cm]
+		\draw[->, thin] (0,0) -- (2.4,0) node[right, font=\footnotesize] {$x$};
+		\draw[->, thin] (0,0) -- (0,1.2) node[above, font=\footnotesize]
+		{$\frac{I}{I_0}$};
+		\draw[red, thick, domain=0:2.2, samples=60]
+		plot (\x, {exp(-\tauVal*\x/2.2)});
+		\draw[dashed, thin] (2.2, 0) -- (2.2, {exp(-\tauVal)})
+		node[pos=0.5, right, font=\scriptsize] {$e^{-\tau}$};
+		\node[font=\scriptsize] at (1.5, 0.9) {$e^{-\gamma x}$};
+	\end{scope}
 \end{tikzpicture}
 \end{document}
